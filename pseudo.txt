@@ -3,3 +3,6 @@ As a < type of user >, I want < some goal > so that < some reason >
 
 Logical flow:
 A few sentences on general functionality and the steps necessary to do all those things.
+
+
+Drag and drop tutorial (relevant stuff starts at 9:00): https://www.youtube.com/watch?v=m3StLl-H4CY
