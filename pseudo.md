@@ -10,6 +10,8 @@ As a busy person, I want a todo app so that I can manage all my tasks as I work 
 
 Each task needs the following info:
 
+#### Properties
+
 -   Title
 -   Status/progress
 -   Due date
@@ -17,7 +19,10 @@ Each task needs the following info:
 -   Priority
 -   A short description/notes
 -   Tags
--   Checkbox for finished (triggers line through & greyed out)
+
+#### Methods
+
+-   Getters and setters
 
 ### App overall
 
@@ -38,4 +43,12 @@ Each task needs the following info:
 
 ## Logical flow:
 
-A few sentences on general functionality and the steps necessary to do all those things.
+App logic:
+Project names stored in an array: Finances, Reading, Home
+Tasks created by task factory or class (Use composition, Object.assign())
+Create sample tasks: Pay bills, groceries, files taxes, read Chekhov, replace lightbulb
+
+DOM controller:
+Use elFactory to create nested objects and htmlFactory to add them to the DOM
+Probably gonna need separate Fn's for creating the display structures of tasks viewed in listMode, in displayMode, and in editMode
+Load the page
