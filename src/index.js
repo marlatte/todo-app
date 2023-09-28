@@ -1,21 +1,39 @@
-let tasks = [
-	{
-		title: "Replace lightbulb",
-		status: "backlog",
-		dueDate: "",
-		project: "home",
-		priority: "medium",
-		notes: "Bathroom light is flickering",
-		tags: "",
-	},
-];
+let tasks = [];
 
-function taskFactory(title, status) {
-	let title = title[0].toUpperCase() + title.slice(1);
-	const task = { title, status };
+function taskFactory(details = {}) {
+	details.title = details.title[0].toUpperCase() + details.title.slice(1);
+	const _task = {};
+	Object.assign(_task, details);
 	return {
-		getProperty: (key) => task[key],
-		setProperty: (key, value) => (task[key] = value),
-		logData: () => console.log(Object.entries(task)),
+		getProperty: (key) => _task[key],
+		setProperty: (key, value) => (_task[key] = value),
+		logData: () => Object.entries(_task),
 	};
 }
+
+function addDefaults() {
+	const defaultTasks = [
+		{
+			title: "replace lightbulb",
+			status: "backlog",
+			dueDate: "",
+			project: "home",
+			priority: "medium",
+			notes: "Bathroom light is flickering",
+			tags: "",
+		},
+	];
+
+	defaultTasks.forEach((item) => {
+		tasks.push(taskFactory(item));
+	});
+
+	tasks.forEach((task, index) => {
+		console.log(`Task at: ${index}`);
+		task.logData().forEach((element) => {
+			console.log(element);
+		});
+	});
+}
+
+addDefaults();
