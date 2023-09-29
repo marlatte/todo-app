@@ -4,6 +4,7 @@ const taskController = (() => {
 
 	let _projectList = ["finances", "home", "learning"];
 	const getProjects = () => _projectList;
+
 	function addProject(newProjectName) {
 		_projectList.push(newProjectName.toLowerCase());
 	}

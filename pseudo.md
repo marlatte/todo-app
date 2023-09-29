@@ -46,9 +46,13 @@ taskController:
         -   `addTask(inputValuesArray)` iterates over the submitted values, creates a task, and adds it to `_tasks`.
     -   Creating a new project.
         -   `addProject(inputValue)` pushes the new project name to the array.
--   Deleting things
-    -   Removing a task
-    -   Removing a project (and all its tasks!!!)
+-   Deleting things.
+    -   Removing a task.
+        -   `removeTask(index)` splices the item from `_tasks` at `index`.
+    -   Removing a project (and all its tasks!!!).
+        -   `removeProject(removeName)`
+            -   Finds all tasks from that project and removes them from `_tasks`.
+            -   Splices the name from `_projectList` at `removeName`'s index.
 
 screenController:
 
@@ -71,7 +75,8 @@ screenController:
     -   `new-thing-btn` that reveals 2 buttons above:
         -   `add-task-btn` on click: opens dialog/form in `editMode`, but blank. On submit: `taskController.addTask(inputValuesArray)`
         -   `add-project-btn` on click: opens a dialog/form/input for project name. On submit: `taskController.addProject(inputValue)`, `updateScreen()`.
--   Deleting things
-    -   Show a warning dialog ("This can't be undone", etc.)
-    -   Removing a task
-    -   Removing a project (and all its tasks)
+-   Deleting things.
+    -   Removing a task.
+        -   `remove-task-btn` on click: shows warning dialog ("This can't be undone", etc.), then triggers `taskController.removeTask(index)`.
+    -   Removing a project (and all its tasks).
+        -   `remove-project-btn` on click: shows warning dialog ("This can't be undone", etc.), then triggers `taskController.removeProject(removeName)`.
