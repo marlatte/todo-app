@@ -1,4 +1,4 @@
-const taskController = (() => {
+const appController = (() => {
 	let _tasks = [];
 	const getAllTasks = () => _tasks;
 
@@ -94,3 +94,31 @@ const taskController = (() => {
 
 	return { getAllTasks, getProjects, addProject, removeProject };
 })();
+
+/**
+PSEUDO
+
+MODULE appController
+	IIFE Tasks
+		_tasks = [],
+		_sortTasks(outgoingArray) => sorts by date
+		getAllTasks(), 
+		getTasksByProperty(property, ...values),
+		addTask(inputValuesArray),
+		removeTask(index)
+	END IIFE
+
+	IIFE Projects
+		_projectList = [],
+		getProjects(), 
+		addProject(newProjectName),
+		removeProject(removeName)
+	END IIFE
+
+END MODULE
+
+MODULE screenController
+
+END MODULE
+
+ */
