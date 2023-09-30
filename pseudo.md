@@ -45,14 +45,15 @@ appController:
         -   Iterates over the submitted values,
         -   Adds it to `_tasks`.
     -   Removing a task: `removeTasks(...removeIds)` splices each item with the given ids from `_tasks`.
-    -   Editing a task: `updateTask(taskId, inputValuesArray)`
+    -   Editing a task: `updateTask(updateId, inputValuesArray)`
         -   Finds the task with relevant id, gets its index in `_tasks`, calls `setProperty` iteratively
     -   Exporting all tasks: `getAllTasks()`
     -   Filtering tasks: `getTasksByProperty(prop, value)`
         -   Find all tasks where `prop === value` (eg. `project === "home"`),
 -   Projects
     -   Project names array: finances, reading, home, etc.
-    -   Creating a new project: `addProject(inputValue)` pushes new name to array.
+    -   Exporting all project names: `getProjects()`
+    -   Creating a new project: `addProject(newProjectName)` pushes new name to array.
     -   Removing a project (and all its tasks!!!): `removeProject(removeName)`
         -   Finds all tasks from that project and removes them from `_tasks`.
             -   `Tasks.getTasksByProperty("project", projectName)`,

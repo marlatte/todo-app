@@ -1,36 +1,60 @@
 const appController = (() => {
-	let _tasks = [];
-	const getAllTasks = () => _tasks;
+	const Tasks = (() => {
+		let _tasks = [];
+		let _idCounter = 0;
 
-	let _projectList = ["finances", "home", "learning"];
-	const getProjects = () => _projectList;
+		function _taskFactory() {
+			const _task = {};
+			return {
+				getProperty: (key) => _task[key],
+				setProperty: (key, value) => (_task[key] = value),
+				logData: () => Object.entries(_task), // devMode
+			};
+		}
 
-	function addProject(newProjectName) {
-		_projectList.push(newProjectName.toLowerCase());
-	}
-	function removeProject(removeName) {
-		_projectList.splice(_projectList.indexOf(removeName), 1);
-		// Needs to remove all tasks associated with that project from _tasks
-	}
+		function addTask(inputValuesArray) {
+			const newTask = _taskFactory();
+			newTask.setProperty("id", _idCounter++);
+			inputValuesArray.forEach((pair) => {
+				newTask.setProperty(pair[0], pair[1]);
+			});
+			_tasks.push(newTask);
+		}
 
-	function taskFactory() {
-		const _task = {};
+		function removeTasks(...removeIds) {}
+
+		function updateTask(updateId, inputValuesArray) {}
+
+		function getTasksByProperty(prop, value) {}
+
 		return {
-			getProperty: (key) => _task[key],
-			setProperty: (key, value) => (_task[key] = value),
-			logData: () => Object.entries(_task), // devMode
+			addTask,
+			removeTasks,
+			updateTask,
+			getAllTasks: () => _tasks,
+			getTasksByProperty,
 		};
-	}
+	})();
 
-	function addTask(inputValuesArray) {
-		const newTask = taskFactory();
-		inputValuesArray.forEach((pair) => {
-			newTask.setProperty(pair[0], pair[1]);
-		});
-		_tasks.push(newTask);
-	}
+	const Projects = (() => {
+		let _projectList = ["finances", "home", "learning"];
 
-	const addDefaults = (() => {
+		function addProject(newProjectName) {
+			_projectList.push(newProjectName.toLowerCase());
+		}
+		function removeProject(removeName) {
+			_projectList.splice(_projectList.indexOf(removeName), 1);
+			// Needs to remove all tasks associated with that project from _tasks
+		}
+
+		return {
+			addProject,
+			removeProject,
+			getProjects: () => _projectList,
+		};
+	})();
+
+	const _addDefaults = (() => {
 		const defaultTasks = [
 			{
 				title: "Pay bills",
@@ -80,32 +104,31 @@ const appController = (() => {
 		].map((item) => Object.entries(item));
 
 		defaultTasks.forEach((item) => {
-			addTask(item);
+			Tasks.addTask(item);
 		});
 
 		// Check to make sure things are adding correctly. devMode
-		_tasks.forEach((task, index) => {
+		Tasks.getAllTasks().forEach((task, index) => {
 			console.log(`Task at: ${index}`);
-			task.logData().forEach((element) => {
-				console.log(element);
-			});
+			console.log(task.logData());
 		});
 	})();
 
-	return { getAllTasks, getProjects, addProject, removeProject };
+	return { Tasks, Projects };
 })();
 
-/**
-PSEUDO
+/*   PSEUDO
 
 MODULE appController
 	IIFE Tasks
 		_tasks = [],
-		_sortTasks(outgoingArray) => sorts by date
-		getAllTasks(), 
-		getTasksByProperty(property, ...values),
+		_idCounter,
+		_taskFactory(),
 		addTask(inputValuesArray),
-		removeTask(index)
+		removeTasks(...removeIds),
+		updateTask(updateId, inputValuesArray)
+		getAllTasks(), 
+		getTasksByProperty(prop, ...values),
 	END IIFE
 
 	IIFE Projects
@@ -115,9 +138,18 @@ MODULE appController
 		removeProject(removeName)
 	END IIFE
 
+	FUNCTION addDefaults
+		adds default tasks
+	END FUNCTION
+
 END MODULE
 
 MODULE screenController
+	VAR tasksToDisplay = []
+
+	FUNCTION updateScreen()
+		iterates through tasksToDisplay
+	END FUNCTION 
 
 END MODULE
 
