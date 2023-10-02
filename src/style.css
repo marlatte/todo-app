@@ -16,6 +16,12 @@
 	--eg-var: red;
 }
 
+body {
+	min-height: 100svh;
+	display: flex;
+	flex-direction: column;
+}
+
 /* ---------------     /Utilities & Universals     --------------- */
 /* ---------------     CONTENT     --------------- */
 
@@ -46,6 +52,9 @@ header h1 {
 
 main {
 	--main-spacer: 20px;
+
+	position: relative;
+	flex: 1;
 	padding: var(--main-spacer);
 }
 
@@ -106,9 +115,57 @@ main {
 }
 
 /* ---------------     /Status columns     --------------- */
+
+.add-container {
+	position: fixed;
+	bottom: calc(var(--main-spacer) + 48px);
+	left: 10px;
+
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 10px;
+}
+
+.add-btn {
+	--add-btn-dims: 50px;
+
+	height: var(--add-btn-dims);
+	width: var(--add-btn-dims);
+	display: grid;
+	place-content: center;
+
+	border-radius: var(--add-btn-dims);
+	border: 2px solid white;
+	background-color: black;
+	color: white;
+	font-size: 40px;
+}
+
+.add-btn.open {
+	transform: rotate(45deg);
+}
+
+.add-btn ~ * {
+	display: none;
+}
+
+.add-btn.open ~ * {
+	display: block;
+}
+
 /* ---------------     /Main     --------------- */
 
 /* ---------------     Footer     --------------- */
+
+footer {
+	padding: 20px;
+
+	display: flex;
+	justify-content: center;
+
+	background-color: black;
+	color: white;
+}
 /* ---------------     /Footer     --------------- */
 
 /* ---------------     Dialog     --------------- */
@@ -119,11 +176,16 @@ dialog {
 	height: 100%;
 	width: 100%;
 
-	display: grid;
-	place-content: center;
+	justify-content: center;
+	align-items: start;
+	padding-top: 140px;
 
 	background-color: rgba(128, 128, 128, 0.5);
 	border: none;
+}
+
+dialog[open] {
+	display: flex;
 }
 
 dialog > * {
@@ -134,8 +196,8 @@ dialog > * {
 }
 
 .display-mode {
-	/* Toggle this! */
-	display: none;
+	/* Toggle: flex */
+	display: flex;
 
 	background-color: wheat;
 }
@@ -146,7 +208,8 @@ dialog > * {
 }
 
 .edit-mode {
-	display: flex;
+	/* Toggle: flex */
+	display: none;
 	background-color: cadetblue;
 }
 
@@ -154,6 +217,12 @@ dialog > * {
 	display: flex;
 	flex-direction: column;
 	gap: var(--modal-spacer);
+}
+
+.project-mode {
+	/* Toggle: flex */
+	display: none;
+	background-color: pink;
 }
 
 /* ---------------     /Dialog     --------------- */

@@ -60,9 +60,16 @@
 					</div>
 				</section>
 			</div>
+			<div class="add-container">
+				<button type="button" class="add-btn open">+</button>
+				<button type="button" class="add-project-btn">
+					New Project
+				</button>
+				<button type="button" class="add-task-btn">New Task</button>
+			</div>
 		</main>
 		<footer>Footer</footer>
-		<dialog open>
+		<dialog>
 			<div class="display-mode">
 				<section class="display-mode-header">
 					<h3 class="display-title">Replace lightbulb</h3>
@@ -158,6 +165,16 @@ Bathroom light is flickering</textarea
 				<section class="edit-mode-buttons">
 					<button type="submit" class="edit-save">Save</button>
 					<button type="button" class="edit-cancel">Cancel</button>
+				</section>
+			</form>
+			<form class="project-mode">
+				<div class="form-item">
+					<label for="new-project">Add Project:</label>
+					<input type="text" id="new-project" />
+				</div>
+				<section class="edit-mode-buttons">
+					<button type="submit" class="project-save">Submit</button>
+					<button type="button" class="project-cancel">Cancel</button>
 				</section>
 			</form>
 		</dialog>
