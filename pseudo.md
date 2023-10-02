@@ -38,18 +38,22 @@ appController:
 
 -   Tasks
     -   Tasks stored in an `_tasks` array.
-    -   Tasks created by `taskFactory()`
+    -   Tasks created by `_taskFactory()`
+    -   Sort by date with `_dateSort()`.
     -   Creating a task: `addTask(inputValuesArray)`
-        -   Creates an empty task with `taskFactory()`,
-        -   Assigns it a unique id from `idCounter`
+        -   Creates an empty task with `_taskFactory()`,
+        -   Assigns it a unique id from `_idCounter`
         -   Iterates over the submitted values,
         -   Adds it to `_tasks`.
     -   Removing a task: `removeTasks(...removeIds)` splices each item with the given ids from `_tasks`.
-    -   Editing a task: `updateTask(updateId, inputValuesArray)`
-        -   Finds the task with relevant id, gets its index in `_tasks`, calls `setProperty` iteratively
-    -   Exporting all tasks: `getAllTasks()`
-    -   Filtering tasks: `getTasksByProperty(prop, value)`
-        -   Find all tasks where `prop === value` (eg. `project === "home"`),
+    -   Editing a task: `updateTask(updateId, inputValuesArray)`.
+        -   Finds the task with relevant id,
+        -   Gets its index in `_tasks`,
+        -   Calls `setProperty` iteratively.
+    -   Exporting tasks always ends with `_dateSort()`.
+        -   All: `getAllTasks()`
+        -   Filtered: `getTasksByProperty(prop, value)`
+            -   Find all tasks where `prop === value` (eg. `project === "home"`),
 -   Projects
     -   Project names array: finances, reading, home, etc.
     -   Exporting all project names: `getProjects()`
@@ -70,7 +74,7 @@ screenController:
     -   Separate Fn's for creating the display structures of tasks viewed in listMode, in displayMode, and in editMode.
 -   (Re)Organizing the view.
     -   Default all tasks.
-    -   Sorting: `sortDisplay()` sorts by `dueDate`
+    -   Sorting: `statusSort()` splits tasks up into appropriate columns.
     -   Filtering: Clicking on a tag, project, etc. will filter tasks by that property.
 -   Editing in place:
     -   On task click: show the full details in dialog modal with 2 modes:

@@ -3,6 +3,8 @@ const appController = (() => {
 		let _tasks = [];
 		let _idCounter = 0;
 
+		function _dateSort(outgoingTasks) {}
+
 		function _taskFactory() {
 			const _task = {};
 			return {
@@ -123,6 +125,7 @@ MODULE appController
 	IIFE Tasks
 		_tasks = [],
 		_idCounter,
+		_dateSort(),
 		_taskFactory(),
 		addTask(inputValuesArray),
 		removeTasks(...removeIds),
