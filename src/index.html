@@ -61,6 +61,105 @@
 				</section>
 			</div>
 		</main>
-		<footer></footer>
+		<footer>Footer</footer>
+		<dialog open>
+			<div class="display-mode">
+				<section class="display-mode-header">
+					<h3 class="display-title">Replace lightbulb</h3>
+					<button class="close-btn">×</button>
+				</section>
+				<section class="display-mode-details">
+					<span id="task-id" data-task-id="0"></span>
+					<p>Project: <span class="display-project">Home</span></p>
+					<p>
+						Priority: <span class="display-priority">medium</span>
+					</p>
+					<p>
+						Due Date: <span class="display-due-date">10/14/23</span>
+					</p>
+					<p>Status: <span class="display-status">Backlog</span></p>
+					<p>
+						Notes:
+						<span class="display-notes"
+							>Bathroom light is flickering</span
+						>
+					</p>
+					<p>Tags: <span class="display-tags">store</span></p>
+				</section>
+				<section class="display-mode-buttons">
+					<button type="button">Edit</button>
+					<button type="button">Delete</button>
+				</section>
+			</div>
+			<form class="edit-mode">
+				<section class="edit-mode-details">
+					<span id="task-id" data-task-id="0"></span>
+					<div class="form-row">
+						<div class="form-item">
+							<label for="title">Title:</label>
+							<input
+								type="text"
+								id="title"
+								value="Replace lightbulb"
+							/>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-item">
+							<label for="project">Project:</label>
+							<select id="project">
+								<option value="finances">Finances</option>
+								<option value="reading">Reading</option>
+								<option value="home" selected>Home</option>
+							</select>
+						</div>
+						<div class="form-item">
+							<label for="priority">Priority:</label>
+							<select id="priority">
+								<option value="high">High</option>
+								<option value="medium" selected>Medium</option>
+								<option value="low">Low</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-item">
+							<label for="due-date">Due Date:</label>
+							<input type="date" id="due-date" />
+						</div>
+						<div class="form-item">
+							<label for="status">Status:</label>
+							<select id="status">
+								<option value="backlog" selected>
+									Backlog
+								</option>
+								<option value="to-do">To Do</option>
+								<option value="in-progress">In Progress</option>
+								<option value="done">Done</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-item">
+							<label for="notes">Notes:</label>
+							<textarea id="notes" cols="30" rows="10">
+Bathroom light is flickering</textarea
+							>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-item">
+							<p>Enter tags separated by commas.</p>
+							<label for="tags">Tags:</label>
+							<input type="text" id="tags" value="store" />
+						</div>
+					</div>
+				</section>
+				<section class="edit-mode-buttons">
+					<button type="submit" class="edit-save">Save</button>
+					<button type="button" class="edit-cancel">Cancel</button>
+				</section>
+			</form>
+		</dialog>
 	</body>
 </html>

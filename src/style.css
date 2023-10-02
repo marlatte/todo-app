@@ -111,4 +111,51 @@ main {
 /* ---------------     Footer     --------------- */
 /* ---------------     /Footer     --------------- */
 
+/* ---------------     Dialog     --------------- */
+
+dialog {
+	--modal-spacer: 12px;
+	top: 0;
+	height: 100%;
+	width: 100%;
+
+	display: grid;
+	place-content: center;
+
+	background-color: rgba(128, 128, 128, 0.5);
+	border: none;
+}
+
+dialog > * {
+	width: min(90vw, 500px);
+	padding: var(--modal-spacer);
+	gap: var(--modal-spacer);
+	flex-direction: column;
+}
+
+.display-mode {
+	/* Toggle this! */
+	display: none;
+
+	background-color: wheat;
+}
+
+.display-mode-header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.edit-mode {
+	display: flex;
+	background-color: cadetblue;
+}
+
+.edit-mode-details {
+	display: flex;
+	flex-direction: column;
+	gap: var(--modal-spacer);
+}
+
+/* ---------------     /Dialog     --------------- */
+
 /* ---------------     /CONTENT     --------------- */
