@@ -74,7 +74,7 @@ const appController = (() => {
 				priority: "medium",
 				notes: "",
 				dueDate: "",
-				tags: "",
+				tags: "store",
 			},
 			{
 				title: "files taxes",
@@ -101,7 +101,7 @@ const appController = (() => {
 				priority: "medium",
 				notes: "Bathroom light is flickering",
 				dueDate: "",
-				tags: "",
+				tags: "store",
 			},
 		].map((item) => Object.entries(item));
 

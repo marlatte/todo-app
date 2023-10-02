@@ -1,6 +1,8 @@
 /* ---------------     Reboot     --------------- */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -10,25 +12,103 @@
 /* ---------------     /Reboot     --------------- */
 /* ---------------     Utilities & Universals     --------------- */
 
-:root{
+:root {
 	--eg-var: red;
 }
 
 /* ---------------     /Utilities & Universals     --------------- */
 /* ---------------     CONTENT     --------------- */
 
-
 /* ---------------     Header     --------------- */
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	border: 1px solid black;
+}
+
+header h1 {
+	margin: 10px;
+	font-style: italic;
+}
+
+.nav-display-btn {
+	margin: 10px;
+	padding: 5px 8px;
+	font-size: 20px;
+}
+
 /* ---------------     /Header     --------------- */
 
 /* ---------------     Main     --------------- */
-/* ---------------     Section     --------------- */
-/* ---------------     /Section     --------------- */
+
+main {
+	--main-spacer: 20px;
+	padding: var(--main-spacer);
+}
+
+.project-displayed {
+	margin-bottom: 20px;
+}
+
+.statuses-container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--main-spacer);
+}
+
+/* ---------------     Status columns     --------------- */
+
+.status {
+	--status-spacer: 10px;
+	padding: var(--status-spacer);
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--status-spacer);
+	border: 1px solid black;
+	border-radius: 6px;
+}
+
+.task-card {
+	--priority-width: 12px;
+	--priority-color: grey;
+
+	padding: 5px 5px 5px calc(var(--priority-width) + 5px);
+
+	background-image: linear-gradient(
+		to right,
+		var(--priority-color) var(--priority-width),
+		transparent var(--priority-width)
+	);
+
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+.task-card[data-priority="high"] {
+	--priority-color: red;
+}
+
+.task-card[data-priority="medium"] {
+	--priority-color: gold;
+}
+
+.task-card[data-priority="low"] {
+	--priority-color: green;
+}
+
+.subtext {
+	display: flex;
+	justify-content: space-between;
+}
+
+/* ---------------     /Status columns     --------------- */
 /* ---------------     /Main     --------------- */
 
 /* ---------------     Footer     --------------- */
 /* ---------------     /Footer     --------------- */
-
-
 
 /* ---------------     /CONTENT     --------------- */

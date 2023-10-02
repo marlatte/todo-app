@@ -4,13 +4,62 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Marlatte Todo App</title>
-		<script src="./index.js"></script>
+		<!-- delete these for webpack -->
+		<script src="./index.js" defer></script>
+		<link rel="stylesheet" href="style.css" />
 	</head>
 
 	<body>
-		<header></header>
+		<header>
+			<div class="brand">
+				<h1>Pa'cer</h1>
+			</div>
+			<div class="nav-container">
+				<button type="button" class="nav-display-btn">☰</button>
+			</div>
+		</header>
 		<main>
-			<section></section>
+			<h1 class="project-displayed">All Tasks</h1>
+			<div class="statuses-container">
+				<section class="status" id="backlog-column">
+					<h2 class="status-name">Backlog</h2>
+					<!-- New Card -->
+					<div
+						class="task-card"
+						data-priority="medium"
+						data-task-id="0"
+						data-task-status="backlog"
+					>
+						<div class="title">Replace lightbulb</div>
+						<div class="subtext">
+							<div class="project">Home</div>
+							<div class="date">10/14/23</div>
+						</div>
+					</div>
+					<!-- New Card -->
+					<div class="task-card">
+						<div class="priority"></div>
+						<div class="task-text">
+							<div class="title">Title</div>
+							<div class="subtext">
+								<div class="project">Project</div>
+								<div class="date">Date</div>
+							</div>
+						</div>
+					</div>
+					<!-- New Card -->
+					<div class="task-card">
+						<div class="priority"></div>
+						<div class="task-text">
+							<div class="title">Title</div>
+							<div class="subtext">
+								<div class="project">Project</div>
+								<div class="date">Date</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
 		</main>
 		<footer></footer>
 	</body>
