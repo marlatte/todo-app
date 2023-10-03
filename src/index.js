@@ -23,7 +23,19 @@ const appController = (() => {
 			_tasks.push(newTask);
 		}
 
-		function removeTasks(...removeIds) {}
+		function removeTasks(...removeIds) {
+			// Refactor
+			for (const currentTask of _tasks) {
+				currentIndex = _tasks.indexOf(currentTask);
+				if (removeIds.includes(currentTask.getProperty("id"))) {
+					_tasks.splice(currentIndex, 1);
+				}
+			}
+			// Delete once stable
+			Tasks.getAllTasks().forEach((item) =>
+				console.log(item.getProperty("id"))
+			);
+		}
 
 		function updateTask(updateId, inputValuesArray) {}
 
@@ -171,3 +183,8 @@ MODULE screenController
 END MODULE
 
  */
+
+const screenController = (() => {
+	const addBtn = document.getElementById("add-btn");
+	addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
+})();

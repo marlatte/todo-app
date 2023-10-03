@@ -12,10 +12,6 @@
 /* ---------------     /Reboot     --------------- */
 /* ---------------     Utilities & Universals     --------------- */
 
-:root {
-	--eg-var: red;
-}
-
 body {
 	min-height: 100svh;
 	display: flex;
