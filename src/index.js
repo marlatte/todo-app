@@ -3,7 +3,9 @@ const appController = (() => {
 		let _tasks = [];
 		let _idCounter = 0;
 
-		function _dateSort(outgoingTasks) {}
+		function _dateSort(outgoingTasks) {
+			return outgoingTasks; // devMode
+		}
 
 		function _taskFactory() {
 			const _task = {};
@@ -24,47 +26,70 @@ const appController = (() => {
 		}
 
 		function removeTasks(...removeIds) {
-			// Refactor
-			for (const currentTask of _tasks) {
-				currentIndex = _tasks.indexOf(currentTask);
-				if (removeIds.includes(currentTask.getProperty("id"))) {
-					_tasks.splice(currentIndex, 1);
+			_tasks.forEach((task, index) => {
+				if (removeIds.includes(task.getProperty("id"))) {
+					_tasks.splice(index, 1);
 				}
-			}
-			// Delete once stable
-			Tasks.getAllTasks().forEach((item) =>
-				console.log(item.getProperty("id"))
-			);
+			});
+
+			// devMode
+			_tasks.forEach((item) => console.log(item.getProperty("id")));
 		}
 
-		function updateTask(updateId, inputValuesArray) {}
+		function updateTask(updateId, inputValuesArray) {
+			_tasks.forEach((task, index) => {
+				if (updateId === task.getProperty("id")) {
+					inputValuesArray.forEach((pair) => {
+						_tasks[index].setProperty(pair[0], pair[1]);
+					});
+				}
+			});
+		}
 
-		function getTasksByProperty(prop, value) {}
+		function getTasksByProperty(prop, value) {
+			return _dateSort(
+				_tasks.filter((task) => task.getProperty(prop) === value)
+			);
+		}
 
 		return {
 			addTask,
 			removeTasks,
 			updateTask,
-			getAllTasks: () => _tasks,
+			getAllTasks: () => _dateSort(_tasks),
 			getTasksByProperty,
 		};
 	})();
 
 	const Projects = (() => {
-		let _projectList = ["finances", "home", "learning"];
+		let _projectList = ["home", "finances", "learning"];
 
 		function addProject(newProjectName) {
-			_projectList.push(newProjectName.toLowerCase());
+			_projectList.push(newProjectName);
 		}
 		function removeProject(removeName) {
-			_projectList.splice(_projectList.indexOf(removeName), 1);
-			// Needs to remove all tasks associated with that project from _tasks
+			if (_projectList.includes(removeName)) {
+				// Get task.id's associated with that project
+				const removeIds = Tasks.getTasksByProperty(
+					"project",
+					removeName
+				).map((task) => task.getProperty("id"));
+
+				// Remove all tasks with those id's from _tasks
+				Tasks.removeTasks(...removeIds);
+
+				// Remove name from project list
+				_projectList.splice(_projectList.indexOf(removeName), 1);
+
+				// devMode
+				console.log(_projectList);
+			}
 		}
 
 		return {
 			addProject,
 			removeProject,
-			getProjects: () => _projectList,
+			getProjects: () => _projectList.sort(),
 		};
 	})();
 

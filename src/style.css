@@ -99,6 +99,12 @@ main {
 	border-radius: 6px;
 }
 
+.cards {
+	display: flex;
+	flex-direction: column;
+	gap: var(--status-spacer);
+}
+
 .task-card {
 	--priority-width: 12px;
 	--priority-color: grey;
@@ -213,7 +219,7 @@ dialog > * {
 
 .display-mode {
 	/* Toggle: flex */
-	display: flex;
+	display: none;
 
 	background-color: wheat;
 }
@@ -225,7 +231,7 @@ dialog > * {
 
 .edit-mode {
 	/* Toggle: flex */
-	display: none;
+	display: flex;
 	background-color: cadetblue;
 }
 
