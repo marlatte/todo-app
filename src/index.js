@@ -148,10 +148,24 @@ MODULE appController
 END MODULE
 
 MODULE screenController
+	Grab constant DOM elements:
+		#nav-display-btn,
+		h1.project-displayed, 
+		#backlog-column, 
+		#to-do-column, 
+		#in-progress-column, 
+		#done-column,
+		#add-btn,
+		#add-project-btn,
+		#add-task-btn,
+		dialog
+
 	VAR tasksToDisplay = []
 
 	FUNCTION updateScreen()
-		iterates through tasksToDisplay
+		iterates through tasksToDisplay, 
+		sorts by column, 
+		calls elFactory and appends them to appropriate column.
 	END FUNCTION 
 
 END MODULE

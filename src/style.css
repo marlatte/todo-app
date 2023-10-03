@@ -46,7 +46,7 @@ header h1 {
 	font-style: italic;
 }
 
-.nav-display-btn {
+#nav-display-btn {
 	margin: 10px;
 	padding: 5px 8px;
 	font-size: 20px;
@@ -71,18 +71,30 @@ main {
 }
 
 .statuses-container {
+	--status-spacer: 10px;
 	flex: 1;
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
 
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--main-spacer);
+}
+
+.status-row {
+	flex: auto;
+	width: min(480px, 100%);
+
+	display: flex;
+	flex-wrap: wrap;
 	gap: var(--main-spacer);
 }
 
 /* ---------------     Status columns     --------------- */
 
 .status {
-	--status-spacer: 10px;
+	flex: 1;
 	padding: var(--status-spacer);
+	min-width: min(230px, 100%);
+	min-height: 25svh;
 
 	display: flex;
 	flex-direction: column;
@@ -136,7 +148,7 @@ main {
 	gap: 10px;
 }
 
-.add-btn {
+#add-btn {
 	height: var(--add-btn-dims);
 	width: var(--add-btn-dims);
 	display: grid;
@@ -149,15 +161,15 @@ main {
 	font-size: 40px;
 }
 
-.add-btn.open {
+#add-btn.open {
 	transform: rotate(45deg);
 }
 
-.add-btn ~ * {
+#add-btn ~ * {
 	display: none;
 }
 
-.add-btn.open ~ * {
+#add-btn.open ~ * {
 	display: block;
 }
 
