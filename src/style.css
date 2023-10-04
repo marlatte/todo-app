@@ -16,25 +16,42 @@ body {
 	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
+	background-color: red;
 }
 
 /* ---------------     /Utilities & Universals     --------------- */
 /* ---------------     CONTENT     --------------- */
 
-.app-content {
+.grid-container {
 	flex: 1;
+	display: grid;
+	place-content: center;
+}
+
+.app-content {
 	display: flex;
 	flex-direction: column;
+	background-color: #fff;
+
+	@media (min-width: 700px) {
+		width: min(calc(100vw - 20px), 1200px);
+		height: min(calc(100vh - 60px), 740px);
+
+		display: grid;
+		grid-template-columns: 1fr 20fr;
+	}
 }
 
 /* ---------------     Header     --------------- */
 
 header {
+	grid-column: span 2;
+
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
-	border: 1px solid black;
+	border-bottom: 1px solid black;
 }
 
 header h1 {
@@ -50,6 +67,54 @@ header h1 {
 
 /* ---------------     /Header     --------------- */
 
+/* ---------------     Sidebar     --------------- */
+
+.sidebar {
+	width: 0;
+	height: 100svh;
+	position: absolute;
+	z-index: 1;
+
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	background-color: wheat;
+}
+
+.sidebar.open {
+	width: 80vw;
+	padding: 20px;
+}
+
+#sidebar-close-btn {
+	align-self: flex-end;
+	padding: 10px;
+}
+
+.projects-container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.project-name {
+	display: flex;
+	justify-content: space-between;
+}
+
+@media (min-width: 700px) {
+	.project-delete-btn {
+		display: none;
+	}
+
+	.project-name:hover .project-delete-btn {
+		display: block;
+	}
+}
+
+/* ---------------     /Sidebar     --------------- */
+
 /* ---------------     Main     --------------- */
 
 main {
@@ -59,7 +124,7 @@ main {
 	flex: 1;
 	position: relative;
 	padding: var(--main-spacer);
-	margin-bottom: var(--add-btn-dims);
+	padding-bottom: calc(var(--add-btn-dims) + var(--main-spacer));
 
 	display: flex;
 	flex-direction: column;
@@ -148,6 +213,11 @@ main {
 	display: flex;
 	flex-direction: column-reverse;
 	gap: 10px;
+
+	@media (min-width: 700px) {
+		position: absolute;
+		bottom: 10px;
+	}
 }
 
 #add-btn {
@@ -180,10 +250,11 @@ main {
 /* ---------------     Footer     --------------- */
 
 footer {
-	padding: 20px;
+	height: 60px;
 
 	display: flex;
 	justify-content: center;
+	align-items: center;
 
 	background-color: black;
 	color: white;

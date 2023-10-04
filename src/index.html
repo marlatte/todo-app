@@ -10,83 +10,122 @@
 	</head>
 
 	<body>
-		<div class="app-content">
-			<header>
-				<div class="brand">
-					<h1>Pa'cer</h1>
-				</div>
-				<div class="nav-container">
-					<button type="button" id="nav-display-btn">☰</button>
-				</div>
-			</header>
-			<main>
-				<h1 class="project-displayed">All Tasks</h1>
-				<div class="statuses-container">
-					<div class="status-row">
-						<section class="status" id="backlog-column">
-							<h2 class="status-name">Backlog</h2>
-							<div class="cards" id="backlog-cards">
-								<!-- New Card -->
-								<div
-									class="task-card"
-									data-priority="medium"
-									data-task-id="0"
-									data-task-status="backlog"
-								>
-									<div class="title">Replace lightbulb</div>
-									<div class="subtext">
-										<div class="project">Home</div>
-										<div class="date">10/14/23</div>
-									</div>
-								</div>
-								<!-- New Card -->
-								<div class="task-card">
-									<div class="priority"></div>
-									<div class="task-text">
-										<div class="title">Title</div>
+		<div class="grid-container">
+			<div class="app-content">
+				<header>
+					<div class="brand">
+						<h1>Pa'cer</h1>
+					</div>
+					<div class="nav-container">
+						<button type="button" id="nav-display-btn">☰</button>
+					</div>
+				</header>
+				<section class="sidebar open">
+					<button type="button" id="sidebar-close-btn">×</button>
+					<div class="projects-container">
+						<div class="project-name">
+							<button type="button">All Tasks</button>
+							<button type="button" class="project-delete-btn">
+								D
+							</button>
+						</div>
+						<div class="project-name">
+							<button type="button">Finances</button>
+							<button type="button" class="project-delete-btn">
+								D
+							</button>
+						</div>
+						<div class="project-name">
+							<button type="button">Home</button>
+							<button type="button" class="project-delete-btn">
+								D
+							</button>
+						</div>
+						<div class="project-name">
+							<button type="button">Learning</button>
+							<button type="button" class="project-delete-btn">
+								D
+							</button>
+						</div>
+					</div>
+				</section>
+				<main>
+					<h1 class="project-displayed">All Tasks</h1>
+					<div class="statuses-container">
+						<div class="status-row">
+							<section class="status" id="backlog-column">
+								<h2 class="status-name">Backlog</h2>
+								<div class="cards" id="backlog-cards">
+									<!-- New Card -->
+									<div
+										class="task-card"
+										data-priority="medium"
+										data-task-id="0"
+										data-task-status="backlog"
+									>
+										<div class="title">
+											Replace lightbulb
+										</div>
 										<div class="subtext">
-											<div class="project">Project</div>
-											<div class="date">Date</div>
+											<div class="project">Home</div>
+											<div class="date">10/14/23</div>
+										</div>
+									</div>
+									<!-- New Card -->
+									<div class="task-card">
+										<div class="priority"></div>
+										<div class="task-text">
+											<div class="title">Title</div>
+											<div class="subtext">
+												<div class="project">
+													Project
+												</div>
+												<div class="date">Date</div>
+											</div>
+										</div>
+									</div>
+									<!-- New Card -->
+									<div class="task-card">
+										<div class="priority"></div>
+										<div class="task-text">
+											<div class="title">Title</div>
+											<div class="subtext">
+												<div class="project">
+													Project
+												</div>
+												<div class="date">Date</div>
+											</div>
 										</div>
 									</div>
 								</div>
-								<!-- New Card -->
-								<div class="task-card">
-									<div class="priority"></div>
-									<div class="task-text">
-										<div class="title">Title</div>
-										<div class="subtext">
-											<div class="project">Project</div>
-											<div class="date">Date</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</section>
-						<section class="status" id="to-do-column">
-							<h2 class="status-name">To Do</h2>
-							<div class="cards" id="to-do-cards"></div>
-						</section>
+							</section>
+							<section class="status" id="to-do-column">
+								<h2 class="status-name">To Do</h2>
+								<div class="cards" id="to-do-cards"></div>
+							</section>
+						</div>
+						<div class="status-row">
+							<section class="status" id="in-progress-column">
+								<h2 class="status-name">In Progress</h2>
+								<div class="cards" id="in-progress-cards"></div>
+							</section>
+							<section class="status" id="done-column">
+								<h2 class="status-name">Done</h2>
+								<div class="cards" id="done-cards"></div>
+							</section>
+						</div>
 					</div>
-					<div class="status-row">
-						<section class="status" id="in-progress-column">
-							<h2 class="status-name">In Progress</h2>
-							<div class="cards" id="in-progress-cards"></div>
-						</section>
-						<section class="status" id="done-column">
-							<h2 class="status-name">Done</h2>
-							<div class="cards" id="done-cards"></div>
-						</section>
+					<div class="add-container">
+						<button type="button" id="add-btn">+</button>
+						<button type="button" id="add-project-btn">
+							New Project
+						</button>
+						<button type="button" id="add-task-btn">
+							New Task
+						</button>
 					</div>
-				</div>
-				<div class="add-container">
-					<button type="button" id="add-btn">+</button>
-					<button type="button" id="add-project-btn">
-						New Project
-					</button>
-					<button type="button" id="add-task-btn">New Task</button>
-				</div>
-			</main>
+				</main>
+			</div>
 		</div>
 		<footer>Footer</footer>
 		<dialog>
