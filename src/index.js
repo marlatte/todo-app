@@ -202,11 +202,17 @@ MODULE screenController
 	LET {currentDisplay}: whatever will be displayed on screen. 
 		Will need to be updated by other FN's.
 
-	FUNCTION updateScreen()
+	FUNCTION updateTaskColumns()
 		Sorts {currentDisplay} by column, 
 		Calls elFactory/htmlFactory, appends them to appropriate column.
 		Adds event listeners
 	END FUNCTION 
+
+// Showing the sidebar (mobile)
+	EVENT LISTENER sidebar-open-btn on click: sidebar.classList.add("open")
+
+// Hiding the sidebar (mobile)
+	EVENT LISTENER sidebar-close-btn on click: sidebar.classList.remove("open")
 
 // Opening displayMode
 	EVENT LISTENER any task on click: openDisplayMode(targetTask)
