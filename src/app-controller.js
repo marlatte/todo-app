@@ -21,8 +21,8 @@ export const Tasks = (() => {
 		);
 		return {
 			backlog: columnSortedArray[0],
-			toDo: columnSortedArray[1],
-			inProgress: columnSortedArray[2],
+			"to-do": columnSortedArray[1],
+			"in-progress": columnSortedArray[2],
 			done: columnSortedArray[3],
 		};
 	}

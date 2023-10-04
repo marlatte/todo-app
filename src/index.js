@@ -1,4 +1,5 @@
 import * as appController from "./app-controller";
+import { elFactory, htmlFactory } from "./dom-factories";
 import "./style.css";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
@@ -12,20 +13,42 @@ const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
 const dialog = document.querySelector("dialog");
 
+let currentDisplayTasks = appController.Tasks.getAllTasks();
+console.log(currentDisplayTasks);
+
+for (const columnName in currentDisplayTasks) {
+	const statusName = columnName
+		.split("-")
+		.map((word) => word[0].toUpperCase() + word.slice(1))
+		.join(" ");
+
+	const columnContent = elFactory("div", { classList: "status-container" }, [
+		elFactory("h2", {
+			classList: "status-name",
+			textContent: statusName,
+		}),
+	]);
+	console.log(currentDisplayTasks[columnName]);
+	currentDisplayTasks[columnName].forEach((task) => {
+		columnContent.children.push(
+			elFactory("div", {
+				classList: "task-card",
+				"dataset.priority": task.getProperty("priority"),
+			})
+		);
+	});
+	console.log(columnContent.children);
+
+	// document.getElementById(`${columnName}-column`).appendChild(htmlFactory(columnContent));
+}
+
 /*   PSEUDO
 
-
-Grab constant DOM elements:
-	#add-btn,
-	#add-project-btn,
-	#add-task-btn,
-	dialog
-
-LET {currentDisplay}: whatever will be displayed on screen. 
+LET {currentDisplayTasks}: whatever will be displayed on screen. 
 	Will need to be updated by other FN's.
 
 FUNCTION updateTaskColumns()
-	Sorts {currentDisplay} by column, 
+	Sorts {currentDisplayTasks} by column, 
 	Calls elFactory/htmlFactory, appends them to appropriate column.
 	Adds event listeners
 END FUNCTION 
