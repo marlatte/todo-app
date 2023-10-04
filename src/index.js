@@ -7,6 +7,27 @@ const appController = (() => {
 			return outgoingTasks; // devMode
 		}
 
+		function _columnSort(outgoingTasks) {
+			const columnSortedArray = [
+				"backlog",
+				"to-do",
+				"in-progress",
+				"done",
+			].map((statusType) =>
+				_dateSort(
+					outgoingTasks.filter(
+						(task) => task.getProperty("status") === statusType
+					)
+				)
+			);
+			return {
+				backlog: columnSortedArray[0],
+				toDo: columnSortedArray[1],
+				inProgress: columnSortedArray[2],
+				done: columnSortedArray[3],
+			};
+		}
+
 		function _taskFactory() {
 			const _task = {};
 			return {
@@ -47,7 +68,7 @@ const appController = (() => {
 		}
 
 		function getTasksByProperty(prop, value) {
-			return _dateSort(
+			return _columnSort(
 				_tasks.filter((task) => task.getProperty(prop) === value)
 			);
 		}
@@ -56,7 +77,7 @@ const appController = (() => {
 			addTask,
 			removeTasks,
 			updateTask,
-			getAllTasks: () => _dateSort(_tasks),
+			getAllTasks: () => _columnSort(_tasks),
 			getTasksByProperty,
 		};
 	})();
@@ -97,7 +118,7 @@ const appController = (() => {
 		const defaultTasks = [
 			{
 				title: "Pay bills",
-				status: "inProgress",
+				status: "in-progress",
 				project: "finances",
 				priority: "high",
 				notes: "The rent is too damn high",
@@ -106,7 +127,7 @@ const appController = (() => {
 			},
 			{
 				title: "groceries",
-				status: "loaded",
+				status: "to-do",
 				project: "home",
 				priority: "medium",
 				notes: "",
@@ -133,7 +154,7 @@ const appController = (() => {
 			},
 			{
 				title: "replace lightbulb",
-				status: "loaded",
+				status: "to-do",
 				project: "home",
 				priority: "medium",
 				notes: "Bathroom light is flickering",
@@ -147,10 +168,17 @@ const appController = (() => {
 		});
 
 		// Check to make sure things are adding correctly. devMode
-		Tasks.getAllTasks().forEach((task, index) => {
-			console.log(`Task at: ${index}`);
-			console.log(task.logData());
-		});
+		const testDefaultTasks = Tasks.getAllTasks();
+		for (const key in testDefaultTasks) {
+			console.log(`Column: ${key}`);
+			testDefaultTasks[key].forEach((task, index) => {
+				console.log(`\tTask at: ${index}`);
+				console.log(
+					`\t\t${task.logData().join("\n\t\t").split(",").join(": ")}`
+				);
+			});
+			console.log("\n");
+		}
 	})();
 
 	return { Tasks, Projects };
@@ -158,52 +186,45 @@ const appController = (() => {
 
 /*   PSEUDO
 
-MODULE appController
-	IIFE Tasks
-		_tasks = [],
-		_idCounter,
-		_dateSort(),
-		_taskFactory(),
-		addTask(inputValuesArray),
-		removeTasks(...removeIds),
-		updateTask(updateId, inputValuesArray)
-		getAllTasks(), 
-		getTasksByProperty(prop, ...values),
-	END IIFE
-
-	IIFE Projects
-		_projectList = [],
-		getProjects(), 
-		addProject(newProjectName),
-		removeProject(removeName)
-	END IIFE
-
-	FUNCTION addDefaults
-		adds default tasks
-	END FUNCTION
-
-END MODULE
-
 MODULE screenController
 	Grab constant DOM elements:
 		#nav-display-btn,
 		h1.project-displayed, 
-		#backlog-column, 
-		#to-do-column, 
-		#in-progress-column, 
-		#done-column,
+		#backlog-cards, 
+		#to-do-cards, 
+		#in-progress-cards, 
+		#done-cards,
 		#add-btn,
 		#add-project-btn,
 		#add-task-btn,
 		dialog
 
-	VAR tasksToDisplay = []
+	LET {currentDisplay}: whatever will be displayed on screen. 
+		Will need to be updated by other FN's.
 
 	FUNCTION updateScreen()
-		iterates through tasksToDisplay, 
-		sorts by column, 
-		calls elFactory and appends them to appropriate column.
+		Sorts {currentDisplay} by column, 
+		Calls elFactory and appends them to appropriate column.
+		Adds event listeners
 	END FUNCTION 
+
+	EVENT LISTENER any task on click:
+		openDisplayMode(targetTask)
+	END EVENT LISTENER 
+
+	FUNCTION openDisplayMode(targetTask)
+		Gets targetTask's info and displays it in full displayMode.
+		Adds event listeners for buttons.
+	END FUNCTION
+
+	EVENT LISTENER edit-btn on click:
+		openEditMode(targetTask)
+	END EVENT LISTENER 
+
+	FUNCTION openEditMode(targetTask)
+		Gets targetTask's info and builds a form with it as values.
+		Adds event listeners for buttons.
+	END FUNCTION
 
 END MODULE
 

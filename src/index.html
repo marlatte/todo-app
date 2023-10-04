@@ -25,7 +25,7 @@
 					<div class="status-row">
 						<section class="status" id="backlog-column">
 							<h2 class="status-name">Backlog</h2>
-							<div class="cards">
+							<div class="cards" id="backlog-cards">
 								<!-- New Card -->
 								<div
 									class="task-card"
@@ -65,17 +65,17 @@
 						</section>
 						<section class="status" id="to-do-column">
 							<h2 class="status-name">To Do</h2>
-							<div class="cards"></div>
+							<div class="cards" id="to-do-cards"></div>
 						</section>
 					</div>
 					<div class="status-row">
 						<section class="status" id="in-progress-column">
 							<h2 class="status-name">In Progress</h2>
-							<div class="cards"></div>
+							<div class="cards" id="in-progress-cards"></div>
 						</section>
 						<section class="status" id="done-column">
 							<h2 class="status-name">Done</h2>
-							<div class="cards"></div>
+							<div class="cards" id="done-cards"></div>
 						</section>
 					</div>
 				</div>
@@ -114,8 +114,8 @@
 					<p>Tags: <span class="display-tags">store</span></p>
 				</section>
 				<section class="display-mode-buttons">
-					<button type="button">Edit</button>
-					<button type="button">Delete</button>
+					<button type="button" id="edit-btn">Edit</button>
+					<button type="button" id="delete-btn">Delete</button>
 				</section>
 			</div>
 			<form class="edit-mode">
@@ -183,8 +183,8 @@ Bathroom light is flickering</textarea
 					</div>
 				</section>
 				<section class="edit-mode-buttons">
-					<button type="submit" class="edit-save">Save</button>
-					<button type="button" class="edit-cancel">Cancel</button>
+					<button type="submit" id="task-save-btn">Save</button>
+					<button type="button" id="task-cancel-btn">Cancel</button>
 				</section>
 			</form>
 			<form class="project-mode">
@@ -192,9 +192,11 @@ Bathroom light is flickering</textarea
 					<label for="new-project">Add Project:</label>
 					<input type="text" id="new-project" />
 				</div>
-				<section class="edit-mode-buttons">
-					<button type="submit" class="project-save">Submit</button>
-					<button type="button" class="project-cancel">Cancel</button>
+				<section class="project-mode-buttons">
+					<button type="submit" id="project-save-btn">Submit</button>
+					<button type="button" id="project-cancel-btn">
+						Cancel
+					</button>
 				</section>
 			</form>
 		</dialog>
