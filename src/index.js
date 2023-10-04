@@ -204,7 +204,7 @@ MODULE screenController
 
 	FUNCTION updateScreen()
 		Sorts {currentDisplay} by column, 
-		Calls elFactory and appends them to appropriate column.
+		Calls elFactory/htmlFactory, appends them to appropriate column.
 		Adds event listeners
 	END FUNCTION 
 
@@ -218,34 +218,52 @@ MODULE screenController
 // Opening editMode
 	EVENT LISTENER edit-btn on click: openEditMode(targetTask)
 	FUNCTION openEditMode(targetTask)
-		Gets targetTask's info and builds a form with it as values.
+	 	Builds a form in <dialog>.
+		IF (targetTask)
+			Gets targetTask info and sets form input values.
+		END IF
 		Adds event listeners for editMode buttons.
 		Removes event listeners for displayMode buttons.
 	END FUNCTION
 
 // Deleting a task
-	EVENT LISTENER delete-btn on click: deleteTask(targetTask)
+	EVENT LISTENER task-delete-btn on click: deleteTask(targetTask)
 	FUNCTION deleteTask(targetTask)
 		Removes task from list
+		closeDialog()
 		Updates the screen.
 	END FUNCTION
 
 // Canceling changes
-	EVENT LISTENER task-cancel-btn on click: cancelEdits()
-	FUNCTION cancelEdits()
+	EVENT LISTENER task-cancel-btn on click: closeDialog()
+	FUNCTION closeDialog()
 		Erases dialog inner content and closes it.
 	END FUNCTION
 
-// Saving changes
-	EVENT LISTENER task-save-btn on submit: saveEdits(targetTask)
-	FUNCTION saveEdits(targetTask)
+// Submitting changes, a new task, or new project
+	EVENT LISTENER form on submit: handleFormSubmit(e)
+	FUNCTION handleFormSubmit(e)
 		Submits new details to targetTask.
+		closeDialog()
 		Updates the screen.
 	END FUNCTION
 
 // Creating a task
+	EVENT LISTENER add-task-btn on click: openEditMode()
+
 // Creating a project
+	EVENT LISTENER add-project-btn on click: openProjectMode()
+	FUNCTION openProjectMode()
+		Opens dialog/form with single input.
+	END FUNCTION
+
 // Deleting a project
+	EVENT LISTENER project-delete-btn on click: deleteProject(e)
+	FUNCTION deleteProject(e)
+		Get projectName from e.target.dataset.etc.
+		Remove name from project list.
+		Update sidebar
+	END FUNCTION
 
 END MODULE
 
