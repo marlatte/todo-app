@@ -208,23 +208,44 @@ MODULE screenController
 		Adds event listeners
 	END FUNCTION 
 
-	EVENT LISTENER any task on click:
-		openDisplayMode(targetTask)
-	END EVENT LISTENER 
-
+// Opening displayMode
+	EVENT LISTENER any task on click: openDisplayMode(targetTask)
 	FUNCTION openDisplayMode(targetTask)
 		Gets targetTask's info and displays it in full displayMode.
 		Adds event listeners for buttons.
 	END FUNCTION
 
-	EVENT LISTENER edit-btn on click:
-		openEditMode(targetTask)
-	END EVENT LISTENER 
-
+// Opening editMode
+	EVENT LISTENER edit-btn on click: openEditMode(targetTask)
 	FUNCTION openEditMode(targetTask)
 		Gets targetTask's info and builds a form with it as values.
-		Adds event listeners for buttons.
+		Adds event listeners for editMode buttons.
+		Removes event listeners for displayMode buttons.
 	END FUNCTION
+
+// Deleting a task
+	EVENT LISTENER delete-btn on click: deleteTask(targetTask)
+	FUNCTION deleteTask(targetTask)
+		Removes task from list
+		Updates the screen.
+	END FUNCTION
+
+// Canceling changes
+	EVENT LISTENER task-cancel-btn on click: cancelEdits()
+	FUNCTION cancelEdits()
+		Erases dialog inner content and closes it.
+	END FUNCTION
+
+// Saving changes
+	EVENT LISTENER task-save-btn on submit: saveEdits(targetTask)
+	FUNCTION saveEdits(targetTask)
+		Submits new details to targetTask.
+		Updates the screen.
+	END FUNCTION
+
+// Creating a task
+// Creating a project
+// Deleting a project
 
 END MODULE
 
