@@ -1,16 +1,21 @@
 import * as appController from "./app-controller";
 import "./style.css";
 
+const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
+const projectDisplayed = document.getElementById("project-displayed");
+const backlogColumn = document.getElementById("backlog-column");
+const toDoColumn = document.getElementById("to-do-column");
+const inProgressColumn = document.getElementById("in-progress-column");
+const doneColumn = document.getElementById("done-column");
+const addBtn = document.getElementById("add-btn");
+const addProjectBtn = document.getElementById("add-project-btn");
+const addTaskBtn = document.getElementById("add-task-btn");
+const dialog = document.querySelector("dialog");
+
 /*   PSEUDO
 
 
 Grab constant DOM elements:
-	#nav-display-btn,
-	h1.project-displayed, 
-	#backlog-cards, 
-	#to-do-cards, 
-	#in-progress-cards, 
-	#done-cards,
 	#add-btn,
 	#add-project-btn,
 	#add-task-btn,

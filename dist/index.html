@@ -52,68 +52,60 @@
 					</div>
 				</section>
 				<main>
-					<h1 class="project-displayed">All Tasks</h1>
+					<h1 id="project-displayed">All Tasks</h1>
 					<div class="statuses-container">
 						<div class="status-row">
-							<section class="status" id="backlog-column">
+							<section class="status-column" id="backlog-column">
 								<h2 class="status-name">Backlog</h2>
-								<div class="cards" id="backlog-cards">
-									<!-- New Card -->
-									<div
-										class="task-card"
-										data-priority="medium"
-										data-task-id="0"
-										data-task-status="backlog"
-									>
-										<div class="title">
-											Replace lightbulb
-										</div>
+								<!-- New Card -->
+								<div
+									class="task-card"
+									data-priority="medium"
+									data-task-id="0"
+									data-task-status="backlog"
+								>
+									<div class="title">Replace lightbulb</div>
+									<div class="subtext">
+										<div class="project">Home</div>
+										<div class="date">10/14/23</div>
+									</div>
+								</div>
+								<!-- New Card -->
+								<div class="task-card">
+									<div class="priority"></div>
+									<div class="task-text">
+										<div class="title">Title</div>
 										<div class="subtext">
-											<div class="project">Home</div>
-											<div class="date">10/14/23</div>
+											<div class="project">Project</div>
+											<div class="date">Date</div>
 										</div>
 									</div>
-									<!-- New Card -->
-									<div class="task-card">
-										<div class="priority"></div>
-										<div class="task-text">
-											<div class="title">Title</div>
-											<div class="subtext">
-												<div class="project">
-													Project
-												</div>
-												<div class="date">Date</div>
-											</div>
-										</div>
-									</div>
-									<!-- New Card -->
-									<div class="task-card">
-										<div class="priority"></div>
-										<div class="task-text">
-											<div class="title">Title</div>
-											<div class="subtext">
-												<div class="project">
-													Project
-												</div>
-												<div class="date">Date</div>
-											</div>
+								</div>
+								<!-- New Card -->
+								<div class="task-card">
+									<div class="priority"></div>
+									<div class="task-text">
+										<div class="title">Title</div>
+										<div class="subtext">
+											<div class="project">Project</div>
+											<div class="date">Date</div>
 										</div>
 									</div>
 								</div>
 							</section>
-							<section class="status" id="to-do-column">
+							<section class="status-column" id="to-do-column">
 								<h2 class="status-name">To Do</h2>
-								<div class="cards" id="to-do-cards"></div>
 							</section>
 						</div>
 						<div class="status-row">
-							<section class="status" id="in-progress-column">
+							<section
+								class="status-column"
+								id="in-progress-column"
+							>
 								<h2 class="status-name">In Progress</h2>
-								<div class="cards" id="in-progress-cards"></div>
 							</section>
-							<section class="status" id="done-column">
+							<section class="status-column" id="done-column">
 								<h2 class="status-name">Done</h2>
-								<div class="cards" id="done-cards"></div>
 							</section>
 						</div>
 					</div>

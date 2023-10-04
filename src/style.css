@@ -216,7 +216,7 @@ main {
 
 /* ---------------     Status columns     --------------- */
 
-.status {
+.status-column {
 	flex: 1;
 	padding: var(--status-spacer);
 	min-width: min(230px, 100%);
@@ -227,12 +227,6 @@ main {
 	gap: var(--status-spacer);
 	border: 1px solid black;
 	border-radius: 6px;
-}
-
-.cards {
-	display: flex;
-	flex-direction: column;
-	gap: var(--status-spacer);
 }
 
 .task-card {
