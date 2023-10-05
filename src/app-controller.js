@@ -116,7 +116,7 @@ const _addDefaults = (() => {
 			project: "finances",
 			priority: "high",
 			notes: "The rent is too damn high",
-			dueDate: "",
+			dueDate: "2023-11-1",
 			tags: "",
 		},
 		{

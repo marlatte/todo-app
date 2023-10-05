@@ -10,49 +10,107 @@ const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
 const dialog = document.querySelector("dialog");
 
-let currentDisplayTasks = appController.Tasks.getAllTasks();
+function makeFirstUpper(string) {
+	return string[0].toUpperCase() + string.slice(1);
+}
 
-currentDisplayTasks.forEach((column) => {
-	const columnName = column[0];
-	const statusName = columnName
-		.split("-")
-		.map((word) => word[0].toUpperCase() + word.slice(1))
-		.join(" ");
+function updateTaskColumns(displayTasks) {
+	// Reset the columns
+	[...statusesContainer.children].forEach((row) => (row.textContent = ""));
 
-	const columnContent = elFactory("div", { classList: "status-container" }, [
-		elFactory("h2", {
-			classList: "status-name",
-			textContent: statusName,
-		}),
-	]);
+	// Build column content
+	displayTasks.forEach((column, index) => {
+		const columnName = column[0];
+		const statusName = columnName
+			.split("-")
+			.map((word) => word[0].toUpperCase() + word.slice(1))
+			.join(" ");
 
-	column[1].forEach((task) => {
-		columnContent.children.push(
-			elFactory("div", {
-				classList: "task-card",
-				dataset: {
-					priority: task.getProperty("priority"),
-					taskId: task.getProperty("id"),
-				},
-			})
+		const columnContent = elFactory(
+			"section",
+			{
+				classList: "status-column",
+				id: `dynamic-${columnName}-column`, //devMode
+			},
+			[
+				elFactory("h2", {
+					classList: "status-name",
+					textContent: statusName,
+				}),
+			]
 		);
+
+		// Build task cards
+		column[1].forEach((task) => {
+			const [title, project, dueDate] = [
+				task.getProperty("title"),
+				task.getProperty("project"),
+				task.getProperty("dueDate"),
+			];
+			columnContent.children.push(
+				elFactory(
+					"div",
+					{
+						classList: "task-card",
+						dataset: {
+							priority: task.getProperty("priority"),
+							taskId: task.getProperty("id"),
+						},
+					},
+					[
+						elFactory("div", {
+							classList: "title",
+							textContent: makeFirstUpper(title),
+						}),
+						elFactory("div", { classList: "subtext" }, [
+							elFactory("div", {
+								classList: "project",
+								textContent: makeFirstUpper(project),
+							}),
+							elFactory("div", {
+								classList: "date",
+								textContent: dueDate ? dueDate : "(date)",
+							}),
+						]),
+					]
+				)
+			);
+		});
+
+		// Append to correct row
+		if (index < 2) {
+			statusesContainer.firstElementChild.appendChild(
+				htmlFactory(columnContent)
+			);
+		} else {
+			statusesContainer.lastElementChild.appendChild(
+				htmlFactory(columnContent)
+			);
+		}
 	});
 
-	// Replace by grabbing (and renaming) statusesContainer and
-	// deciding which status-row to append it to based on index.
-	// Use firstElementChild, etc.
-	document
-		.getElementById(`${columnName}-column`)
-		.appendChild(htmlFactory(columnContent));
-});
+	// Make each task clickable
+	const TaskCards = document.querySelectorAll(".task-card");
+	TaskCards.forEach((card) => {
+		card.addEventListener("click", openDisplayMode);
+	});
+}
+
+function openDisplayMode(e) {
+	const findTaskId = (target) => {
+		return target.classList.value === "task-card"
+			? target.dataset.taskId
+			: findTaskId(target.parentElement);
+	};
+	console.log(findTaskId(e.target));
+}
 
 /*   PSEUDO
 
-LET {currentDisplayTasks}: whatever will be displayed on screen. 
-	Will need to be updated by other FN's.
+
 
 FUNCTION updateTaskColumns()
-	Sorts {currentDisplayTasks} by column, 
+	Sorts {displayTasks} by column, 
 	Calls elFactory/htmlFactory, appends them to appropriate column.
 	Adds event listeners
 END FUNCTION 
@@ -71,7 +129,8 @@ EVENT LISTENER sidebar-close-btn on click: sidebar.classList.remove("open")
 // Opening displayMode
 EVENT LISTENER any task on click: openDisplayMode(targetTask)
 FUNCTION openDisplayMode(targetTask)
-	Gets targetTask's info and displays it in full displayMode.
+	Gets targetTask's info.
+	Builds content and appends it to dialog.
 	Adds event listeners for buttons.
 END FUNCTION
 
@@ -130,8 +189,7 @@ END FUNCTION
 
 
  */
+// Initial call
+updateTaskColumns(appController.Tasks.getAllTasks());
 
-const screenController = (() => {
-	const addBtn = document.getElementById("add-btn");
-	addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
-})();
+addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
