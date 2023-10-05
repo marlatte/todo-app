@@ -70,5 +70,5 @@ export function findTaskId(target) {
 }
 
 export function makeFirstUpper(string) {
-	return string[0].toUpperCase() + string.slice(1);
+	return !!string ? string[0].toUpperCase() + string.slice(1) : string;
 }

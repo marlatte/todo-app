@@ -1,6 +1,6 @@
 import * as appController from "./app-controller";
 import { elFactory, htmlFactory, findTaskId, makeFirstUpper } from "./helpers";
-import { buildDisplayMode } from "./modals";
+import { buildDisplayMode, buildEditMode } from "./modals";
 import "./style.css";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
@@ -96,19 +96,27 @@ function updateTaskColumns(displayTasks) {
 }
 
 function openDisplayMode(e) {
+	dialog.textContent = "";
 	dialog.appendChild(buildDisplayMode(findTaskId(e.target)));
 	dialog.showModal();
+	document.querySelector(".close-btn").addEventListener("click", () => {
+		dialog.close();
+		dialog.textContent = "";
+	});
+	document.getElementById("edit-btn").addEventListener("click", openEditMode);
+	document.getElementById("delete-btn").addEventListener("click", deleteTask);
+}
+
+function openEditMode(e) {
+	dialog.textContent = "";
+	dialog.appendChild(buildEditMode(findTaskId(e.target)));
+}
+
+function deleteTask(e) {
+	console.log(findTaskId(e.target));
 }
 
 /*   PSEUDO
-
-
-
-FUNCTION updateTaskColumns()
-	Sorts {displayTasks} by column, 
-	Calls elFactory/htmlFactory, appends them to appropriate column.
-	Adds event listeners
-END FUNCTION 
 
 FUNCTION updateSidebar()
 	Gets current list.

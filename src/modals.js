@@ -48,7 +48,7 @@ export function buildDisplayMode(selectedId) {
 				"section",
 				{
 					classList: "display-mode-buttons id-bubble-marker",
-					dataset: { taskID: selectedId },
+					dataset: { taskId: selectedId },
 				},
 				[
 					elFactory("button", {
@@ -69,4 +69,21 @@ export function buildDisplayMode(selectedId) {
 
 export function buildEditMode(id) {
 	// Builds a form, adds relevant task info IF an id is supplied
+	return htmlFactory(
+		elFactory("div", { classList: "edit-mode" }, [
+			elFactory("section", { classList: "edit-mode-details" }, []),
+			elFactory("section", { classList: "edit-mode-buttons" }, [
+				elFactory("button", {
+					type: "submit",
+					id: "save-btn",
+					textContent: "Save",
+				}),
+				elFactory("button", {
+					type: "button",
+					id: "cancel-btn",
+					textContent: "Cancel",
+				}),
+			]),
+		])
+	);
 }

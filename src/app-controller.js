@@ -27,11 +27,9 @@ export const Tasks = (() => {
 	function _taskFactory() {
 		const _task = {};
 		const setProperty = (key, value) => {
-			_task[key] = value;
-			// if (key === "tags" || key === "dueDate" || key === "id") {
-			// } else {
-			// 	_task[key] = makeFirstUpper(value);
-			// }
+			_task[key] = "title project priority notes".includes(key)
+				? makeFirstUpper(value)
+				: value;
 		};
 
 		return {
