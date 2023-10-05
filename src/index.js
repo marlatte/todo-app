@@ -1,5 +1,6 @@
 import * as appController from "./app-controller";
 import { elFactory, htmlFactory } from "./dom-factories";
+import { buildDisplayMode } from "./modals";
 import "./style.css";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
@@ -9,10 +10,6 @@ const addBtn = document.getElementById("add-btn");
 const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
 const dialog = document.querySelector("dialog");
-
-function makeFirstUpper(string) {
-	return string[0].toUpperCase() + string.slice(1);
-}
 
 function updateTaskColumns(displayTasks) {
 	// Reset the columns
@@ -51,7 +48,7 @@ function updateTaskColumns(displayTasks) {
 				elFactory(
 					"div",
 					{
-						classList: "task-card",
+						classList: "task-card id-bubble-marker",
 						dataset: {
 							priority: task.getProperty("priority"),
 							taskId: task.getProperty("id"),
@@ -97,12 +94,8 @@ function updateTaskColumns(displayTasks) {
 }
 
 function openDisplayMode(e) {
-	const findTaskId = (target) => {
-		return target.classList.value === "task-card"
-			? target.dataset.taskId
-			: findTaskId(target.parentElement);
-	};
-	console.log(findTaskId(e.target));
+	dialog.appendChild(buildDisplayMode(findTaskId(e.target)));
+	dialog.showModal();
 }
 
 /*   PSEUDO

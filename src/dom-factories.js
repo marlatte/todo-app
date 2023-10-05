@@ -1,3 +1,7 @@
+// ------------------------------------------------------- //
+// -------------------- DOM Factories -------------------- //
+// ------------------------------------------------------- //
+
 export function elFactory(type, attributes, children = []) {
 	return { type, attributes, children };
 }
@@ -53,4 +57,18 @@ export function formRowFactory(formDataArrays) {
 				return acc;
 			}
 		}, []);
+}
+
+// ------------------------------------------------------- //
+// -------------------- Other Helpers -------------------- //
+// ------------------------------------------------------- //
+
+export function findTaskId(target) {
+	return target.classList.value.includes("id-bubble-marker")
+		? target.dataset.taskId
+		: findTaskId(target.parentElement);
+}
+
+export function makeFirstUpper(string) {
+	return string[0].toUpperCase() + string.slice(1);
 }

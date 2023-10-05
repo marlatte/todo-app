@@ -283,24 +283,13 @@ footer {
 
 dialog {
 	--modal-spacer: 12px;
-	top: 0;
-	height: 100%;
-	width: 100%;
 
-	justify-content: center;
-	align-items: start;
-	padding-top: 140px;
-
-	background-color: rgba(128, 128, 128, 0.5);
+	margin: auto;
 	border: none;
 }
 
-dialog[open] {
-	display: flex;
-}
-
 dialog > * {
-	width: min(90vw, 500px);
+	width: min(88vw, 500px);
 	padding: var(--modal-spacer);
 	gap: var(--modal-spacer);
 	flex-direction: column;
@@ -308,7 +297,7 @@ dialog > * {
 
 .display-mode {
 	/* Toggle: flex */
-	display: none;
+	display: flex;
 
 	background-color: wheat;
 }
@@ -320,7 +309,7 @@ dialog > * {
 
 .edit-mode {
 	/* Toggle: flex */
-	display: flex;
+	display: none;
 	background-color: cadetblue;
 }
 

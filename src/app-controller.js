@@ -62,9 +62,7 @@ export const Tasks = (() => {
 	}
 
 	function getTasksByProperty(prop, value) {
-		return _columnSort(
-			_tasks.filter((task) => task.getProperty(prop) === value)
-		);
+		return _tasks.filter((task) => task.getProperty(prop) === value);
 	}
 
 	return {
