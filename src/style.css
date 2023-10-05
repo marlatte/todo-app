@@ -196,7 +196,7 @@ main {
 	gap: var(--main-spacer);
 }
 
-.statuses-container {
+#statuses-container {
 	--status-spacer: 10px;
 	flex: 1;
 

@@ -6,25 +6,20 @@ export const Tasks = (() => {
 		return outgoingTasks; // devMode
 	}
 
+	const _columnNames = ["backlog", "to-do", "in-progress", "done"];
+
 	function _columnSort(outgoingTasks) {
-		const columnSortedArray = [
-			"backlog",
-			"to-do",
-			"in-progress",
-			"done",
-		].map((statusType) =>
-			_dateSort(
-				outgoingTasks.filter(
-					(task) => task.getProperty("status") === statusType
-				)
-			)
-		);
-		return {
-			backlog: columnSortedArray[0],
-			"to-do": columnSortedArray[1],
-			"in-progress": columnSortedArray[2],
-			done: columnSortedArray[3],
-		};
+		const columnSortedArray = _columnNames.map((columnName) => {
+			return [
+				columnName,
+				_dateSort(
+					outgoingTasks.filter(
+						(task) => task.getProperty("status") === columnName
+					)
+				),
+			];
+		});
+		return columnSortedArray;
 	}
 
 	function _taskFactory() {
@@ -168,14 +163,14 @@ const _addDefaults = (() => {
 
 	// Check to make sure things are adding correctly. devMode
 	const testDefaultTasks = Tasks.getAllTasks();
-	for (const key in testDefaultTasks) {
-		console.log(`Column: ${key}`);
-		testDefaultTasks[key].forEach((task, index) => {
+	testDefaultTasks.forEach((column, index) => {
+		console.log(`Column: ${column[0]}`);
+		column[1].forEach((task, index) => {
 			console.log(`\tTask at: ${index}`);
 			console.log(
 				`\t\t${task.logData().join("\n\t\t").split(",").join(": ")}`
 			);
 		});
 		console.log("\n");
-	}
+	});
 })();

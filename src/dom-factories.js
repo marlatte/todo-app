@@ -7,7 +7,14 @@ export function htmlFactory(obj) {
 	const attributes = obj.attributes;
 
 	for (let key in attributes) {
-		el[key] = attributes[key];
+		if (key !== "dataset") {
+			el[key] = attributes[key];
+		} else {
+			// Special directions needed to set "data-" properties
+			for (const prop in attributes[key]) {
+				el.dataset[prop] = attributes[key][prop];
+			}
+		}
 	}
 
 	obj.children?.forEach((child) => {

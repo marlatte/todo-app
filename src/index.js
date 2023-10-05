@@ -4,19 +4,16 @@ import "./style.css";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
 const projectDisplayed = document.getElementById("project-displayed");
-const backlogColumn = document.getElementById("backlog-column");
-const toDoColumn = document.getElementById("to-do-column");
-const inProgressColumn = document.getElementById("in-progress-column");
-const doneColumn = document.getElementById("done-column");
+const statusesContainer = document.getElementById("statuses-container");
 const addBtn = document.getElementById("add-btn");
 const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
 const dialog = document.querySelector("dialog");
 
 let currentDisplayTasks = appController.Tasks.getAllTasks();
-console.log(currentDisplayTasks);
 
-for (const columnName in currentDisplayTasks) {
+currentDisplayTasks.forEach((column) => {
+	const columnName = column[0];
 	const statusName = columnName
 		.split("-")
 		.map((word) => word[0].toUpperCase() + word.slice(1))
@@ -28,19 +25,26 @@ for (const columnName in currentDisplayTasks) {
 			textContent: statusName,
 		}),
 	]);
-	console.log(currentDisplayTasks[columnName]);
-	currentDisplayTasks[columnName].forEach((task) => {
+
+	column[1].forEach((task) => {
 		columnContent.children.push(
 			elFactory("div", {
 				classList: "task-card",
-				"dataset.priority": task.getProperty("priority"),
+				dataset: {
+					priority: task.getProperty("priority"),
+					taskId: task.getProperty("id"),
+				},
 			})
 		);
 	});
-	console.log(columnContent.children);
 
-	// document.getElementById(`${columnName}-column`).appendChild(htmlFactory(columnContent));
-}
+	// Replace by grabbing (and renaming) statusesContainer and
+	// deciding which status-row to append it to based on index.
+	// Use firstElementChild, etc.
+	document
+		.getElementById(`${columnName}-column`)
+		.appendChild(htmlFactory(columnContent));
+});
 
 /*   PSEUDO
 
