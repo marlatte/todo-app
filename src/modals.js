@@ -1,6 +1,5 @@
-import { elFactory, htmlFactory } from "./dom-factories";
+import { elFactory, htmlFactory, makeFirstUpper } from "./helpers";
 import * as appController from "./app-controller";
-import { makeFirstUpper } from "./index";
 
 export function buildDisplayMode(selectedId) {
 	const task = appController.Tasks.getTasksByProperty("id", +selectedId)[0];
@@ -19,13 +18,36 @@ export function buildDisplayMode(selectedId) {
 					textContent: "×",
 				}),
 			]),
-			elFactory("section", { classList: "display-mode-details" }, [
-				elFactory(),
-			]),
+			elFactory(
+				"section",
+				{ classList: "display-mode-details" },
+				// Add details!!!!
+				[
+					"project",
+					"priority",
+					"due-date",
+					"status",
+					"notes",
+					"tags",
+				].map((prop) => {
+					return elFactory(
+						"p",
+						{
+							textContent: `${makeFirstUpper(prop)}: `,
+						},
+						[
+							elFactory("span", {
+								classList: `display-${prop}`,
+								textContent: task.getProperty(prop),
+							}),
+						]
+					);
+				})
+			),
 			elFactory(
 				"section",
 				{
-					classList: "display-mode-buttons",
+					classList: "display-mode-buttons id-bubble-marker",
 					dataset: { taskID: selectedId },
 				},
 				[

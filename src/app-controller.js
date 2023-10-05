@@ -1,3 +1,5 @@
+import { makeFirstUpper } from "./helpers";
+
 export const Tasks = (() => {
 	let _tasks = [];
 	let _idCounter = 0;
@@ -24,9 +26,17 @@ export const Tasks = (() => {
 
 	function _taskFactory() {
 		const _task = {};
+		const setProperty = (key, value) => {
+			_task[key] = value;
+			// if (key === "tags" || key === "dueDate" || key === "id") {
+			// } else {
+			// 	_task[key] = makeFirstUpper(value);
+			// }
+		};
+
 		return {
 			getProperty: (key) => _task[key],
-			setProperty: (key, value) => (_task[key] = value),
+			setProperty,
 			logData: () => Object.entries(_task), // devMode
 		};
 	}
@@ -139,7 +149,7 @@ const _addDefaults = (() => {
 			title: "read Chekhov",
 			status: "backlog",
 			project: "learning",
-			priority: "low",
+			priority: "Low",
 			notes: "",
 			dueDate: "",
 			tags: "",

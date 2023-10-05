@@ -1,5 +1,5 @@
 import * as appController from "./app-controller";
-import { elFactory, htmlFactory } from "./dom-factories";
+import { elFactory, htmlFactory, findTaskId, makeFirstUpper } from "./helpers";
 import { buildDisplayMode } from "./modals";
 import "./style.css";
 
@@ -50,7 +50,9 @@ function updateTaskColumns(displayTasks) {
 					{
 						classList: "task-card id-bubble-marker",
 						dataset: {
-							priority: task.getProperty("priority"),
+							priority: task
+								.getProperty("priority")
+								.toLowerCase(),
 							taskId: task.getProperty("id"),
 						},
 					},
