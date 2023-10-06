@@ -10,6 +10,16 @@ export const Tasks = (() => {
 
 	const _columnNames = ["backlog", "to-do", "in-progress", "done"];
 
+	let _propertyNames = [
+		"title",
+		"status",
+		"project",
+		"priority",
+		"notes",
+		"dueDate",
+		"tags",
+	];
+
 	function _columnSort(outgoingTasks) {
 		const columnSortedArray = _columnNames.map((columnName) => {
 			return [
@@ -31,7 +41,7 @@ export const Tasks = (() => {
 				? makeFirstUpper(value)
 				: value;
 		};
-
+		_propertyNames.forEach((prop) => setProperty(prop, ""));
 		return {
 			getProperty: (key) => _task[key],
 			setProperty,
@@ -79,6 +89,7 @@ export const Tasks = (() => {
 		updateTask,
 		getAllTasks: () => _columnSort(_tasks),
 		getTasksByProperty,
+		getColumnNames: () => _columnNames,
 	};
 })();
 
@@ -122,7 +133,7 @@ const _addDefaults = (() => {
 			project: "finances",
 			priority: "high",
 			notes: "The rent is too damn high",
-			dueDate: "2023-11-1",
+			dueDate: "2023-11-01",
 			tags: "",
 		},
 		{
@@ -135,7 +146,7 @@ const _addDefaults = (() => {
 			tags: "store",
 		},
 		{
-			title: "files taxes",
+			title: "file taxes",
 			status: "backlog",
 			project: "finances",
 			priority: "medium",

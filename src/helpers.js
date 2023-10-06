@@ -31,18 +31,56 @@ export function htmlFactory(obj) {
 export function formRowFactory(formDataArrays) {
 	return formDataArrays
 		.map((formData) => {
-			const kebab = formData[0].toLowerCase().split(" ").join("-");
-			return elFactory("div", { classList: "form-item" }, [
+			const kebab = formData[1].toLowerCase().split(" ").join("-");
+			const formItem = elFactory("div", { classList: "form-item" }, [
 				elFactory("label", {
 					htmlFor: kebab,
-					textContent: formData[0] + ":",
-				}),
-				elFactory("input", {
-					id: kebab,
-					type: formData[1],
-					autocomplete: formData[2],
+					textContent: formData[1] + ":",
 				}),
 			]);
+
+			switch (formData[0]) {
+				case "input":
+					formItem.children.push(
+						elFactory("input", {
+							id: kebab,
+							value: formData[2],
+							type: formData[3],
+						})
+					);
+					break;
+
+				case "select":
+					formItem.children.push(
+						elFactory(
+							"select",
+							{
+								id: kebab,
+							},
+							formData[3].map((option) => {
+								return elFactory("option", {
+									value: option,
+									textContent: makeFirstUpper(option),
+									selected:
+										formData[2].toLowerCase() === option,
+								});
+							})
+						)
+					);
+					break;
+				case "textarea":
+					formItem.children.push(
+						elFactory("textarea", {
+							id: kebab,
+							cols: 30,
+							rows: 10,
+							textContent: formData[2],
+						})
+					);
+					break;
+			}
+
+			return formItem;
 		})
 		.reduce((acc, currentItem, index) => {
 			if (!(index & 1)) {
@@ -70,5 +108,10 @@ export function findTaskId(target) {
 }
 
 export function makeFirstUpper(string) {
-	return !!string ? string[0].toUpperCase() + string.slice(1) : string;
+	return !!string
+		? string
+				.split("-")
+				.map((word) => word[0].toUpperCase() + word.slice(1))
+				.join(" ")
+		: string;
 }
