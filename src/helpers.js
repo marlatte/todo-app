@@ -57,14 +57,18 @@ export function formRowFactory(formDataArrays) {
 							{
 								id: kebab,
 							},
-							formData[3].map((option) => {
-								return elFactory("option", {
-									value: option,
-									textContent: makeFirstUpper(option),
-									selected:
-										formData[2].toLowerCase() === option,
-								});
-							})
+							[
+								elFactory("option"),
+								...formData[3].map((option) => {
+									return elFactory("option", {
+										value: option,
+										textContent: makeFirstUpper(option),
+										selected:
+											formData[2].toLowerCase() ===
+											option,
+									});
+								}),
+							]
 						)
 					);
 					break;

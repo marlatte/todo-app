@@ -20,6 +20,8 @@ export const Tasks = (() => {
 		"tags",
 	];
 
+	let _priorities = ["high", "medium", "low"];
+
 	function _columnSort(outgoingTasks) {
 		const columnSortedArray = _columnNames.map((columnName) => {
 			return [
@@ -90,6 +92,8 @@ export const Tasks = (() => {
 		getAllTasks: () => _columnSort(_tasks),
 		getTasksByProperty,
 		getColumnNames: () => _columnNames,
+		getPriorityNames: () => _priorities,
+		getPropertyNames: () => _propertyNames,
 	};
 })();
 

@@ -1,6 +1,11 @@
 import * as appController from "./app-controller";
 import { elFactory, htmlFactory, findTaskId, makeFirstUpper } from "./helpers";
-import { buildDisplayMode, buildEditMode } from "./modals";
+import {
+	addDropdowns,
+	buildDisplayMode,
+	buildEditMode,
+	populateForm,
+} from "./modals";
 import "./style.css";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
@@ -18,16 +23,13 @@ function updateTaskColumns(displayTasks) {
 	// Build column content
 	displayTasks.forEach((column, index) => {
 		const columnName = column[0];
-		const statusName = columnName
-			.split("-")
-			.map((word) => word[0].toUpperCase() + word.slice(1))
-			.join(" ");
+		const statusName = makeFirstUpper(columnName);
 
 		const columnContent = elFactory(
 			"section",
 			{
 				classList: "status-column",
-				id: `dynamic-${columnName}-column`, //devMode
+				id: `dynamic-${columnName}-column`, //devMode (dynamic)
 			},
 			[
 				elFactory("h2", {
@@ -108,8 +110,11 @@ function openDisplayMode(e) {
 }
 
 function openEditMode(e) {
-	dialog.textContent = "";
-	dialog.appendChild(buildEditMode(findTaskId(e.target)));
+	buildEditMode();
+	addDropdowns();
+	if (e.target.id === "edit-btn") {
+		populateForm(findTaskId(e.target));
+	}
 }
 
 function deleteTask(e) {
@@ -128,14 +133,6 @@ EVENT LISTENER sidebar-open-btn on click: sidebar.classList.add("open")
 
 // Hiding the sidebar (mobile)
 EVENT LISTENER sidebar-close-btn on click: sidebar.classList.remove("open")
-
-// Opening displayMode
-EVENT LISTENER any task on click: openDisplayMode(targetTask)
-FUNCTION openDisplayMode(targetTask)
-	Gets targetTask's info.
-	Builds content and appends it to dialog.
-	Adds event listeners for buttons.
-END FUNCTION
 
 // Opening editMode
 EVENT LISTENER edit-btn on click: openEditMode(targetTask)
