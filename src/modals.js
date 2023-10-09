@@ -8,8 +8,14 @@ import {
 import * as appController from "./app-controller";
 
 const dialog = document.querySelector("dialog");
+document.addEventListener("click", (e) => {
+	if (e.target === dialog) dialog.close();
+});
+dialog.addEventListener("close", () => {
+	dialog.textContent = "";
+});
 
-export function buildDisplayMode(selectedId) {
+export function buildDisplayMode() {
 	dialog.innerHTML = `
 			<div class="display-mode">
 				<section class="display-mode-header">
@@ -45,6 +51,9 @@ export function populateDisplay(selectedId) {
 		element.textContent = prop === "tags" ? output : makeFirstUpper(output);
 	});
 	dialog.querySelector(".id-bubble-marker").dataset.taskId = selectedId;
+	dialog
+		.querySelector(".close-btn")
+		.addEventListener("click", () => dialog.close());
 }
 
 // export function buildDisplayMode(selectedId) {
@@ -185,7 +194,7 @@ export function populateDisplay(selectedId) {
 // }
 
 export function buildEditMode() {
-	dialog.innerHTML = `<form class="edit-mode">
+	dialog.innerHTML = `<form class="edit-mode" method="dialog">
 				<section class="edit-mode-details">
 					<div class="form-row">
 						<div class="form-item">
@@ -240,10 +249,13 @@ export function buildEditMode() {
 					</div>
 				</section>
 				<section class="edit-mode-buttons id-bubble-marker" data-task-id="">
-					<button type="submit" id="static-save-btn">Save</button>
-					<button type="button" id="static-cancel-btn">Cancel</button>
+					<button type="submit" id="save-btn">Save</button>
+					<button type="button" id="cancel-btn">Cancel</button>
 				</section>
 			</form>`;
+	document
+		.getElementById("cancel-btn")
+		.addEventListener("click", () => dialog.close());
 }
 
 export function addDropdowns() {

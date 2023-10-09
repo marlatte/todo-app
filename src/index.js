@@ -15,7 +15,6 @@ const statusesContainer = document.getElementById("statuses-container");
 const addBtn = document.getElementById("add-btn");
 const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
-const dialog = document.querySelector("dialog");
 
 function updateTaskColumns(displayTasks) {
 	// Reset the columns
@@ -99,13 +98,8 @@ function updateTaskColumns(displayTasks) {
 }
 
 function openDisplayMode(e) {
-	// Move logic to modals.js
 	buildDisplayMode();
 	populateDisplay(findTaskId(e.target));
-	document.querySelector(".close-btn").addEventListener("click", () => {
-		dialog.close();
-		dialog.textContent = "";
-	});
 	document.getElementById("edit-btn").addEventListener("click", openEditMode);
 	document.getElementById("delete-btn").addEventListener("click", deleteTask);
 }
@@ -116,10 +110,17 @@ function openEditMode(e) {
 	if (e.target.id === "edit-btn") {
 		populateForm(findTaskId(e.target));
 	}
+	document
+		.querySelector(".edit-mode")
+		.addEventListener("submit", handleFormSubmit);
 }
 
 function deleteTask(e) {
 	console.log(findTaskId(e.target));
+}
+
+function handleFormSubmit(e) {
+	e.preventDefault();
 }
 
 /*   PSEUDO
