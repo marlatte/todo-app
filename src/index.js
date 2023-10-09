@@ -4,6 +4,7 @@ import {
 	addDropdowns,
 	buildDisplayMode,
 	buildEditMode,
+	populateDisplay,
 	populateForm,
 } from "./modals";
 import "./style.css";
@@ -98,9 +99,9 @@ function updateTaskColumns(displayTasks) {
 }
 
 function openDisplayMode(e) {
-	dialog.textContent = "";
-	dialog.appendChild(buildDisplayMode(findTaskId(e.target)));
-	dialog.showModal();
+	// Move logic to modals.js
+	buildDisplayMode();
+	populateDisplay(findTaskId(e.target));
 	document.querySelector(".close-btn").addEventListener("click", () => {
 		dialog.close();
 		dialog.textContent = "";

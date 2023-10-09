@@ -1,5 +1,3 @@
-import { makeFirstUpper } from "./helpers";
-
 export const Tasks = (() => {
 	let _tasks = [];
 	let _idCounter = 0;
@@ -16,7 +14,7 @@ export const Tasks = (() => {
 		"project",
 		"priority",
 		"notes",
-		"dueDate",
+		"due",
 		"tags",
 	];
 
@@ -38,11 +36,7 @@ export const Tasks = (() => {
 
 	function _taskFactory() {
 		const _task = {};
-		const setProperty = (key, value) => {
-			_task[key] = "title project priority notes".includes(key)
-				? makeFirstUpper(value)
-				: value;
-		};
+		const setProperty = (key, value) => (_task[key] = value);
 		_propertyNames.forEach((prop) => setProperty(prop, ""));
 		return {
 			getProperty: (key) => _task[key],
@@ -132,12 +126,12 @@ export const Projects = (() => {
 const _addDefaults = (() => {
 	const defaultTasks = [
 		{
-			title: "Pay bills",
+			title: "pay bills",
 			status: "in-progress",
 			project: "finances",
 			priority: "high",
-			notes: "The rent is too damn high",
-			dueDate: "2023-11-01",
+			notes: "the rent is too damn high",
+			due: "2023-11-01",
 			tags: "",
 		},
 		{
@@ -146,7 +140,7 @@ const _addDefaults = (() => {
 			project: "home",
 			priority: "medium",
 			notes: "",
-			dueDate: "",
+			due: "",
 			tags: "store",
 		},
 		{
@@ -155,16 +149,16 @@ const _addDefaults = (() => {
 			project: "finances",
 			priority: "medium",
 			notes: "",
-			dueDate: "",
+			due: "",
 			tags: "",
 		},
 		{
 			title: "read Chekhov",
 			status: "backlog",
 			project: "learning",
-			priority: "Low",
+			priority: "low",
 			notes: "",
-			dueDate: "",
+			due: "",
 			tags: "",
 		},
 		{
@@ -172,8 +166,8 @@ const _addDefaults = (() => {
 			status: "to-do",
 			project: "home",
 			priority: "medium",
-			notes: "Bathroom light is flickering",
-			dueDate: "",
+			notes: "bathroom light is flickering",
+			due: "",
 			tags: "store",
 		},
 	].map((item) => Object.entries(item));
