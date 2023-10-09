@@ -106,9 +106,9 @@ export function formRowFactory(formDataArrays) {
 // ------------------------------------------------------- //
 
 export function findTaskId(target) {
-	return target.classList.value.includes("id-bubble-marker")
+	return +(target.classList.value.includes("id-bubble-marker")
 		? target.dataset.taskId
-		: findTaskId(target.parentElement);
+		: findTaskId(target.parentElement));
 }
 
 export function makeFirstUpper(string) {
