@@ -4,7 +4,8 @@ import {
 	addDropdowns,
 	buildDisplayMode,
 	buildEditMode,
-	confirmDelete,
+	buildProjectMode,
+	dialog,
 	populateDisplay,
 	populateForm,
 } from "./modals";
@@ -16,6 +17,128 @@ const statusesContainer = document.getElementById("statuses-container");
 const addBtn = document.getElementById("add-btn");
 const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
+
+addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
+addTaskBtn.addEventListener("click", openEditMode);
+addProjectBtn.addEventListener("click", openProjectMode);
+
+let currentProject = "all";
+
+function openDisplayMode(e) {
+	buildDisplayMode();
+	populateDisplay(findTaskId(e.target));
+	document.getElementById("edit-btn").addEventListener("click", openEditMode);
+	document
+		.getElementById("delete-btn")
+		.addEventListener("click", handleDelete);
+}
+
+function openEditMode(e) {
+	if (e.target !== addTaskBtn) {
+		document
+			.getElementById("edit-btn")
+			.removeEventListener("click", openEditMode);
+		document
+			.getElementById("delete-btn")
+			.removeEventListener("click", handleDelete);
+	} else {
+		addBtn.classList.toggle("open");
+	}
+
+	buildEditMode();
+	addDropdowns();
+
+	if (e.target.id === "edit-btn") {
+		populateForm(findTaskId(e.target));
+	}
+
+	document
+		.querySelector(".edit-mode")
+		.addEventListener("submit", handleTaskSubmit);
+	document
+		.getElementById("cancel-btn")
+		.addEventListener("click", handleTaskCancel);
+}
+
+function openProjectMode() {
+	buildProjectMode();
+	//add event listeners
+	document
+		.querySelector(".project-mode")
+		.addEventListener("submit", handleProjectSubmit);
+	document
+		.getElementById("project-cancel-btn")
+		.addEventListener("click", handleProjectCancel);
+}
+
+function handleTaskCancel(e) {
+	document
+		.querySelector(".edit-mode")
+		.removeEventListener("submit", handleTaskSubmit);
+	document
+		.getElementById("cancel-btn")
+		.removeEventListener("click", handleTaskCancel);
+
+	if (findTaskId(e.target)) {
+		openDisplayMode(e);
+	} else {
+		dialog.close();
+	}
+}
+
+function handleProjectCancel() {
+	document
+		.querySelector(".project-mode")
+		.removeEventListener("submit", handleProjectSubmit);
+	document
+		.getElementById("project-cancel-btn")
+		.removeEventListener("click", handleProjectCancel);
+
+	dialog.close();
+}
+
+function handleDelete(e) {
+	const selectedId = findTaskId(e.target);
+	const task = appController.Tasks.getTasksByProperty("id", selectedId)[0];
+
+	const userConfirmed = confirm(
+		`Are you sure you want to delete the "${makeFirstUpper(
+			task.getProperty("title")
+		)}" task? \nThis action cannot be undone.`
+	);
+
+	if (userConfirmed) {
+		console.log(selectedId);
+		appController.Tasks.removeTasks(selectedId);
+		updateScreen(currentProject);
+	}
+}
+
+function handleTaskSubmit(e) {
+	e.preventDefault();
+	document
+		.querySelector(".edit-mode")
+		.removeEventListener("submit", handleTaskSubmit);
+	document
+		.getElementById("cancel-btn")
+		.removeEventListener("click", handleTaskCancel);
+
+	console.log("task submitted"); // devMode
+}
+
+function handleProjectSubmit(e) {
+	e.preventDefault();
+	console.log("project submitted"); // devMode
+}
+
+function updateScreen(selectedProject) {
+	if (selectedProject === "all") {
+		projectDisplayed.textContent = "All Tasks";
+		updateTaskColumns(appController.Tasks.getAllTasks());
+	} else {
+	}
+	dialog.close();
+}
 
 function updateTaskColumns(displayTasks) {
 	// Reset the columns
@@ -98,58 +221,6 @@ function updateTaskColumns(displayTasks) {
 	});
 }
 
-function openDisplayMode(e) {
-	buildDisplayMode();
-	populateDisplay(findTaskId(e.target));
-	document.getElementById("edit-btn").addEventListener("click", openEditMode);
-	document
-		.getElementById("delete-btn")
-		.addEventListener("click", handleDelete);
-}
-
-function openEditMode(e) {
-	document
-		.getElementById("edit-btn")
-		.removeEventListener("click", openEditMode);
-	document
-		.getElementById("delete-btn")
-		.removeEventListener("click", handleDelete);
-
-	buildEditMode();
-	addDropdowns();
-
-	if (e.target.id === "edit-btn") {
-		populateForm(findTaskId(e.target));
-	}
-
-	document
-		.querySelector(".edit-mode")
-		.addEventListener("submit", handleFormSubmit);
-	document
-		.getElementById("cancel-btn")
-		.addEventListener("click", handleCancel);
-}
-
-function handleCancel(e) {
-	document
-		.querySelector(".edit-mode")
-		.removeEventListener("submit", handleFormSubmit);
-	document
-		.getElementById("cancel-btn")
-		.removeEventListener("click", handleCancel);
-
-	openDisplayMode(e);
-}
-
-function handleDelete(e) {
-	confirmDelete(findTaskId(e.target));
-}
-
-function handleFormSubmit(e) {
-	e.preventDefault();
-	console.log("form submitted");
-}
-
 /*   PSEUDO
 
 FUNCTION updateSidebar()
@@ -163,30 +234,13 @@ EVENT LISTENER sidebar-open-btn on click: sidebar.classList.add("open")
 // Hiding the sidebar (mobile)
 EVENT LISTENER sidebar-close-btn on click: sidebar.classList.remove("open")
 
-// Deleting a task
-EVENT LISTENER task-delete-btn on click: handleDelete(targetTask)
-FUNCTION handleDelete(targetTask)
-	Removes task from list
-	closeDialog()
-	Updates the screen.
-END FUNCTION
-
-// Canceling changes
-EVENT LISTENER task-cancel-btn on click: closeDialog()
-FUNCTION closeDialog()
-	Erases dialog inner content and closes it.
-END FUNCTION
-
 // Submitting changes, a new task, or new project
-EVENT LISTENER form on submit: handleFormSubmit(e)
-FUNCTION handleFormSubmit(e)
+EVENT LISTENER form on submit: handleTaskSubmit(e)
+FUNCTION handleTaskSubmit(e)
 	Submits new details to targetTask.
 	closeDialog()
 	Updates the screen.
 END FUNCTION
-
-// Creating a task
-EVENT LISTENER add-task-btn on click: openEditMode()
 
 // Creating a project
 EVENT LISTENER add-project-btn on click: openProjectMode()
@@ -207,7 +261,6 @@ END FUNCTION
 
 
  */
-// Initial call
-updateTaskColumns(appController.Tasks.getAllTasks());
 
-addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
+// Initial call
+updateScreen(currentProject);

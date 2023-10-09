@@ -1,7 +1,7 @@
 import { elFactory, formatDate, htmlFactory, makeFirstUpper } from "./helpers";
 import * as appController from "./app-controller";
 
-const dialog = document.querySelector("dialog");
+export const dialog = document.querySelector("dialog");
 document.addEventListener("click", (e) => {
 	if (e.target === dialog) dialog.close();
 });
@@ -110,6 +110,7 @@ export function buildEditMode() {
 					<button type="button" id="cancel-btn">Cancel</button>
 				</section>
 			</form>`;
+	dialog.showModal();
 }
 
 export function addDropdowns() {
@@ -161,17 +162,19 @@ export function populateForm(selectedId) {
 	dialog.querySelector(".id-bubble-marker").dataset.taskId = selectedId;
 }
 
-export function confirmDelete(selectedId) {
-	const task = appController.Tasks.getTasksByProperty("id", selectedId)[0];
-
-	const userConfirmed = confirm(
-		`Are you sure you want to delete the "${makeFirstUpper(
-			task.getProperty("title")
-		)}" task? \nThis action cannot be undone.`
-	);
-
-	if (userConfirmed) {
-		console.log(selectedId);
-		appController.Tasks.removeTasks(selectedId);
-	}
+export function buildProjectMode() {
+	dialog.innerHTML = `
+		<form class="project-mode">
+			<div class="form-item">
+				<label for="new-project">New Project:</label>
+				<input type="text" id="new-project" />
+			</div>
+			<section class="project-mode-buttons">
+				<button type="submit" id="project-save-btn">Submit</button>
+				<button type="button" id="project-cancel-btn">
+					Cancel
+				</button>
+			</section>
+		</form>`;
+	dialog.showModal();
 }
