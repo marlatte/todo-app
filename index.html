@@ -116,6 +116,28 @@
 		<dialog>
 			<div class="display-mode">
 				<section class="display-mode-header">
+					<h3 class="display-title"></h3>
+					<button class="close-btn">×</button>
+				</section>
+				<section class="display-mode-details">
+					<span id="task-id" data-task-id="0"></span>
+					<p>Project: <span class="display-project"></span></p>
+					<p>Priority: <span class="display-priority"></span></p>
+					<p>Due Date: <span class="display-due-date"></span></p>
+					<p>Status: <span class="display-status"></span></p>
+					<p>
+						Notes:
+						<span class="display-notes"></span>
+					</p>
+					<p>Tags: <span class="display-tags"></span></p>
+				</section>
+				<section class="display-mode-buttons id-bubble-marker">
+					<button type="button" id="static-edit-btn">Edit</button>
+					<button type="button" id="static-delete-btn">Delete</button>
+				</section>
+			</div>
+			<!-- <div class="display-mode">
+				<section class="display-mode-header">
 					<h3 class="display-title">Replace lightbulb</h3>
 					<button class="close-btn">×</button>
 				</section>
@@ -141,10 +163,9 @@
 					<button type="button" id="static-edit-btn">Edit</button>
 					<button type="button" id="static-delete-btn">Delete</button>
 				</section>
-			</div>
+			</div> -->
 			<form class="edit-mode">
 				<section class="edit-mode-details">
-					<span id="task-id" data-task-id="0"></span>
 					<div class="form-row">
 						<div class="form-item">
 							<label for="title">Title:</label>
@@ -208,7 +229,7 @@
 						</div>
 					</div>
 				</section>
-				<section class="edit-mode-buttons">
+				<section class="edit-mode-buttons id-bubble-marker">
 					<button type="submit" id="static-save-btn">Save</button>
 					<button type="button" id="static-cancel-btn">Cancel</button>
 				</section>
