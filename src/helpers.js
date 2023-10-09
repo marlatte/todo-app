@@ -119,3 +119,26 @@ export function makeFirstUpper(string) {
 				.join(" ")
 		: string;
 }
+
+export function formatDate(isoDate) {
+	const date = new Date(`${isoDate}T12:00:00-04:00`);
+	const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	const months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"June",
+		"July",
+		"Aug",
+		"Sept",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+
+	return `${days[date.getDay()]}, ${date.getDate()} ${
+		months[date.getMonth()]
+	} ${date.getFullYear()}`;
+}

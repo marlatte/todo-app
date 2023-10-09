@@ -1,6 +1,7 @@
 import {
 	elFactory,
 	formRowFactory,
+	formatDate,
 	htmlFactory,
 	makeFirstUpper,
 } from "./helpers";
@@ -38,13 +39,12 @@ export function populateDisplay(selectedId) {
 		const element = document.getElementById(`display-${prop}`);
 		let output = task.getProperty(prop);
 
-		if (prop === "due") {
-			const date = new Date(output);
-			const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-			output = `${days[date.getDay()]}`;
+		if (prop === "due" && !!output) {
+			output = formatDate(output);
 		}
 		element.textContent = prop === "tags" ? output : makeFirstUpper(output);
 	});
+	dialog.querySelector(".id-bubble-marker").dataset.taskId = selectedId;
 }
 
 // export function buildDisplayMode(selectedId) {
@@ -280,19 +280,17 @@ export function populateForm(selectedId) {
 				});
 				break;
 			case "title":
-				element.value = makeFirstUpper(prop);
+				element.value = makeFirstUpper(task.getProperty(prop));
 				break;
 
 			case "notes":
-				element.textContent = makeFirstUpper(task.getProperty("notes"));
+				element.textContent = makeFirstUpper(task.getProperty(prop));
 				break;
 
 			default:
-				element.value = prop;
+				element.value = task.getProperty(prop);
 				break;
 		}
 	});
-	document.querySelector(
-		".edit-mode-buttons.id-bubble-marker"
-	).dataset.taskId = selectedId;
+	dialog.querySelector(".id-bubble-marker").dataset.taskId = selectedId;
 }

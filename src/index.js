@@ -42,10 +42,10 @@ function updateTaskColumns(displayTasks) {
 
 		// Build task cards
 		column[1].forEach((task) => {
-			const [title, project, dueDate] = [
+			const [title, project, due] = [
 				task.getProperty("title"),
 				task.getProperty("project"),
-				task.getProperty("dueDate"),
+				task.getProperty("due"),
 			];
 			columnContent.children.push(
 				elFactory(
@@ -71,7 +71,7 @@ function updateTaskColumns(displayTasks) {
 							}),
 							elFactory("div", {
 								classList: "date",
-								textContent: dueDate ? dueDate : "(date)",
+								textContent: due ? due : "(date)",
 							}),
 						]),
 					]
