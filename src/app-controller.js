@@ -92,13 +92,13 @@ export const Tasks = (() => {
 })();
 
 export const Projects = (() => {
-	let _projectList = ["home", "finances", "learning"];
+	let _projectList = new Set(["home", "finances", "learning"]);
 
 	function addProject(newProjectName) {
-		_projectList.push(newProjectName);
+		_projectList.add(newProjectName.toLowerCase());
 	}
 	function removeProject(removeName) {
-		if (_projectList.includes(removeName)) {
+		if (_projectList.has(removeName)) {
 			// Get task.id's associated with that project
 			const removeIds = Tasks.getTasksByProperty(
 				"project",
@@ -109,7 +109,7 @@ export const Projects = (() => {
 			Tasks.removeTasks(...removeIds);
 
 			// Remove name from project list
-			_projectList.splice(_projectList.indexOf(removeName), 1);
+			_projectList.delete(removeName);
 
 			// devMode
 			console.log(_projectList);
@@ -119,7 +119,7 @@ export const Projects = (() => {
 	return {
 		addProject,
 		removeProject,
-		getProjects: () => _projectList.sort(),
+		getProjects: () => [..._projectList].sort(),
 	};
 })();
 

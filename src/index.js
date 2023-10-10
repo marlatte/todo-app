@@ -22,7 +22,8 @@ addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
 addTaskBtn.addEventListener("click", openEditMode);
 addProjectBtn.addEventListener("click", openProjectMode);
 
-let currentProject = "all";
+const ALL_TASKS = "all-tasks";
+let currentProject = "";
 
 function openDisplayMode(e) {
 	buildDisplayMode();
@@ -128,13 +129,16 @@ function handleTaskSubmit(e) {
 
 function handleProjectSubmit(e) {
 	e.preventDefault();
-	console.log("project submitted"); // devMode
+	const newProjectName = document.getElementById("new-project").value;
+	appController.Projects.addProject(newProjectName);
+	updateScreen();
 }
 
-function updateScreen(selectedProject) {
-	if (selectedProject === "all") {
-		projectDisplayed.textContent = "All Tasks";
+function updateScreen() {
+	if (!currentProject) {
+		projectDisplayed.textContent = makeFirstUpper(ALL_TASKS);
 		updateTaskColumns(appController.Tasks.getAllTasks());
+		updateSidebar();
 	} else {
 	}
 	dialog.close();
@@ -221,6 +225,37 @@ function updateTaskColumns(displayTasks) {
 	});
 }
 
+function updateSidebar() {
+	const sidebar = document.querySelector(".sidebar");
+	document.querySelector(".projects-container").remove();
+	const replacementContainer = elFactory(
+		"div",
+		{ classList: "projects-container" },
+		[ALL_TASKS, ...appController.Projects.getProjects()].map((project) => {
+			return elFactory(
+				"div",
+				{
+					classList: "project-name id-bubble-marker",
+					dataset: { projectFilter: project },
+				},
+				[
+					elFactory("button", {
+						type: "button",
+						textContent: makeFirstUpper(project),
+						classList: "project-filter-btn",
+					}),
+					elFactory("button", {
+						type: "button",
+						textContent: "D",
+						classList: "project-delete-btn",
+					}),
+				]
+			);
+		})
+	);
+	sidebar.appendChild(htmlFactory(replacementContainer));
+}
+
 /*   PSEUDO
 
 FUNCTION updateSidebar()
@@ -234,18 +269,12 @@ EVENT LISTENER sidebar-open-btn on click: sidebar.classList.add("open")
 // Hiding the sidebar (mobile)
 EVENT LISTENER sidebar-close-btn on click: sidebar.classList.remove("open")
 
-// Submitting changes, a new task, or new project
+// Submitting changes or a new task
 EVENT LISTENER form on submit: handleTaskSubmit(e)
 FUNCTION handleTaskSubmit(e)
 	Submits new details to targetTask.
 	closeDialog()
 	Updates the screen.
-END FUNCTION
-
-// Creating a project
-EVENT LISTENER add-project-btn on click: openProjectMode()
-FUNCTION openProjectMode()
-	Opens dialog/form with single input.
 END FUNCTION
 
 // Deleting a project
@@ -263,4 +292,4 @@ END FUNCTION
  */
 
 // Initial call
-updateScreen(currentProject);
+updateScreen();
