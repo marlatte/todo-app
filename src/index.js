@@ -37,7 +37,7 @@ addTaskBtn.addEventListener("click", openEditMode);
 addProjectBtn.addEventListener("click", openProjectMode);
 
 const ALL_TASKS = "all-tasks";
-let currentProject = "";
+let currentProject = ALL_TASKS;
 
 function openDisplayMode(e) {
 	buildDisplayMode();
@@ -141,6 +141,8 @@ function handleProjectDelete(e) {
 
 	if (userConfirmed) {
 		appController.Projects.removeProject(selectedProject);
+		currentProject =
+			selectedProject === currentProject ? ALL_TASKS : currentProject;
 		updateScreen();
 	}
 }
@@ -165,11 +167,19 @@ function handleProjectSubmit(e) {
 }
 
 function updateScreen() {
-	if (!currentProject) {
+	if (currentProject === ALL_TASKS) {
 		projectDisplayed.textContent = makeFirstUpper(ALL_TASKS);
 		updateTaskColumns(appController.Tasks.getAllTasks());
 		updateSidebar();
 	} else {
+		projectDisplayed.textContent = makeFirstUpper(currentProject);
+		updateTaskColumns(
+			appController.Tasks.getSortedTasksByProperty(
+				"project",
+				currentProject
+			)
+		);
+		updateSidebar();
 	}
 	dialog.close();
 }
@@ -294,15 +304,13 @@ function updateSidebar() {
 	});
 }
 
-function filterProjectView(projectName) {}
+function filterProjectView(e) {
+	currentProject = findProjectName(e.target);
+	updateScreen();
+	sidebar.classList.remove("open");
+}
 
 /*   PSEUDO
-
-// Showing the sidebar (mobile)
-EVENT LISTENER sidebar-open-btn on click: sidebar.classList.add("open")
-
-// Hiding the sidebar (mobile)
-EVENT LISTENER sidebar-close-btn on click: sidebar.classList.remove("open")
 
 // Submitting changes or a new task
 EVENT LISTENER form on submit: handleTaskSubmit(e)
@@ -311,10 +319,6 @@ FUNCTION handleTaskSubmit(e)
 	closeDialog()
 	Updates the screen.
 END FUNCTION
-
-
-
-
 
  */
 

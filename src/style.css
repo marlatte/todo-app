@@ -182,6 +182,13 @@ header h1 {
 		height: unset;
 		padding: 20px;
 		z-index: unset;
+
+		transition: none;
+	}
+
+	.sidebar > *,
+	.sidebar.open > * {
+		opacity: 1;
 	}
 
 	#sidebar-close-btn {

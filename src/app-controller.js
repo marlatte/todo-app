@@ -79,12 +79,19 @@ export const Tasks = (() => {
 		return _tasks.filter((task) => task.getProperty(prop) === value);
 	}
 
+	function getSortedTasksByProperty(prop, value) {
+		return _columnSort(
+			_tasks.filter((task) => task.getProperty(prop) === value)
+		);
+	}
+
 	return {
 		addTask,
 		removeTasks,
 		updateTask,
 		getAllTasks: () => _columnSort(_tasks),
 		getTasksByProperty,
+		getSortedTasksByProperty,
 		getColumnNames: () => _columnNames,
 		getPriorityNames: () => _priorities,
 		getPropertyNames: () => _propertyNames,
