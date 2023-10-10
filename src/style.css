@@ -135,14 +135,30 @@ header h1 {
 	gap: 20px;
 
 	background-color: wheat;
+
+	transition: all 1s;
 }
 
 .sidebar.open {
-	width: 80vw;
+	width: 100vw;
 	padding: 20px;
+
+	transition: all 0.5s;
 }
 
-#sidebar-close-btn {
+.sidebar > * {
+	opacity: 0;
+
+	transition: opacity 0.2s;
+}
+
+.sidebar.open > * {
+	opacity: 1;
+
+	transition: opacity 1s;
+}
+
+.close-btn {
 	align-self: flex-end;
 	padding: 10px;
 }
@@ -170,14 +186,6 @@ header h1 {
 
 	#sidebar-close-btn {
 		display: none;
-	}
-
-	.project-delete-btn {
-		display: none;
-	}
-
-	.project-name:hover .project-delete-btn {
-		display: block;
 	}
 }
 

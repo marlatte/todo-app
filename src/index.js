@@ -1,5 +1,11 @@
 import * as appController from "./app-controller";
-import { elFactory, htmlFactory, findTaskId, makeFirstUpper } from "./helpers";
+import {
+	elFactory,
+	htmlFactory,
+	findTaskId,
+	makeFirstUpper,
+	findProjectName,
+} from "./helpers";
 import {
 	addDropdowns,
 	buildDisplayMode,
@@ -12,8 +18,16 @@ import {
 import "./style.css";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
+const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
+const sidebar = document.querySelector(".sidebar");
+sidebarOpenBtn.addEventListener("click", () => sidebar.classList.add("open"));
+sidebarCloseBtn.addEventListener("click", () =>
+	sidebar.classList.remove("open")
+);
+
 const projectDisplayed = document.getElementById("project-displayed");
 const statusesContainer = document.getElementById("statuses-container");
+
 const addBtn = document.getElementById("add-btn");
 const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
@@ -31,7 +45,7 @@ function openDisplayMode(e) {
 	document.getElementById("edit-btn").addEventListener("click", openEditMode);
 	document
 		.getElementById("delete-btn")
-		.addEventListener("click", handleDelete);
+		.addEventListener("click", handleTaskDelete);
 }
 
 function openEditMode(e) {
@@ -41,7 +55,7 @@ function openEditMode(e) {
 			.removeEventListener("click", openEditMode);
 		document
 			.getElementById("delete-btn")
-			.removeEventListener("click", handleDelete);
+			.removeEventListener("click", handleTaskDelete);
 	} else {
 		addBtn.classList.toggle("open");
 	}
@@ -62,6 +76,7 @@ function openEditMode(e) {
 }
 
 function openProjectMode() {
+	addBtn.classList.toggle("open");
 	buildProjectMode();
 	//add event listeners
 	document
@@ -98,7 +113,7 @@ function handleProjectCancel() {
 	dialog.close();
 }
 
-function handleDelete(e) {
+function handleTaskDelete(e) {
 	const selectedId = findTaskId(e.target);
 	const task = appController.Tasks.getTasksByProperty("id", selectedId)[0];
 
@@ -111,7 +126,22 @@ function handleDelete(e) {
 	if (userConfirmed) {
 		console.log(selectedId);
 		appController.Tasks.removeTasks(selectedId);
-		updateScreen(currentProject);
+		updateScreen();
+	}
+}
+
+function handleProjectDelete(e) {
+	const selectedProject = findProjectName(e.target);
+
+	const userConfirmed = confirm(
+		`Are you sure you want to delete "${makeFirstUpper(
+			selectedProject
+		)}" and all its tasks? \nThis action cannot be undone.`
+	);
+
+	if (userConfirmed) {
+		appController.Projects.removeProject(selectedProject);
+		updateScreen();
 	}
 }
 
@@ -226,7 +256,6 @@ function updateTaskColumns(displayTasks) {
 }
 
 function updateSidebar() {
-	const sidebar = document.querySelector(".sidebar");
 	document.querySelector(".projects-container").remove();
 	const replacementContainer = elFactory(
 		"div",
@@ -244,24 +273,30 @@ function updateSidebar() {
 						textContent: makeFirstUpper(project),
 						classList: "project-filter-btn",
 					}),
-					elFactory("button", {
-						type: "button",
-						textContent: "D",
-						classList: "project-delete-btn",
-					}),
+					project === ALL_TASKS
+						? ""
+						: elFactory("button", {
+								type: "button",
+								textContent: "D",
+								classList: "project-delete-btn",
+						  }),
 				]
 			);
 		})
 	);
+
 	sidebar.appendChild(htmlFactory(replacementContainer));
+	document.querySelectorAll(".project-filter-btn").forEach((button) => {
+		button.addEventListener("click", filterProjectView);
+	});
+	document.querySelectorAll(".project-delete-btn").forEach((button) => {
+		button.addEventListener("click", handleProjectDelete);
+	});
 }
 
-/*   PSEUDO
+function filterProjectView(projectName) {}
 
-FUNCTION updateSidebar()
-	Gets current list.
-	Builds DOM elements for each.
-END FUNCTION
+/*   PSEUDO
 
 // Showing the sidebar (mobile)
 EVENT LISTENER sidebar-open-btn on click: sidebar.classList.add("open")
@@ -275,14 +310,6 @@ FUNCTION handleTaskSubmit(e)
 	Submits new details to targetTask.
 	closeDialog()
 	Updates the screen.
-END FUNCTION
-
-// Deleting a project
-EVENT LISTENER .project-delete-btn on click: deleteProject(e)
-FUNCTION deleteProject(e)
-	Get projectName from e.target.dataset.etc.
-	Remove name from project list.
-	updateSidebar()
 END FUNCTION
 
 

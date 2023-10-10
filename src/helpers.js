@@ -22,83 +22,14 @@ export function htmlFactory(obj) {
 	}
 
 	obj.children?.forEach((child) => {
-		el.appendChild(htmlFactory(child));
+		// Allows for conditionally adding children upstream by
+		// setting "" as the alternative to elFactory()
+		if (!!child) {
+			el.appendChild(htmlFactory(child));
+		}
 	});
 
 	return el;
-}
-
-export function formRowFactory(formDataArrays) {
-	return formDataArrays
-		.map((formData) => {
-			const kebab = formData[1].toLowerCase().split(" ").join("-");
-			const formItem = elFactory("div", { classList: "form-item" }, [
-				elFactory("label", {
-					htmlFor: kebab,
-					textContent: formData[1] + ":",
-				}),
-			]);
-
-			switch (formData[0]) {
-				case "input":
-					formItem.children.push(
-						elFactory("input", {
-							id: kebab,
-							value: formData[2],
-							type: formData[3],
-						})
-					);
-					break;
-
-				case "select":
-					formItem.children.push(
-						elFactory(
-							"select",
-							{
-								id: kebab,
-							},
-							[
-								elFactory("option"),
-								...formData[3].map((option) => {
-									return elFactory("option", {
-										value: option,
-										textContent: makeFirstUpper(option),
-										selected:
-											formData[2].toLowerCase() ===
-											option,
-									});
-								}),
-							]
-						)
-					);
-					break;
-				case "textarea":
-					formItem.children.push(
-						elFactory("textarea", {
-							id: kebab,
-							cols: 30,
-							rows: 10,
-							textContent: formData[2],
-						})
-					);
-					break;
-			}
-
-			return formItem;
-		})
-		.reduce((acc, currentItem, index) => {
-			if (!(index & 1)) {
-				// If even, create row with currentItem as a child
-				acc.push(
-					elFactory("div", { classList: "form-row" }, [currentItem])
-				);
-				return acc;
-			} else {
-				// If odd, add currentItem to previous row
-				acc[acc.length - 1].children.push(currentItem);
-				return acc;
-			}
-		}, []);
 }
 
 // ------------------------------------------------------- //
@@ -109,6 +40,12 @@ export function findTaskId(target) {
 	return +(target.classList.value.includes("id-bubble-marker")
 		? target.dataset.taskId
 		: findTaskId(target.parentElement));
+}
+
+export function findProjectName(target) {
+	return target.classList.value.includes("id-bubble-marker")
+		? target.dataset.projectFilter
+		: findProjectName(target.parentElement);
 }
 
 export function makeFirstUpper(string) {

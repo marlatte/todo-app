@@ -14,7 +14,7 @@ export function buildDisplayMode() {
 			<div class="display-mode">
 				<section class="display-mode-header">
 					<h3 id="display-title"></h3>
-					<button class="close-btn">×</button>
+					<button class="close-btn display-close-btn">×</button>
 				</section>
 				<section class="display-mode-details">
 					<p>Project: <span id="display-project"></span></p>
@@ -46,7 +46,7 @@ export function populateDisplay(selectedId) {
 	});
 	dialog.querySelector(".id-bubble-marker").dataset.taskId = selectedId;
 	dialog
-		.querySelector(".close-btn")
+		.querySelector(".display-close-btn")
 		.addEventListener("click", () => dialog.close());
 }
 
@@ -167,7 +167,7 @@ export function buildProjectMode() {
 		<form class="project-mode">
 			<div class="form-item">
 				<label for="new-project">New Project:</label>
-				<input type="text" id="new-project" />
+				<input type="text" id="new-project" required/>
 			</div>
 			<section class="project-mode-buttons">
 				<button type="submit" id="project-save-btn">Submit</button>
