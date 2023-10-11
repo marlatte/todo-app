@@ -253,8 +253,8 @@ function updateTaskColumns(displayTasks) {
 								textContent: makeFirstUpper(project),
 							}),
 							elFactory("div", {
-								classList: "date",
-								textContent: due ? due : "(date)",
+								classList: "due",
+								textContent: due,
 							}),
 						]),
 					]
