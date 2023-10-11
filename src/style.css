@@ -261,7 +261,7 @@ main {
 }
 
 .task-card[data-priority="high"] {
-	--priority-color: red;
+	--priority-color: rgb(222, 19, 0);
 }
 
 .task-card[data-priority="medium"] {
@@ -269,6 +269,10 @@ main {
 }
 
 .task-card[data-priority="low"] {
+	--priority-color: skyblue;
+}
+
+#done-column .task-card {
 	--priority-color: green;
 }
 
