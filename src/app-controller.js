@@ -3,7 +3,11 @@ export const Tasks = (() => {
 	let _idCounter = 1;
 
 	function _dateSort(outgoingTasks) {
-		return outgoingTasks; // devMode
+		return outgoingTasks.sort((a, b) => {
+			const dateA = a.getProperty("due").split("-").join("");
+			const dateB = b.getProperty("due").split("-").join("");
+			return !dateA ? 1 : dateA - dateB;
+		});
 	}
 
 	const _columnNames = ["backlog", "to-do", "in-progress", "done"];
