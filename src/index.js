@@ -213,7 +213,7 @@ function updateTaskColumns(displayTasks) {
 			"section",
 			{
 				classList: "status-column",
-				id: `dynamic-${columnName}-column`, //devMode (dynamic)
+				id: `${columnName}-column`,
 			},
 			[
 				elFactory("h2", {

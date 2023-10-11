@@ -41,7 +41,6 @@ export const Tasks = (() => {
 		return {
 			getProperty: (key) => _task[key],
 			setProperty,
-			logData: () => Object.entries(_task), // devMode
 		};
 	}
 
@@ -60,9 +59,6 @@ export const Tasks = (() => {
 				_tasks.splice(index, 1);
 			}
 		});
-
-		// devMode
-		_tasks.forEach((item) => console.log(item.getProperty("id")));
 	}
 
 	function updateTask(updateId, inputValuesArray) {
@@ -117,9 +113,6 @@ export const Projects = (() => {
 
 			// Remove name from project list
 			_projectList.delete(removeName);
-
-			// devMode
-			console.log(_projectList);
 		}
 	}
 
@@ -181,18 +174,5 @@ const _addDefaults = (() => {
 
 	defaultTasks.forEach((item) => {
 		Tasks.addTask(item);
-	});
-
-	// Check to make sure things are adding correctly. devMode
-	const testDefaultTasks = Tasks.getAllTasks();
-	testDefaultTasks.forEach((column, index) => {
-		console.log(`Column: ${column[0]}`);
-		column[1].forEach((task, index) => {
-			console.log(`\tTask at: ${index}`);
-			console.log(
-				`\t\t${task.logData().join("\n\t\t").split(",").join(": ")}`
-			);
-		});
-		console.log("\n");
 	});
 })();
