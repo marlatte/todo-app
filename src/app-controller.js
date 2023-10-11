@@ -1,6 +1,6 @@
 export const Tasks = (() => {
 	let _tasks = [];
-	let _idCounter = 0;
+	let _idCounter = 1;
 
 	function _dateSort(outgoingTasks) {
 		return outgoingTasks; // devMode

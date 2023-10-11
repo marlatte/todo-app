@@ -12,6 +12,7 @@ import {
 	buildEditMode,
 	buildProjectMode,
 	dialog,
+	getValuesArray,
 	populateDisplay,
 	populateForm,
 } from "./modals";
@@ -40,6 +41,7 @@ const ALL_TASKS = "all-tasks";
 let currentProject = ALL_TASKS;
 
 function openDisplayMode(e) {
+	addBtn.classList.remove("open");
 	buildDisplayMode();
 	populateDisplay(findTaskId(e.target));
 	document.getElementById("edit-btn").addEventListener("click", openEditMode);
@@ -56,9 +58,9 @@ function openEditMode(e) {
 		document
 			.getElementById("delete-btn")
 			.removeEventListener("click", handleTaskDelete);
-	} else {
-		addBtn.classList.toggle("open");
 	}
+
+	addBtn.classList.remove("open");
 
 	buildEditMode();
 	addDropdowns();
@@ -156,7 +158,21 @@ function handleTaskSubmit(e) {
 		.getElementById("cancel-btn")
 		.removeEventListener("click", handleTaskCancel);
 
-	console.log("task submitted"); // devMode
+	const submitId = findTaskId(document.getElementById("save-btn"));
+	const userConfirmed = confirm(
+		`Ready to submit ${submitId === 0 ? "a new task" : "your changes"}?`
+	);
+
+	if (userConfirmed) {
+		const valuesArray = getValuesArray();
+		if (submitId === 0) {
+			appController.Tasks.addTask(valuesArray);
+		} else {
+			appController.Tasks.updateTask(submitId, valuesArray);
+		}
+		dialog.close();
+		updateScreen();
+	}
 }
 
 function handleProjectSubmit(e) {
@@ -309,18 +325,6 @@ function filterProjectView(e) {
 	updateScreen();
 	sidebar.classList.remove("open");
 }
-
-/*   PSEUDO
-
-// Submitting changes or a new task
-EVENT LISTENER form on submit: handleTaskSubmit(e)
-FUNCTION handleTaskSubmit(e)
-	Submits new details to targetTask.
-	closeDialog()
-	Updates the screen.
-END FUNCTION
-
- */
 
 // Initial call
 updateScreen();

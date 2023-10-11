@@ -59,6 +59,7 @@ export function buildEditMode() {
 							<input
 								type="text"
 								id="title"
+								class="submit-info"
 								required
 							/>
 						</div>
@@ -66,14 +67,14 @@ export function buildEditMode() {
 					<div class="form-row">
 						<div class="form-item">
 							<label for="project">Project:</label>
-							<select id="project">
+							<select id="project" class="submit-info">
 								<option value=""></option>
 								<!-- Add options here -->
 							</select>
 						</div>
 						<div class="form-item">
 							<label for="priority">Priority:</label>
-							<select id="priority">
+							<select id="priority" class="submit-info">
 								<option value=""></option>
 								<!-- Add options here -->
 							</select>
@@ -82,11 +83,11 @@ export function buildEditMode() {
 					<div class="form-row">
 						<div class="form-item">
 							<label for="due">Due:</label>
-							<input type="date" id="due" />
+							<input type="date" id="due" class="submit-info"/>
 						</div>
 						<div class="form-item">
 							<label for="status">Status:</label>
-							<select id="status" required>
+							<select id="status" class="submit-info" required>
 								<!-- Add options here -->
 							</select>
 						</div>
@@ -94,14 +95,14 @@ export function buildEditMode() {
 					<div class="form-row">
 						<div class="form-item">
 							<label for="notes">Notes:</label>
-							<textarea id="notes" cols="30" rows="10"></textarea>
+							<textarea id="notes" cols="30" rows="10" class="submit-info"></textarea>
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="form-item">
 							<p>Enter tags separated by commas.</p>
 							<label for="tags">Tags:</label>
-							<input type="text" id="tags" />
+							<input type="text" id="tags" class="submit-info"/>
 						</div>
 					</div>
 				</section>
@@ -177,4 +178,19 @@ export function buildProjectMode() {
 			</section>
 		</form>`;
 	dialog.showModal();
+}
+
+export function getValuesArray() {
+	const submittedInfo = [];
+	document.querySelectorAll(".submit-info").forEach((el) => {
+		let submitValue = {
+			input: el.value,
+			select: [...el.children].filter(
+				(option) => option.selected === true
+			)[0]?.value,
+			textarea: el.textContent,
+		}[el.tagName.toLowerCase()];
+		submittedInfo.push([el.id, submitValue]);
+	});
+	return submittedInfo;
 }
