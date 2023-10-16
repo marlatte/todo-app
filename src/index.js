@@ -9,41 +9,59 @@ import {
 import { dialog } from "./modals";
 import "./style.css";
 import { PubSub, EVENTS } from "./pubsub";
-
-const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
-const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
-const sidebar = document.querySelector(".sidebar");
-sidebarOpenBtn.addEventListener("click", () => sidebar.classList.add("open"));
-sidebarCloseBtn.addEventListener("click", () =>
-	sidebar.classList.remove("open")
-);
-
-const projectDisplayed = document.getElementById("project-displayed");
-const statusesContainer = document.getElementById("statuses-container");
+import "./screenController";
 
 const addBtn = document.getElementById("add-btn");
 const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
 
 addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
-addTaskBtn.addEventListener("click", () => {
-	// document
-	// 	.getElementById("edit-btn")
-	// 	.removeEventListener("click", openEditMode);
-	// document
-	// 	.getElementById("delete-btn")
-	// 	.removeEventListener("click", handleTaskDelete);
-	PubSub.publish(EVENTS.EDIT_MODE);
-});
+addTaskBtn.addEventListener("click", openEditMode);
 addProjectBtn.addEventListener("click", openProjectMode);
 
-const ALL_TASKS = "all-tasks";
-let currentProject = ALL_TASKS;
+function openDisplayMode(e) {
+	addBtn.classList.remove("open");
+
+	PubSub.publish(EVENTS.DISPLAY_MODE, findTaskId(e.target));
+
+	document.getElementById("edit-btn").addEventListener("click", openEditMode);
+	document
+		.getElementById("delete-btn")
+		.addEventListener("click", handleTaskDelete);
+}
+
+const subCardClick = PubSub.subscribe(EVENTS.CARD_CLICK, openDisplayMode);
+
+function openEditMode(e) {
+	addBtn.classList.remove("open");
+	if (e.target !== addTaskBtn) {
+		document
+			.getElementById("edit-btn")
+			.removeEventListener("click", openEditMode);
+		document
+			.getElementById("delete-btn")
+			.removeEventListener("click", handleTaskDelete);
+	}
+
+	PubSub.publish(EVENTS.EDIT_MODE);
+
+	if (e.target.id === "edit-btn") {
+		PubSub.publish(EVENTS.EDIT_MODE_POP, findTaskId(e.target));
+	}
+
+	document
+		.querySelector(".edit-mode")
+		.addEventListener("submit", handleTaskSubmit);
+	document
+		.getElementById("cancel-btn")
+		.addEventListener("click", handleTaskCancel);
+}
 
 function openProjectMode() {
 	addBtn.classList.toggle("open");
-	buildProjectMode();
-	//add event listeners
+
+	PubSub.publish(EVENTS.PROJECT_MODE);
+
 	document
 		.querySelector(".project-mode")
 		.addEventListener("submit", handleProjectSubmit);
@@ -78,7 +96,8 @@ function handleProjectCancel() {
 	dialog.close();
 }
 
-function confirmDeleteTask(selectedId) {
+function handleTaskDelete(e) {
+	const selectedId = findTaskId(e.target);
 	const task = appController.Tasks.getTasksByProperty(
 		"id",
 		selectedId
@@ -92,29 +111,6 @@ function confirmDeleteTask(selectedId) {
 
 	if (userConfirmed) {
 		PubSub.publish(EVENTS.DELETE_TASK, selectedId);
-		updateScreen();
-	}
-}
-
-const subConfirmDeleteTask = PubSub.subscribe(
-	EVENTS.CONFIRM_DELETE_TASK,
-	confirmDeleteTask
-);
-
-function handleProjectDelete(e) {
-	const selectedProject = findProjectName(e.target);
-
-	const userConfirmed = confirm(
-		`Are you sure you want to delete "${makeFirstUpper(
-			selectedProject
-		)}" and all its tasks? \nThis action cannot be undone.`
-	);
-
-	if (userConfirmed) {
-		appController.Projects.removeProject(selectedProject);
-		currentProject =
-			selectedProject === currentProject ? ALL_TASKS : currentProject;
-		updateScreen();
 	}
 }
 
@@ -133,13 +129,15 @@ function getValuesArray() {
 	return submittedInfo;
 }
 
-function submitTask(submitId) {
-	// document
-	// 	.querySelector(".edit-mode")
-	// 	.removeEventListener("submit", handleTaskSubmit);
-	// document
-	// 	.getElementById("cancel-btn")
-	// 	.removeEventListener("click", handleTaskCancel);
+function handleTaskSubmit(e) {
+	e.preventDefault();
+	const submitId = findTaskId(document.getElementById("save-btn"));
+	document
+		.querySelector(".edit-mode")
+		.removeEventListener("submit", handleTaskSubmit);
+	document
+		.getElementById("cancel-btn")
+		.removeEventListener("click", handleTaskCancel);
 
 	const userConfirmed = confirm(
 		`Ready to submit ${submitId === 0 ? "a new task" : "your changes"}?`
@@ -153,178 +151,14 @@ function submitTask(submitId) {
 			PubSub.publish(EVENTS.UPDATE_TASK, submitId, valuesArray);
 		}
 		dialog.close();
-		updateScreen();
 	}
 }
-
-const subSubmitTask = PubSub.subscribe(EVENTS.SUBMIT_TASK, submitTask);
 
 function handleProjectSubmit(e) {
 	e.preventDefault();
 	const newProjectName = document.getElementById("new-project").value;
-	appController.Projects.addProject(newProjectName);
-	updateScreen();
+	PubSub.publish(EVENTS.ADD_PROJECT, newProjectName);
 }
-
-function updateScreen() {
-	if (currentProject === ALL_TASKS) {
-		projectDisplayed.textContent = makeFirstUpper(ALL_TASKS);
-		updateTaskColumns(appController.Tasks.getAllTasks());
-		updateSidebar();
-	} else {
-		projectDisplayed.textContent = makeFirstUpper(currentProject);
-		updateTaskColumns(
-			appController.Tasks.getSortedTasksByProperty(
-				"project",
-				currentProject
-			)
-		);
-		updateSidebar();
-	}
-	dialog.close();
-}
-
-function updateTaskColumns(displayTasks) {
-	// Reset the columns
-	[...statusesContainer.children].forEach((row) => (row.textContent = ""));
-
-	// Build column content
-	displayTasks.forEach((column, index) => {
-		const columnName = column[0];
-		const statusName = makeFirstUpper(columnName);
-
-		const columnContent = elFactory(
-			"section",
-			{
-				classList: "status-column",
-				id: `${columnName}-column`,
-			},
-			[
-				elFactory("h2", {
-					classList: "status-name",
-					textContent: statusName,
-				}),
-			]
-		);
-
-		// Build task cards
-		column[1].forEach((task) => {
-			const [title, project, due] = [
-				task.getProperty("title"),
-				task.getProperty("project"),
-				task.getProperty("due"),
-			];
-			columnContent.children.push(
-				elFactory(
-					"div",
-					{
-						classList: "task-card id-bubble-marker",
-						dataset: {
-							priority: task
-								.getProperty("priority")
-								.toLowerCase(),
-							taskId: task.getProperty("id"),
-						},
-					},
-					[
-						elFactory("div", {
-							classList: "title",
-							textContent: makeFirstUpper(title),
-						}),
-						elFactory("div", { classList: "subtext" }, [
-							elFactory("div", {
-								classList: "project",
-								textContent: makeFirstUpper(project),
-							}),
-							elFactory("div", {
-								classList: "due",
-								textContent: due,
-							}),
-						]),
-					]
-				)
-			);
-		});
-
-		// Append to correct row
-		if (index < 2) {
-			statusesContainer.firstElementChild.appendChild(
-				htmlFactory(columnContent)
-			);
-		} else {
-			statusesContainer.lastElementChild.appendChild(
-				htmlFactory(columnContent)
-			);
-		}
-	});
-
-	// Make each task clickable
-	const TaskCards = document.querySelectorAll(".task-card");
-	TaskCards.forEach((card) => {
-		card.addEventListener("click", (e) => {
-			PubSub.publish(EVENTS.DISPLAY_MODE, findTaskId(e.target));
-		});
-	});
-}
-
-function updateSidebar() {
-	document.querySelector(".projects-container").remove();
-	const replacementContainer = elFactory(
-		"div",
-		{ classList: "projects-container" },
-		[ALL_TASKS, ...appController.Projects.getProjects()].map((project) => {
-			return elFactory(
-				"div",
-				{
-					classList: "project-name id-bubble-marker",
-					dataset: { projectFilter: project },
-				},
-				[
-					elFactory("button", {
-						type: "button",
-						textContent: makeFirstUpper(project),
-						classList: "project-filter-btn",
-					}),
-					project === ALL_TASKS
-						? ""
-						: elFactory("button", {
-								type: "button",
-								textContent: "D",
-								classList: "project-delete-btn",
-						  }),
-				]
-			);
-		})
-	);
-
-	sidebar.appendChild(htmlFactory(replacementContainer));
-	document.querySelectorAll(".project-filter-btn").forEach((button) => {
-		button.addEventListener("click", filterProjectView);
-	});
-	document.querySelectorAll(".project-delete-btn").forEach((button) => {
-		button.addEventListener("click", handleProjectDelete);
-	});
-}
-
-function filterProjectView(e) {
-	currentProject = findProjectName(e.target);
-	updateScreen();
-	sidebar.classList.remove("open");
-}
-
-function closeAddBtn() {
-	addBtn.classList.remove("open");
-}
-
-const subDisplayCloseAddBtn = PubSub.subscribe(
-	EVENTS.DISPLAY_MODE,
-	closeAddBtn
-);
-const subEditCloseAddBtn = PubSub.subscribe(EVENTS.EDIT_MODE, closeAddBtn);
-const subProjectCloseAddBtn = PubSub.subscribe(
-	EVENTS.PROJECT_MODE,
-	closeAddBtn
-);
 
 // Initial call
-updateScreen();
+PubSub.publish(EVENTS.INIT);

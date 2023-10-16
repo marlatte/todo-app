@@ -56,9 +56,11 @@ export const EVENTS = {
 	EDIT_MODE: "editMode",
 	EDIT_MODE_POP: "editModePop",
 	PROJECT_MODE: "projectMode",
-	CONFIRM_DELETE_TASK: "confirmDeleteTask",
 	DELETE_TASK: "deleteTask",
-	SUBMIT_TASK: "submitTask",
 	ADD_TASK: "addTask",
 	UPDATE_TASK: "updateTask",
+	CARD_CLICK: "cardClick",
+	INIT: "init",
+	ADD_PROJECT: "addProject",
+	DELETE_PROJECT: "deleteProject",
 };

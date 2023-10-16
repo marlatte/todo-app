@@ -38,13 +38,6 @@ function buildDisplayMode() {
 			</div>
 	`;
 	dialog.showModal();
-	document.getElementById("edit-btn").addEventListener("click", (e) => {
-		PubSub.publish(EVENTS.EDIT_MODE);
-		PubSub.publish(EVENTS.EDIT_MODE_POP, findTaskId(e.target));
-	});
-	document.getElementById("delete-btn").addEventListener("click", (e) => {
-		PubSub.publish(EVENTS.CONFIRM_DELETE_TASK, findTaskId(e.target));
-	});
 }
 
 function populateDisplay(selectedId) {
@@ -126,16 +119,6 @@ function buildEditMode() {
 				</section>
 			</form>`;
 	dialog.showModal();
-	document.querySelector(".edit-mode").addEventListener("submit", (e) => {
-		e.preventDefault();
-		PubSub.publish(
-			EVENTS.SUBMIT_TASK,
-			findTaskId(document.getElementById("save-btn"))
-		);
-	});
-	// document
-	// 	.getElementById("cancel-btn")
-	// 	.addEventListener("click", handleTaskCancel);
 }
 
 function addDropdowns() {

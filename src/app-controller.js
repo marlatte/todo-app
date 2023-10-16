@@ -96,6 +96,7 @@ export const Tasks = (() => {
 
 	return {
 		addTask,
+		removeTasks, // Used in Projects below
 		updateTask,
 		getAllTasks: () => _columnSort(_taskList),
 		getTasksByProperty,
@@ -112,6 +113,9 @@ export const Projects = (() => {
 	function addProject(newProjectName) {
 		_projectList.add(newProjectName.toLowerCase());
 	}
+
+	const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, addProject);
+
 	function removeProject(removeName) {
 		if (_projectList.has(removeName)) {
 			// Get task.id's associated with that project
@@ -128,9 +132,12 @@ export const Projects = (() => {
 		}
 	}
 
+	const subRemoveProject = PubSub.subscribe(
+		EVENTS.DELETE_PROJECT,
+		removeProject
+	);
+
 	return {
-		addProject,
-		removeProject,
 		getProjects: () => [..._projectList].sort(),
 	};
 })();
