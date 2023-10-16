@@ -1,5 +1,12 @@
-import { elFactory, formatDate, htmlFactory, makeFirstUpper } from "./helpers";
+import {
+	elFactory,
+	formatDate,
+	htmlFactory,
+	makeFirstUpper,
+	findTaskId,
+} from "./helpers";
 import * as appController from "./app-controller";
+import { PubSub, EVENTS } from "./pubsub";
 
 export const dialog = document.querySelector("dialog");
 document.addEventListener("click", (e) => {
@@ -9,7 +16,7 @@ dialog.addEventListener("close", () => {
 	dialog.textContent = "";
 });
 
-export function buildDisplayMode() {
+function buildDisplayMode() {
 	dialog.innerHTML = `
 			<div class="display-mode">
 				<section class="display-mode-header">
@@ -31,9 +38,16 @@ export function buildDisplayMode() {
 			</div>
 	`;
 	dialog.showModal();
+	document.getElementById("edit-btn").addEventListener("click", (e) => {
+		PubSub.publish(EVENTS.EDIT_MODE);
+		PubSub.publish(EVENTS.EDIT_MODE_POP, findTaskId(e.target));
+	});
+	document.getElementById("delete-btn").addEventListener("click", (e) => {
+		PubSub.publish(EVENTS.CONFIRM_DELETE_TASK, findTaskId(e.target));
+	});
 }
 
-export function populateDisplay(selectedId) {
+function populateDisplay(selectedId) {
 	const task = appController.Tasks.getTasksByProperty("id", selectedId)[0];
 	appController.Tasks.getPropertyNames().forEach((prop) => {
 		const element = document.getElementById(`display-${prop}`);
@@ -50,7 +64,7 @@ export function populateDisplay(selectedId) {
 		.addEventListener("click", () => dialog.close());
 }
 
-export function buildEditMode() {
+function buildEditMode() {
 	dialog.innerHTML = `<form class="edit-mode" method="dialog">
 				<section class="edit-mode-details">
 					<div class="form-row">
@@ -112,9 +126,19 @@ export function buildEditMode() {
 				</section>
 			</form>`;
 	dialog.showModal();
+	document.querySelector(".edit-mode").addEventListener("submit", (e) => {
+		e.preventDefault();
+		PubSub.publish(
+			EVENTS.SUBMIT_TASK,
+			findTaskId(document.getElementById("save-btn"))
+		);
+	});
+	// document
+	// 	.getElementById("cancel-btn")
+	// 	.addEventListener("click", handleTaskCancel);
 }
 
-export function addDropdowns() {
+function addDropdowns() {
 	[
 		["project", appController.Projects.getProjects()],
 		["priority", appController.Tasks.getPriorityNames()],
@@ -134,7 +158,7 @@ export function addDropdowns() {
 	});
 }
 
-export function populateForm(selectedId) {
+function populateForm(selectedId) {
 	const task = appController.Tasks.getTasksByProperty("id", selectedId)[0];
 	appController.Tasks.getPropertyNames().forEach((prop) => {
 		const element = document.getElementById(prop);
@@ -163,7 +187,7 @@ export function populateForm(selectedId) {
 	dialog.querySelector(".id-bubble-marker").dataset.taskId = selectedId;
 }
 
-export function buildProjectMode() {
+function buildProjectMode() {
 	dialog.innerHTML = `
 		<form class="project-mode">
 			<div class="form-item">
@@ -180,17 +204,14 @@ export function buildProjectMode() {
 	dialog.showModal();
 }
 
-export function getValuesArray() {
-	const submittedInfo = [];
-	document.querySelectorAll(".submit-info").forEach((el) => {
-		let submitValue = {
-			input: el.value,
-			select: [...el.children].filter(
-				(option) => option.selected === true
-			)[0]?.value,
-			textarea: el.textContent,
-		}[el.tagName.toLowerCase()];
-		submittedInfo.push([el.id, submitValue]);
-	});
-	return submittedInfo;
-}
+const subDisplayBuild = PubSub.subscribe(EVENTS.DISPLAY_MODE, buildDisplayMode);
+const subDisplayPopulate = PubSub.subscribe(
+	EVENTS.DISPLAY_MODE,
+	populateDisplay
+);
+
+const subEditBuild = PubSub.subscribe(EVENTS.EDIT_MODE, buildEditMode);
+const subEditDropdowns = PubSub.subscribe(EVENTS.EDIT_MODE, addDropdowns);
+const subFormPopulate = PubSub.subscribe(EVENTS.EDIT_MODE_POP, populateForm);
+
+const subProjectBuild = PubSub.subscribe(EVENTS.PROJECT_MODE, buildProjectMode);

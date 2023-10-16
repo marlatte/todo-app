@@ -1,3 +1,5 @@
+import { PubSub, EVENTS } from "./pubsub";
+
 export const Tasks = (() => {
 	let _taskList = [];
 	let _idCounter = 1;
@@ -44,6 +46,7 @@ export const Tasks = (() => {
 		_propertyNames.forEach((prop) => setProperty(prop, ""));
 		return {
 			getProperty: (key) => _task[key],
+			getProperties: () => _task,
 			setProperty,
 		};
 	}
@@ -57,6 +60,8 @@ export const Tasks = (() => {
 		_taskList.push(newTask);
 	}
 
+	const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, addTask);
+
 	function removeTasks(...removeIds) {
 		_taskList.forEach((task, index) => {
 			if (removeIds.includes(task.getProperty("id"))) {
@@ -64,6 +69,8 @@ export const Tasks = (() => {
 			}
 		});
 	}
+
+	const subRemoveTask = PubSub.subscribe(EVENTS.DELETE_TASK, removeTasks);
 
 	function updateTask(updateId, inputValuesArray) {
 		_taskList.forEach((task, index) => {
@@ -74,6 +81,8 @@ export const Tasks = (() => {
 			}
 		});
 	}
+
+	const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateTask);
 
 	function getTasksByProperty(prop, value) {
 		return _taskList.filter((task) => task.getProperty(prop) === value);
@@ -87,7 +96,6 @@ export const Tasks = (() => {
 
 	return {
 		addTask,
-		removeTasks,
 		updateTask,
 		getAllTasks: () => _columnSort(_taskList),
 		getTasksByProperty,

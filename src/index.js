@@ -6,17 +6,9 @@ import {
 	makeFirstUpper,
 	findProjectName,
 } from "./helpers";
-import {
-	addDropdowns,
-	buildDisplayMode,
-	buildEditMode,
-	buildProjectMode,
-	dialog,
-	getValuesArray,
-	populateDisplay,
-	populateForm,
-} from "./modals";
+import { dialog } from "./modals";
 import "./style.css";
+import { PubSub, EVENTS } from "./pubsub";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
 const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
@@ -34,48 +26,19 @@ const addProjectBtn = document.getElementById("add-project-btn");
 const addTaskBtn = document.getElementById("add-task-btn");
 
 addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
-addTaskBtn.addEventListener("click", openEditMode);
+addTaskBtn.addEventListener("click", () => {
+	// document
+	// 	.getElementById("edit-btn")
+	// 	.removeEventListener("click", openEditMode);
+	// document
+	// 	.getElementById("delete-btn")
+	// 	.removeEventListener("click", handleTaskDelete);
+	PubSub.publish(EVENTS.EDIT_MODE);
+});
 addProjectBtn.addEventListener("click", openProjectMode);
 
 const ALL_TASKS = "all-tasks";
 let currentProject = ALL_TASKS;
-
-function openDisplayMode(e) {
-	addBtn.classList.remove("open");
-	buildDisplayMode();
-	populateDisplay(findTaskId(e.target));
-	document.getElementById("edit-btn").addEventListener("click", openEditMode);
-	document
-		.getElementById("delete-btn")
-		.addEventListener("click", handleTaskDelete);
-}
-
-function openEditMode(e) {
-	if (e.target !== addTaskBtn) {
-		document
-			.getElementById("edit-btn")
-			.removeEventListener("click", openEditMode);
-		document
-			.getElementById("delete-btn")
-			.removeEventListener("click", handleTaskDelete);
-	}
-
-	addBtn.classList.remove("open");
-
-	buildEditMode();
-	addDropdowns();
-
-	if (e.target.id === "edit-btn") {
-		populateForm(findTaskId(e.target));
-	}
-
-	document
-		.querySelector(".edit-mode")
-		.addEventListener("submit", handleTaskSubmit);
-	document
-		.getElementById("cancel-btn")
-		.addEventListener("click", handleTaskCancel);
-}
 
 function openProjectMode() {
 	addBtn.classList.toggle("open");
@@ -115,22 +78,28 @@ function handleProjectCancel() {
 	dialog.close();
 }
 
-function handleTaskDelete(e) {
-	const selectedId = findTaskId(e.target);
-	const task = appController.Tasks.getTasksByProperty("id", selectedId)[0];
+function confirmDeleteTask(selectedId) {
+	const task = appController.Tasks.getTasksByProperty(
+		"id",
+		selectedId
+	)[0].getProperties();
 
 	const userConfirmed = confirm(
 		`Are you sure you want to delete the "${makeFirstUpper(
-			task.getProperty("title")
+			task.title
 		)}" task? \nThis action cannot be undone.`
 	);
 
 	if (userConfirmed) {
-		console.log(selectedId);
-		appController.Tasks.removeTasks(selectedId);
+		PubSub.publish(EVENTS.DELETE_TASK, selectedId);
 		updateScreen();
 	}
 }
+
+const subConfirmDeleteTask = PubSub.subscribe(
+	EVENTS.CONFIRM_DELETE_TASK,
+	confirmDeleteTask
+);
 
 function handleProjectDelete(e) {
 	const selectedProject = findProjectName(e.target);
@@ -149,16 +118,29 @@ function handleProjectDelete(e) {
 	}
 }
 
-function handleTaskSubmit(e) {
-	e.preventDefault();
-	document
-		.querySelector(".edit-mode")
-		.removeEventListener("submit", handleTaskSubmit);
-	document
-		.getElementById("cancel-btn")
-		.removeEventListener("click", handleTaskCancel);
+function getValuesArray() {
+	const submittedInfo = [];
+	document.querySelectorAll(".submit-info").forEach((el) => {
+		let submitValue = {
+			input: el.value,
+			select: [...el.children].filter(
+				(option) => option.selected === true
+			)[0]?.value,
+			textarea: el.textContent,
+		}[el.tagName.toLowerCase()];
+		submittedInfo.push([el.id, submitValue]);
+	});
+	return submittedInfo;
+}
 
-	const submitId = findTaskId(document.getElementById("save-btn"));
+function submitTask(submitId) {
+	// document
+	// 	.querySelector(".edit-mode")
+	// 	.removeEventListener("submit", handleTaskSubmit);
+	// document
+	// 	.getElementById("cancel-btn")
+	// 	.removeEventListener("click", handleTaskCancel);
+
 	const userConfirmed = confirm(
 		`Ready to submit ${submitId === 0 ? "a new task" : "your changes"}?`
 	);
@@ -166,14 +148,16 @@ function handleTaskSubmit(e) {
 	if (userConfirmed) {
 		const valuesArray = getValuesArray();
 		if (submitId === 0) {
-			appController.Tasks.addTask(valuesArray);
+			PubSub.publish(EVENTS.ADD_TASK, valuesArray);
 		} else {
-			appController.Tasks.updateTask(submitId, valuesArray);
+			PubSub.publish(EVENTS.UPDATE_TASK, submitId, valuesArray);
 		}
 		dialog.close();
 		updateScreen();
 	}
 }
+
+const subSubmitTask = PubSub.subscribe(EVENTS.SUBMIT_TASK, submitTask);
 
 function handleProjectSubmit(e) {
 	e.preventDefault();
@@ -277,7 +261,9 @@ function updateTaskColumns(displayTasks) {
 	// Make each task clickable
 	const TaskCards = document.querySelectorAll(".task-card");
 	TaskCards.forEach((card) => {
-		card.addEventListener("click", openDisplayMode);
+		card.addEventListener("click", (e) => {
+			PubSub.publish(EVENTS.DISPLAY_MODE, findTaskId(e.target));
+		});
 	});
 }
 
@@ -325,6 +311,20 @@ function filterProjectView(e) {
 	updateScreen();
 	sidebar.classList.remove("open");
 }
+
+function closeAddBtn() {
+	addBtn.classList.remove("open");
+}
+
+const subDisplayCloseAddBtn = PubSub.subscribe(
+	EVENTS.DISPLAY_MODE,
+	closeAddBtn
+);
+const subEditCloseAddBtn = PubSub.subscribe(EVENTS.EDIT_MODE, closeAddBtn);
+const subProjectCloseAddBtn = PubSub.subscribe(
+	EVENTS.PROJECT_MODE,
+	closeAddBtn
+);
 
 // Initial call
 updateScreen();

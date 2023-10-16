@@ -27,6 +27,7 @@ export const PubSub = (() => {
 		} else {
 			_eventsList[triggerEvent].push(subscriber);
 		}
+		console.log(_eventsList); // devMode
 		return {
 			unsubscribe: () => {
 				const functionList = _eventsList[triggerEvent];
@@ -49,3 +50,15 @@ export const PubSub = (() => {
 
 	return { subscribe, publish };
 })();
+
+export const EVENTS = {
+	DISPLAY_MODE: "displayMode",
+	EDIT_MODE: "editMode",
+	EDIT_MODE_POP: "editModePop",
+	PROJECT_MODE: "projectMode",
+	CONFIRM_DELETE_TASK: "confirmDeleteTask",
+	DELETE_TASK: "deleteTask",
+	SUBMIT_TASK: "submitTask",
+	ADD_TASK: "addTask",
+	UPDATE_TASK: "updateTask",
+};
