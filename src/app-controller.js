@@ -1,5 +1,5 @@
 export const Tasks = (() => {
-	let _tasks = [];
+	let _taskList = [];
 	let _idCounter = 1;
 
 	function _dateSort(outgoingTasks) {
@@ -54,34 +54,34 @@ export const Tasks = (() => {
 		inputValuesArray.forEach((pair) => {
 			newTask.setProperty(pair[0], pair[1]);
 		});
-		_tasks.push(newTask);
+		_taskList.push(newTask);
 	}
 
 	function removeTasks(...removeIds) {
-		_tasks.forEach((task, index) => {
+		_taskList.forEach((task, index) => {
 			if (removeIds.includes(task.getProperty("id"))) {
-				_tasks.splice(index, 1);
+				_taskList.splice(index, 1);
 			}
 		});
 	}
 
 	function updateTask(updateId, inputValuesArray) {
-		_tasks.forEach((task, index) => {
+		_taskList.forEach((task, index) => {
 			if (updateId === task.getProperty("id")) {
 				inputValuesArray.forEach((pair) => {
-					_tasks[index].setProperty(pair[0], pair[1]);
+					_taskList[index].setProperty(pair[0], pair[1]);
 				});
 			}
 		});
 	}
 
 	function getTasksByProperty(prop, value) {
-		return _tasks.filter((task) => task.getProperty(prop) === value);
+		return _taskList.filter((task) => task.getProperty(prop) === value);
 	}
 
 	function getSortedTasksByProperty(prop, value) {
 		return _columnSort(
-			_tasks.filter((task) => task.getProperty(prop) === value)
+			_taskList.filter((task) => task.getProperty(prop) === value)
 		);
 	}
 
@@ -89,7 +89,7 @@ export const Tasks = (() => {
 		addTask,
 		removeTasks,
 		updateTask,
-		getAllTasks: () => _columnSort(_tasks),
+		getAllTasks: () => _columnSort(_taskList),
 		getTasksByProperty,
 		getSortedTasksByProperty,
 		getColumnNames: () => _columnNames,
@@ -112,7 +112,7 @@ export const Projects = (() => {
 				removeName
 			).map((task) => task.getProperty("id"));
 
-			// Remove all tasks with those id's from _tasks
+			// Remove all tasks with those id's from _taskList
 			Tasks.removeTasks(...removeIds);
 
 			// Remove name from project list
