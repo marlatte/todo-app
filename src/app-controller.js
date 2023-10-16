@@ -60,8 +60,6 @@ export const Tasks = (() => {
 		_taskList.push(newTask);
 	}
 
-	const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, addTask);
-
 	function removeTasks(...removeIds) {
 		_taskList.forEach((task, index) => {
 			if (removeIds.includes(task.getProperty("id"))) {
@@ -69,8 +67,6 @@ export const Tasks = (() => {
 			}
 		});
 	}
-
-	const subRemoveTask = PubSub.subscribe(EVENTS.DELETE_TASK, removeTasks);
 
 	function updateTask(updateId, inputValuesArray) {
 		_taskList.forEach((task, index) => {
@@ -82,8 +78,6 @@ export const Tasks = (() => {
 		});
 	}
 
-	const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateTask);
-
 	function getTasksByProperty(prop, value) {
 		return _taskList.filter((task) => task.getProperty(prop) === value);
 	}
@@ -94,10 +88,11 @@ export const Tasks = (() => {
 		);
 	}
 
+	const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, addTask);
+	const subRemoveTask = PubSub.subscribe(EVENTS.DELETE_TASK, removeTasks);
+	const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateTask);
+
 	return {
-		addTask,
-		removeTasks, // Used in Projects below
-		updateTask,
 		getAllTasks: () => _columnSort(_taskList),
 		getTasksByProperty,
 		getSortedTasksByProperty,
@@ -114,8 +109,6 @@ export const Projects = (() => {
 		_projectList.add(newProjectName.toLowerCase());
 	}
 
-	const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, addProject);
-
 	function removeProject(removeName) {
 		if (_projectList.has(removeName)) {
 			// Get task.id's associated with that project
@@ -125,13 +118,14 @@ export const Projects = (() => {
 			).map((task) => task.getProperty("id"));
 
 			// Remove all tasks with those id's from _taskList
-			Tasks.removeTasks(...removeIds);
+			PubSub.publish(EVENTS.DELETE_TASK, ...removeIds);
 
 			// Remove name from project list
 			_projectList.delete(removeName);
 		}
 	}
 
+	const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, addProject);
 	const subRemoveProject = PubSub.subscribe(
 		EVENTS.DELETE_PROJECT,
 		removeProject
@@ -192,6 +186,6 @@ const _addDefaults = (() => {
 	].map((item) => Object.entries(item));
 
 	defaultTasks.forEach((item) => {
-		Tasks.addTask(item);
+		PubSub.publish(EVENTS.ADD_TASK, item);
 	});
 })();

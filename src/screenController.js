@@ -4,7 +4,6 @@ import { PubSub, EVENTS } from "./pubsub";
 import {
 	elFactory,
 	htmlFactory,
-	findTaskId,
 	makeFirstUpper,
 	findProjectName,
 } from "./helpers";
@@ -40,14 +39,6 @@ function updateScreen() {
 	}
 	dialog.close();
 }
-
-const subInit = PubSub.subscribe(EVENTS.INIT, updateScreen);
-
-const subDeleteTask = PubSub.subscribe(EVENTS.DELETE_TASK, updateScreen);
-const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, updateScreen);
-const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateScreen);
-
-const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, updateScreen);
 
 function updateTaskColumns(displayTasks) {
 	// Reset the columns
@@ -193,3 +184,11 @@ function filterProjectView(e) {
 	updateScreen();
 	sidebar.classList.remove("open");
 }
+
+const subInit = PubSub.subscribe(EVENTS.INIT, updateScreen);
+
+const subDeleteTask = PubSub.subscribe(EVENTS.DELETE_TASK, updateScreen);
+const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, updateScreen);
+const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateScreen);
+
+const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, updateScreen);

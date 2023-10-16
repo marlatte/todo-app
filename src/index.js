@@ -1,11 +1,5 @@
 import * as appController from "./app-controller";
-import {
-	elFactory,
-	htmlFactory,
-	findTaskId,
-	makeFirstUpper,
-	findProjectName,
-} from "./helpers";
+import { findTaskId, makeFirstUpper } from "./helpers";
 import { dialog } from "./modals";
 import "./style.css";
 import { PubSub, EVENTS } from "./pubsub";
@@ -29,8 +23,6 @@ function openDisplayMode(e) {
 		.getElementById("delete-btn")
 		.addEventListener("click", handleTaskDelete);
 }
-
-const subCardClick = PubSub.subscribe(EVENTS.CARD_CLICK, openDisplayMode);
 
 function openEditMode(e) {
 	addBtn.classList.remove("open");
@@ -159,6 +151,8 @@ function handleProjectSubmit(e) {
 	const newProjectName = document.getElementById("new-project").value;
 	PubSub.publish(EVENTS.ADD_PROJECT, newProjectName);
 }
+
+const subCardClick = PubSub.subscribe(EVENTS.CARD_CLICK, openDisplayMode);
 
 // Initial call
 PubSub.publish(EVENTS.INIT);
