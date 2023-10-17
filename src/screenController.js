@@ -1,4 +1,4 @@
-import * as appController from "./app-controller";
+import { Tasks, Projects } from "./app-controller";
 import { dialog } from "./modals";
 import { PubSub, EVENTS } from "./pubsub";
 import {
@@ -26,12 +26,12 @@ let currentProject = ALL_TASKS;
 function updateScreen() {
 	if (currentProject === ALL_TASKS) {
 		projectDisplayed.textContent = makeFirstUpper(ALL_TASKS);
-		updateTaskColumns(appController.Tasks.getAllTasks());
+		updateTaskColumns(Tasks.getAllTasks());
 		updateSidebar();
 	} else {
 		projectDisplayed.textContent = makeFirstUpper(currentProject);
 		updateTaskColumns(
-			appController.Tasks.getSortedTasksByProperty(
+			Tasks.getSortedTasksBy(
 				"project",
 				currentProject === NO_PROJECT ? "" : currentProject
 			)
@@ -129,31 +129,29 @@ function updateSidebar() {
 	const replacementContainer = elFactory(
 		"div",
 		{ classList: "projects-container" },
-		[ALL_TASKS, NO_PROJECT, ...appController.Projects.getProjects()].map(
-			(project) => {
-				return elFactory(
-					"div",
-					{
-						classList: "project-name id-bubble-marker",
-						dataset: { projectFilter: project },
-					},
-					[
-						elFactory("button", {
-							type: "button",
-							textContent: makeFirstUpper(project),
-							classList: "project-filter-btn",
-						}),
-						[ALL_TASKS, NO_PROJECT].includes(project)
-							? ""
-							: elFactory("button", {
-									type: "button",
-									textContent: "D",
-									classList: "project-delete-btn",
-							  }),
-					]
-				);
-			}
-		)
+		[ALL_TASKS, NO_PROJECT, ...Projects.getProjects()].map((project) => {
+			return elFactory(
+				"div",
+				{
+					classList: "project-name id-bubble-marker",
+					dataset: { projectFilter: project },
+				},
+				[
+					elFactory("button", {
+						type: "button",
+						textContent: makeFirstUpper(project),
+						classList: "project-filter-btn",
+					}),
+					[ALL_TASKS, NO_PROJECT].includes(project)
+						? ""
+						: elFactory("button", {
+								type: "button",
+								textContent: "D",
+								classList: "project-delete-btn",
+						  }),
+				]
+			);
+		})
 	);
 
 	sidebar.appendChild(htmlFactory(replacementContainer));

@@ -1,4 +1,4 @@
-import * as appController from "./app-controller";
+import { Tasks } from "./app-controller";
 import { findTaskId, makeFirstUpper } from "./helpers";
 import { dialog } from "./modals";
 import "./style.css";
@@ -90,10 +90,7 @@ function handleProjectCancel() {
 
 function handleTaskDelete(e) {
 	const selectedId = findTaskId(e.target);
-	const task = appController.Tasks.getTasksByProperty(
-		"id",
-		selectedId
-	)[0].getProperties();
+	const task = Tasks.getTasksBy("id", selectedId)[0].getProperties();
 
 	const userConfirmed = confirm(
 		`Are you sure you want to delete the "${makeFirstUpper(

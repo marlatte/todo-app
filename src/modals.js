@@ -1,5 +1,5 @@
 import { elFactory, formatDate, htmlFactory, makeFirstUpper } from "./helpers";
-import * as appController from "./app-controller";
+import { Tasks, Projects } from "./app-controller";
 import { PubSub, EVENTS } from "./pubsub";
 
 export const dialog = document.querySelector("dialog");
@@ -35,10 +35,10 @@ function buildDisplayMode() {
 }
 
 function populateDisplay(selectedId) {
-	const task = appController.Tasks.getTasksByProperty("id", selectedId)[0];
-	appController.Tasks.getPropertyNames().forEach((prop) => {
+	const task = Tasks.getTasksBy("id", selectedId)[0].getProperties();
+	Tasks.getPropertyNames().forEach((prop) => {
 		const element = document.getElementById(`display-${prop}`);
-		let output = task.getProperty(prop);
+		let output = task[prop];
 
 		if (prop === "due" && !!output) {
 			output = formatDate(output);
@@ -108,9 +108,9 @@ function buildEditMode() {
 
 function addDropdowns() {
 	[
-		["project", appController.Projects.getProjects()],
-		["priority", appController.Tasks.getPriorityNames()],
-		["status", appController.Tasks.getColumnNames()],
+		["project", Projects.getProjects()],
+		["priority", Tasks.getPriorityNames()],
+		["status", Tasks.getColumnNames()],
 	].forEach((pair) => {
 		const element = document.getElementById(pair[0]);
 		pair[1].forEach((option) => {
@@ -127,8 +127,8 @@ function addDropdowns() {
 }
 
 function populateForm(selectedId) {
-	const task = appController.Tasks.getTasksByProperty("id", selectedId)[0];
-	appController.Tasks.getPropertyNames().forEach((prop) => {
+	const task = Tasks.getTasksBy("id", selectedId)[0].getProperties();
+	Tasks.getPropertyNames().forEach((prop) => {
 		const element = document.getElementById(prop);
 
 		switch (prop) {
@@ -136,19 +136,19 @@ function populateForm(selectedId) {
 			case "priority":
 			case "status":
 				[...element.children].forEach((option) => {
-					option.selected = option.value === task.getProperty(prop);
+					option.selected = option.value === task[prop];
 				});
 				break;
 			case "title":
-				element.value = makeFirstUpper(task.getProperty(prop));
+				element.value = makeFirstUpper(task[prop]);
 				break;
 
 			case "notes":
-				element.textContent = makeFirstUpper(task.getProperty(prop));
+				element.textContent = makeFirstUpper(task[prop]);
 				break;
 
 			default:
-				element.value = task.getProperty(prop);
+				element.value = task[prop];
 				break;
 		}
 	});
