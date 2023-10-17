@@ -4,6 +4,7 @@ import { dialog } from "./modals";
 import "./style.css";
 import { PubSub, EVENTS } from "./pubsub";
 import "./screenController";
+import "./web-storage";
 
 const addBtn = document.getElementById("add-btn");
 const addProjectBtn = document.getElementById("add-project-btn");

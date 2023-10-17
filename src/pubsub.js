@@ -27,7 +27,6 @@ export const PubSub = (() => {
 		} else {
 			_eventsList[triggerEvent].push(subscriber);
 		}
-		console.log(_eventsList); // devMode
 		return {
 			unsubscribe: () => {
 				const functionList = _eventsList[triggerEvent];
