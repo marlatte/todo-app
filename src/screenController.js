@@ -26,7 +26,7 @@ let currentProject = ALL_TASKS;
 function updateScreen() {
 	if (currentProject === ALL_TASKS) {
 		projectDisplayed.textContent = makeFirstUpper(ALL_TASKS);
-		updateTaskColumns(Tasks.getAllTasks());
+		updateTaskColumns(Tasks.getSortedTasks());
 		updateSidebar();
 	} else {
 		projectDisplayed.textContent = makeFirstUpper(currentProject);

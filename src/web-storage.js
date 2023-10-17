@@ -1,3 +1,6 @@
+import { PubSub, EVENTS } from "./pubsub";
+import { Tasks } from "./app-controller";
+
 // This function is from MDN to test is storage is available on older browsers.
 function storageAvailable(type) {
 	let storage;
@@ -26,13 +29,33 @@ function storageAvailable(type) {
 	}
 }
 
+let storageType;
 if (storageAvailable("localStorage")) {
-	// Yippee! We can use localStorage awesomeness
-	console.log("Yes, localStorage is available");
+	console.log("localStorage");
+	storageType = localStorage;
 } else if (storageAvailable("sessionStorage")) {
-	// Try session storage
-	console.log("At least sessionStorage is available");
+	console.log("sessionStorage");
+	storageType = sessionStorage;
 } else {
-	// Too bad, no localStorage for us
-	console.log("No, storage is NOT available");
+	console.log("No storage");
+	PubSub.publish(EVENTS.ADD_DEFAULTS);
 }
+// PubSub.publish(EVENTS.ADD_DEFAULTS);
+
+// let allTasks = Tasks.getAllTasks().map((task) => task.getProperties());
+// console.log(allTasks);
+
+// storageType.setItem("tasks", JSON.stringify([...allTasks]));
+// storageType.removeItem("a");
+console.log(storageType);
+
+console.log(JSON.parse(storageType.getItem("tasks")));
+
+/*
+- Check type of storage available 
+	- set storageType (local or session)
+- Subscribe to trigger events
+	- Run in parallel to rest of app, just in case storage fails
+- Check storage populated
+	- setStorage or getStorage
+*/

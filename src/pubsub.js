@@ -62,4 +62,5 @@ export const EVENTS = {
 	INIT: "init",
 	ADD_PROJECT: "addProject",
 	DELETE_PROJECT: "deleteProject",
+	ADD_DEFAULTS: "addDefaults",
 };

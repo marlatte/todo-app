@@ -91,7 +91,8 @@ export const Tasks = (() => {
 	const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateTask);
 
 	return {
-		getAllTasks: () => _columnSort(_taskList),
+		getAllTasks: () => _taskList,
+		getSortedTasks: () => _columnSort(_taskList),
 		getTasksBy,
 		getSortedTasksBy,
 		getColumnNames: () => _columnNames,
@@ -133,54 +134,58 @@ export const Projects = (() => {
 	};
 })();
 
-const defaultTasks = [
-	{
-		title: "pay bills",
-		status: "in-progress",
-		project: "finances",
-		priority: "high",
-		notes: "the rent is too damn high",
-		due: "2023-11-01",
-		tags: "",
-	},
-	{
-		title: "groceries",
-		status: "to-do",
-		project: "home",
-		priority: "medium",
-		notes: "",
-		due: "",
-		tags: "store",
-	},
-	{
-		title: "file taxes",
-		status: "backlog",
-		project: "finances",
-		priority: "medium",
-		notes: "",
-		due: "",
-		tags: "",
-	},
-	{
-		title: "read Chekhov",
-		status: "backlog",
-		project: "learning",
-		priority: "low",
-		notes: "",
-		due: "2023-11-05",
-		tags: "",
-	},
-	{
-		title: "replace lightbulb",
-		status: "to-do",
-		project: "home",
-		priority: "medium",
-		notes: "bathroom light is flickering",
-		due: "",
-		tags: "store",
-	},
-].map((item) => Object.entries(item));
+function addDefaults() {
+	const defaultTasks = [
+		{
+			title: "pay bills",
+			status: "in-progress",
+			project: "finances",
+			priority: "high",
+			notes: "the rent is too damn high",
+			due: "2023-11-01",
+			tags: "",
+		},
+		{
+			title: "groceries",
+			status: "to-do",
+			project: "home",
+			priority: "medium",
+			notes: "",
+			due: "",
+			tags: "store",
+		},
+		{
+			title: "file taxes",
+			status: "backlog",
+			project: "finances",
+			priority: "medium",
+			notes: "",
+			due: "",
+			tags: "",
+		},
+		{
+			title: "read Chekhov",
+			status: "backlog",
+			project: "learning",
+			priority: "low",
+			notes: "",
+			due: "2023-11-05",
+			tags: "",
+		},
+		{
+			title: "replace lightbulb",
+			status: "to-do",
+			project: "home",
+			priority: "medium",
+			notes: "bathroom light is flickering",
+			due: "",
+			tags: "store",
+		},
+	].map((item) => Object.entries(item));
 
-defaultTasks.forEach((item) => {
-	PubSub.publish(EVENTS.ADD_TASK, item);
-});
+	defaultTasks.forEach((item) => {
+		PubSub.publish(EVENTS.ADD_TASK, item);
+	});
+}
+
+PubSub.subscribe(EVENTS.ADD_DEFAULTS, addDefaults);
