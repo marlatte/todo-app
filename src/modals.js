@@ -1,10 +1,4 @@
-import {
-	elFactory,
-	formatDate,
-	htmlFactory,
-	makeFirstUpper,
-	findTaskId,
-} from "./helpers";
+import { elFactory, formatDate, htmlFactory, makeFirstUpper } from "./helpers";
 import * as appController from "./app-controller";
 import { PubSub, EVENTS } from "./pubsub";
 
@@ -63,12 +57,7 @@ function buildEditMode() {
 					<div class="form-row">
 						<div class="form-item">
 							<label for="title">Title:</label>
-							<input
-								type="text"
-								id="title"
-								class="submit-info"
-								required
-							/>
+							<input type="text" id="title" class="submit-info" required />
 						</div>
 					</div>
 					<div class="form-row">
@@ -76,14 +65,12 @@ function buildEditMode() {
 							<label for="project">Project:</label>
 							<select id="project" class="submit-info">
 								<option value=""></option>
-								<!-- Add options here -->
 							</select>
 						</div>
 						<div class="form-item">
 							<label for="priority">Priority:</label>
 							<select id="priority" class="submit-info">
 								<option value=""></option>
-								<!-- Add options here -->
 							</select>
 						</div>
 					</div>
@@ -94,9 +81,7 @@ function buildEditMode() {
 						</div>
 						<div class="form-item">
 							<label for="status">Status:</label>
-							<select id="status" class="submit-info" required>
-								<!-- Add options here -->
-							</select>
+							<select id="status" class="submit-info" required></select>
 						</div>
 					</div>
 					<div class="form-row">
@@ -188,13 +173,10 @@ function buildProjectMode() {
 }
 
 const subDisplayBuild = PubSub.subscribe(EVENTS.DISPLAY_MODE, buildDisplayMode);
-const subDisplayPopulate = PubSub.subscribe(
-	EVENTS.DISPLAY_MODE,
-	populateDisplay
-);
+const subDisplayPop = PubSub.subscribe(EVENTS.DISPLAY_MODE, populateDisplay);
 
 const subEditBuild = PubSub.subscribe(EVENTS.EDIT_MODE, buildEditMode);
 const subEditDropdowns = PubSub.subscribe(EVENTS.EDIT_MODE, addDropdowns);
-const subFormPopulate = PubSub.subscribe(EVENTS.EDIT_MODE_POP, populateForm);
+const subFormPop = PubSub.subscribe(EVENTS.EDIT_MODE_POP, populateForm);
 
 const subProjectBuild = PubSub.subscribe(EVENTS.PROJECT_MODE, buildProjectMode);

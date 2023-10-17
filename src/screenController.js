@@ -20,6 +20,7 @@ const projectDisplayed = document.getElementById("project-displayed");
 const statusesContainer = document.getElementById("statuses-container");
 
 const ALL_TASKS = "all-tasks";
+const NO_PROJECT = "uncategorized";
 let currentProject = ALL_TASKS;
 
 function updateScreen() {
@@ -32,7 +33,7 @@ function updateScreen() {
 		updateTaskColumns(
 			appController.Tasks.getSortedTasksByProperty(
 				"project",
-				currentProject
+				currentProject === NO_PROJECT ? "" : currentProject
 			)
 		);
 		updateSidebar();
@@ -128,29 +129,31 @@ function updateSidebar() {
 	const replacementContainer = elFactory(
 		"div",
 		{ classList: "projects-container" },
-		[ALL_TASKS, ...appController.Projects.getProjects()].map((project) => {
-			return elFactory(
-				"div",
-				{
-					classList: "project-name id-bubble-marker",
-					dataset: { projectFilter: project },
-				},
-				[
-					elFactory("button", {
-						type: "button",
-						textContent: makeFirstUpper(project),
-						classList: "project-filter-btn",
-					}),
-					project === ALL_TASKS
-						? ""
-						: elFactory("button", {
-								type: "button",
-								textContent: "D",
-								classList: "project-delete-btn",
-						  }),
-				]
-			);
-		})
+		[ALL_TASKS, NO_PROJECT, ...appController.Projects.getProjects()].map(
+			(project) => {
+				return elFactory(
+					"div",
+					{
+						classList: "project-name id-bubble-marker",
+						dataset: { projectFilter: project },
+					},
+					[
+						elFactory("button", {
+							type: "button",
+							textContent: makeFirstUpper(project),
+							classList: "project-filter-btn",
+						}),
+						[ALL_TASKS, NO_PROJECT].includes(project)
+							? ""
+							: elFactory("button", {
+									type: "button",
+									textContent: "D",
+									classList: "project-delete-btn",
+							  }),
+					]
+				);
+			}
+		)
 	);
 
 	sidebar.appendChild(htmlFactory(replacementContainer));

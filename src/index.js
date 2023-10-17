@@ -154,5 +154,4 @@ function handleProjectSubmit(e) {
 
 const subCardClick = PubSub.subscribe(EVENTS.CARD_CLICK, openDisplayMode);
 
-// Initial call
 PubSub.publish(EVENTS.INIT);
