@@ -20,24 +20,23 @@ export const Tasks = (() => {
 
 	function _dateSort(outgoingTasks) {
 		return outgoingTasks.sort((a, b) => {
-			const dateA = a.getProperty("due").split("-").join("");
-			const dateB = b.getProperty("due").split("-").join("");
-			return !dateA ? 1 : dateA - dateB;
+			const dateA = +a.getProperties().due.split("-").join("");
+			const dateB = +b.getProperties().due.split("-").join("");
+			return !dateA ? 1 : dateB - dateA;
 		});
 	}
 
 	function _columnSort(outgoingTasks) {
-		const columnSortedArray = _columnNames.map((columnName) => {
+		return _columnNames.map((columnName) => {
 			return [
 				columnName,
 				_dateSort(
 					outgoingTasks.filter(
-						(task) => task.getProperty("status") === columnName
+						(task) => task.getProperties().status === columnName
 					)
 				),
 			];
 		});
-		return columnSortedArray;
 	}
 
 	function _taskFactory() {
@@ -45,7 +44,6 @@ export const Tasks = (() => {
 		const setProperty = (key, value) => (_task[key] = value);
 		_propertyNames.forEach((prop) => setProperty(prop, ""));
 		return {
-			getProperty: (key) => _task[key],
 			getProperties: () => _task,
 			setProperty,
 		};
@@ -62,7 +60,7 @@ export const Tasks = (() => {
 
 	function removeTasks(...removeIds) {
 		_taskList.forEach((task, index) => {
-			if (removeIds.includes(task.getProperty("id"))) {
+			if (removeIds.includes(task.getProperties().id)) {
 				_taskList.splice(index, 1);
 			}
 		});
@@ -70,7 +68,7 @@ export const Tasks = (() => {
 
 	function updateTask(updateId, inputValuesArray) {
 		_taskList.forEach((task, index) => {
-			if (updateId === task.getProperty("id")) {
+			if (updateId === task.getProperties().id) {
 				inputValuesArray.forEach((pair) => {
 					_taskList[index].setProperty(pair[0], pair[1]);
 				});
@@ -79,12 +77,12 @@ export const Tasks = (() => {
 	}
 
 	function getTasksBy(prop, value) {
-		return _taskList.filter((task) => task.getProperty(prop) === value);
+		return _taskList.filter((task) => task.getProperties()[prop] === value);
 	}
 
 	function getSortedTasksBy(prop, value) {
 		return _columnSort(
-			_taskList.filter((task) => task.getProperty(prop) === value)
+			_taskList.filter((task) => task.getProperties()[prop] === value)
 		);
 	}
 
@@ -113,7 +111,7 @@ export const Projects = (() => {
 		if (_projectList.has(removeName)) {
 			// Get task.id's associated with that project
 			const removeIds = Tasks.getTasksBy("project", removeName).map(
-				(task) => task.getProperty("id")
+				(task) => task.getProperties().id
 			);
 
 			// Remove all tasks with those id's from _taskList
@@ -169,7 +167,7 @@ const defaultTasks = [
 		project: "learning",
 		priority: "low",
 		notes: "",
-		due: "",
+		due: "2023-11-05",
 		tags: "",
 	},
 	{

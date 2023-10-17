@@ -65,37 +65,32 @@ function updateTaskColumns(displayTasks) {
 		);
 
 		// Build task cards
-		column[1].forEach((task) => {
-			const [title, project, due] = [
-				task.getProperty("title"),
-				task.getProperty("project"),
-				task.getProperty("due"),
-			];
+		column[1].forEach((taskContainer) => {
+			const task = taskContainer.getProperties();
+
 			columnContent.children.push(
 				elFactory(
 					"div",
 					{
 						classList: "task-card id-bubble-marker",
 						dataset: {
-							priority: task
-								.getProperty("priority")
-								.toLowerCase(),
-							taskId: task.getProperty("id"),
+							priority: task.priority.toLowerCase(),
+							taskId: task.id,
 						},
 					},
 					[
 						elFactory("div", {
 							classList: "title",
-							textContent: makeFirstUpper(title),
+							textContent: makeFirstUpper(task.title),
 						}),
 						elFactory("div", { classList: "subtext" }, [
 							elFactory("div", {
 								classList: "project",
-								textContent: makeFirstUpper(project),
+								textContent: makeFirstUpper(task.project),
 							}),
 							elFactory("div", {
 								classList: "due",
-								textContent: due,
+								textContent: task.due,
 							}),
 						]),
 					]
