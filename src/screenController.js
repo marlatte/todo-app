@@ -148,8 +148,9 @@ function updateSidebar() {
 			);
 		})
 	);
-
-	sidebar.appendChild(htmlFactory(replacementContainer));
+	document
+		.querySelector(".bottom-buttons")
+		.before(htmlFactory(replacementContainer));
 	document.querySelectorAll(".project-filter-btn").forEach((button) => {
 		button.addEventListener("click", filterProjectView);
 	});

@@ -6,16 +6,51 @@ import { PubSub, EVENTS } from "./pubsub";
 import "./screenController";
 import "./web-storage";
 
-const addBtn = document.getElementById("add-btn");
-const addProjectBtn = document.getElementById("add-project-btn");
-const addTaskBtn = document.getElementById("add-task-btn");
+const BottomBtns = (() => {
+	const addRevealBtn = document.getElementById("add-reveal-btn");
+	const addTaskBtn = document.getElementById("add-task-btn");
+	const addProjectBtn = document.getElementById("add-project-btn");
 
-addBtn.addEventListener("click", () => addBtn.classList.toggle("open"));
-addTaskBtn.addEventListener("click", openEditMode);
-addProjectBtn.addEventListener("click", openProjectMode);
+	const storageRevealBtn = document.getElementById("storage-reveal-btn");
+	const defaultsBtn = document.getElementById("defaults-btn");
+	const clearStorageBtn = document.getElementById("clear-storage-btn");
+
+	addRevealBtn.addEventListener("click", () => {
+		addRevealBtn.classList.toggle("open");
+		addTaskBtn.classList.toggle("open");
+		addProjectBtn.classList.toggle("open");
+
+		storageRevealBtn.classList.remove("open");
+		defaultsBtn.classList.remove("open");
+		clearStorageBtn.classList.remove("open");
+	});
+
+	addTaskBtn.addEventListener("click", openEditMode);
+	addProjectBtn.addEventListener("click", openProjectMode);
+
+	storageRevealBtn.addEventListener("click", () => {
+		storageRevealBtn.classList.toggle("open");
+		defaultsBtn.classList.toggle("open");
+		clearStorageBtn.classList.toggle("open");
+
+		addRevealBtn.classList.remove("open");
+		addTaskBtn.classList.remove("open");
+		addProjectBtn.classList.remove("open");
+	});
+	// defaultsBtn.addEventListener("click", openEditMode);
+	// clearStorageBtn.addEventListener("click", openProjectMode);
+
+	function hideAddBtns() {
+		addRevealBtn.classList.remove("open");
+		addTaskBtn.classList.remove("open");
+		addProjectBtn.classList.remove("open");
+	}
+
+	return { hideAddBtns, addTaskBtn };
+})();
 
 function openDisplayMode(e) {
-	addBtn.classList.remove("open");
+	BottomBtns.hideAddBtns();
 
 	PubSub.publish(EVENTS.DISPLAY_MODE, findTaskId(e.target));
 
@@ -26,8 +61,8 @@ function openDisplayMode(e) {
 }
 
 function openEditMode(e) {
-	addBtn.classList.remove("open");
-	if (e.target !== addTaskBtn) {
+	BottomBtns.hideAddBtns();
+	if (e.target !== BottomBtns.addTaskBtn) {
 		document
 			.getElementById("edit-btn")
 			.removeEventListener("click", openEditMode);
@@ -51,7 +86,7 @@ function openEditMode(e) {
 }
 
 function openProjectMode() {
-	addBtn.classList.toggle("open");
+	BottomBtns.hideAddBtns();
 
 	PubSub.publish(EVENTS.PROJECT_MODE);
 

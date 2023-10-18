@@ -9,13 +9,6 @@
 	<body>
 		<div class="flex-container">
 			<div class="app-content">
-				<div class="add-container">
-					<button type="button" id="add-btn">+</button>
-					<button type="button" id="add-project-btn">
-						New Project
-					</button>
-					<button type="button" id="add-task-btn">New Task</button>
-				</div>
 				<header>
 					<div class="brand">
 						<h1>Pa'cer</h1>
@@ -31,6 +24,52 @@
 						×
 					</button>
 					<div class="projects-container"></div>
+					<div class="bottom-buttons">
+						<button
+							type="button"
+							id="add-task-btn"
+							class="hidden-btn add-btn"
+						>
+							New Task
+						</button>
+						<button
+							type="button"
+							id="add-project-btn"
+							class="hidden-btn add-btn"
+						>
+							New Project
+						</button>
+						<button
+							type="button"
+							id="defaults-btn"
+							class="hidden-btn storage-btn"
+						>
+							Restore Defaults
+						</button>
+						<button
+							type="button"
+							id="clear-storage-btn"
+							class="hidden-btn storage-btn"
+						>
+							Clear All
+						</button>
+						<div class="reveal-btns">
+							<button
+								type="button"
+								id="add-reveal-btn"
+								class="reveal-btn"
+							>
+								+
+							</button>
+							<button
+								type="button"
+								id="storage-reveal-btn"
+								class="reveal-btn"
+							>
+								S
+							</button>
+						</div>
+					</div>
 				</section>
 				<main>
 					<h1 id="project-displayed">All Tasks</h1>

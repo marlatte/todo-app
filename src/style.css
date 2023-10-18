@@ -39,42 +39,6 @@ body {
 	background-color: #fff;
 }
 
-.add-container {
-	position: fixed;
-	z-index: 1;
-	bottom: calc(var(--main-spacer) + 48px);
-	left: 10px;
-
-	display: flex;
-	flex-direction: column-reverse;
-	gap: 10px;
-}
-
-#add-btn {
-	height: var(--add-btn-dims);
-	width: var(--add-btn-dims);
-	display: grid;
-	place-content: center;
-
-	border-radius: var(--add-btn-dims);
-	border: 2px solid white;
-	background-color: black;
-	color: white;
-	font-size: 40px;
-}
-
-#add-btn.open {
-	transform: rotate(45deg);
-}
-
-#add-btn ~ * {
-	display: none;
-}
-
-#add-btn.open ~ * {
-	display: block;
-}
-
 @media (min-width: 700px) {
 	.app-content {
 		width: min(calc(100vw - 40px), 1400px);
@@ -82,10 +46,6 @@ body {
 		display: grid;
 		grid-template-columns: 1fr 4fr;
 		grid-template-rows: 60px auto;
-	}
-	.add-container {
-		position: absolute;
-		bottom: 10px;
 	}
 }
 
@@ -172,6 +132,44 @@ header h1 {
 .project-name {
 	display: flex;
 	justify-content: space-between;
+}
+
+.bottom-buttons {
+	margin-top: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	border: 2px solid blue;
+}
+
+.hidden-btn {
+	display: none;
+}
+
+.hidden-btn.open {
+	display: block;
+}
+
+.reveal-btns {
+	display: flex;
+	justify-content: space-between;
+}
+
+.reveal-btn {
+	height: var(--add-btn-dims);
+	width: var(--add-btn-dims);
+	display: grid;
+	place-content: center;
+
+	border-radius: var(--add-btn-dims);
+	border: 2px solid white;
+	background-color: black;
+	color: white;
+	font-size: 40px;
+}
+
+#add-reveal-btn.open {
+	transform: rotate(45deg);
 }
 
 @media (min-width: 700px) {
