@@ -63,4 +63,5 @@ export const EVENTS = {
 	ADD_PROJECT: "addProject",
 	DELETE_PROJECT: "deleteProject",
 	ADD_DEFAULTS: "addDefaults",
+	CLEAR_ALL: "clearAll",
 };

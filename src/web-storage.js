@@ -1,5 +1,5 @@
 import { PubSub, EVENTS } from "./pubsub";
-import { Tasks } from "./app-controller";
+import { Projects, Tasks } from "./app-controller";
 
 // This function is from MDN to test is storage is available on older browsers.
 function storageAvailable(type) {
@@ -38,24 +38,55 @@ if (storageAvailable("localStorage")) {
 	storageType = sessionStorage;
 } else {
 	console.log("No storage");
-	PubSub.publish(EVENTS.ADD_DEFAULTS);
+	PubSub.publish(EVENTS.ADD_DEFAULTS, false);
 }
-// PubSub.publish(EVENTS.ADD_DEFAULTS);
 
-// let allTasks = Tasks.getAllTasks().map((task) => task.getProperties());
-// console.log(allTasks);
+function checkStorage() {
+	if (!!storageType.length) {
+		getStorage();
+	}
+}
 
-// storageType.setItem("tasks", JSON.stringify([...allTasks]));
-// storageType.removeItem("a");
-console.log(storageType);
+function setStorage() {
+	const allTasks = Tasks.getAllTasks().map((task) => task.getProperties());
+	const allProjects = Projects.getProjects();
 
-console.log(JSON.parse(storageType.getItem("tasks")));
+	console.log({ allTasks, allProjects }); //devMode
 
-/*
-- Check type of storage available 
-	- set storageType (local or session)
-- Subscribe to trigger events
-	- Run in parallel to rest of app, just in case storage fails
-- Check storage populated
-	- setStorage or getStorage
-*/
+	storageType.setItem("allProjects", JSON.stringify(allProjects));
+	storageType.setItem("allTasks", JSON.stringify([...allTasks]));
+}
+
+function getStorage() {
+	const storedProjects = JSON.parse(storageType.getItem("allProjects"));
+	const storedTasks = JSON.parse(storageType.getItem("allTasks")).map((item) =>
+		Object.entries(item)
+	);
+
+	console.log(storedProjects); // devMode
+	console.log(storedTasks); // devMode
+
+	storedProjects.forEach((project) => {
+		PubSub.publish(EVENTS.ADD_PROJECT, project);
+	});
+
+	storedTasks.forEach((item) => {
+		PubSub.publish(EVENTS.ADD_TASK, item);
+	});
+}
+
+function clearStorage() {
+	storageType.clear();
+
+	console.log(storageType); // devMode
+}
+
+const subSetAddTask = PubSub.subscribe(EVENTS.ADD_TASK, setStorage);
+const subSetDeleteTask = PubSub.subscribe(EVENTS.DELETE_TASK, setStorage);
+const subSetUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, setStorage);
+const subSetAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, setStorage);
+const subSetDeleteProject = PubSub.subscribe(EVENTS.DELETE_PROJECT, setStorage);
+
+const subCheckInit = PubSub.subscribe(EVENTS.INIT, checkStorage);
+
+const subClearStorage = PubSub.subscribe(EVENTS.CLEAR_ALL, clearStorage);

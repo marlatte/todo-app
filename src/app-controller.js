@@ -1,7 +1,7 @@
 import { PubSub, EVENTS } from "./pubsub";
 
 export const Tasks = (() => {
-	let _taskList = [];
+	let _taskList = new Set();
 	let _idCounter = 1;
 
 	const _columnNames = ["backlog", "to-do", "in-progress", "done"];
@@ -55,44 +55,49 @@ export const Tasks = (() => {
 		inputValuesArray.forEach((pair) => {
 			newTask.setProperty(pair[0], pair[1]);
 		});
-		_taskList.push(newTask);
+		_taskList.add(newTask);
 	}
 
 	function removeTasks(...removeIds) {
-		_taskList.forEach((task, index) => {
+		[..._taskList].forEach((task) => {
 			if (removeIds.includes(task.getProperties().id)) {
-				_taskList.splice(index, 1);
+				_taskList.delete(task);
 			}
 		});
 	}
 
 	function updateTask(updateId, inputValuesArray) {
-		_taskList.forEach((task, index) => {
+		[..._taskList].forEach((task) => {
 			if (updateId === task.getProperties().id) {
 				inputValuesArray.forEach((pair) => {
-					_taskList[index].setProperty(pair[0], pair[1]);
+					task.setProperty(pair[0], pair[1]);
 				});
 			}
 		});
 	}
 
+	function clearTasks() {
+		_taskList.clear();
+	}
+
 	function getTasksBy(prop, value) {
-		return _taskList.filter((task) => task.getProperties()[prop] === value);
+		return [..._taskList].filter((task) => task.getProperties()[prop] === value);
 	}
 
 	function getSortedTasksBy(prop, value) {
 		return _columnSort(
-			_taskList.filter((task) => task.getProperties()[prop] === value)
+			[..._taskList].filter((task) => task.getProperties()[prop] === value)
 		);
 	}
 
 	const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, addTask);
 	const subRemoveTask = PubSub.subscribe(EVENTS.DELETE_TASK, removeTasks);
 	const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateTask);
+	const subClearTasks = PubSub.subscribe(EVENTS.CLEAR_ALL, clearTasks);
 
 	return {
-		getAllTasks: () => _taskList,
-		getSortedTasks: () => _columnSort(_taskList),
+		getAllTasks: () => [..._taskList],
+		getSortedTasks: () => _columnSort([..._taskList]),
 		getTasksBy,
 		getSortedTasksBy,
 		getColumnNames: () => _columnNames,
@@ -102,7 +107,7 @@ export const Tasks = (() => {
 })();
 
 export const Projects = (() => {
-	let _projectList = new Set(["home", "finances", "learning"]);
+	let _projectList = new Set();
 
 	function addProject(newProjectName) {
 		_projectList.add(newProjectName.toLowerCase());
@@ -123,69 +128,85 @@ export const Projects = (() => {
 		}
 	}
 
+	function clearProjects() {
+		_projectList.clear();
+	}
+
 	const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, addProject);
-	const subRemoveProject = PubSub.subscribe(
-		EVENTS.DELETE_PROJECT,
-		removeProject
-	);
+	const subRemoveProject = PubSub.subscribe(EVENTS.DELETE_PROJECT, removeProject);
+	const subClearProjects = PubSub.subscribe(EVENTS.CLEAR_ALL, clearProjects);
 
 	return {
 		getProjects: () => [..._projectList].sort(),
 	};
 })();
 
-function addDefaults() {
-	const defaultTasks = [
-		{
-			title: "pay bills",
-			status: "in-progress",
-			project: "finances",
-			priority: "high",
-			notes: "the rent is too damn high",
-			due: "2023-11-01",
-			tags: "",
-		},
-		{
-			title: "groceries",
-			status: "to-do",
-			project: "home",
-			priority: "medium",
-			notes: "",
-			due: "",
-			tags: "store",
-		},
-		{
-			title: "file taxes",
-			status: "backlog",
-			project: "finances",
-			priority: "medium",
-			notes: "",
-			due: "",
-			tags: "",
-		},
-		{
-			title: "read Chekhov",
-			status: "backlog",
-			project: "learning",
-			priority: "low",
-			notes: "",
-			due: "2023-11-05",
-			tags: "",
-		},
-		{
-			title: "replace lightbulb",
-			status: "to-do",
-			project: "home",
-			priority: "medium",
-			notes: "bathroom light is flickering",
-			due: "",
-			tags: "store",
-		},
-	].map((item) => Object.entries(item));
+function addDefaults(askUser) {
+	const userConfirmed = askUser
+		? confirm(
+				"Default Mode replaces all tasks and projects with an example set. \nThis will erase anything you have saved."
+		  )
+		: true;
+	if (userConfirmed) {
+		PubSub.publish(EVENTS.CLEAR_ALL);
+		const defaultProjects = ["home", "finances", "learning"];
 
-	defaultTasks.forEach((item) => {
-		PubSub.publish(EVENTS.ADD_TASK, item);
-	});
+		defaultProjects.forEach((project) => {
+			PubSub.publish(EVENTS.ADD_PROJECT, project);
+		});
+
+		const defaultTasks = [
+			{
+				title: "pay bills",
+				status: "in-progress",
+				project: "finances",
+				priority: "high",
+				notes: "the rent is too damn high",
+				due: "2023-11-01",
+				tags: "",
+			},
+			{
+				title: "groceries",
+				status: "to-do",
+				project: "home",
+				priority: "medium",
+				notes: "",
+				due: "",
+				tags: "store",
+			},
+			{
+				title: "file taxes",
+				status: "backlog",
+				project: "finances",
+				priority: "medium",
+				notes: "",
+				due: "",
+				tags: "",
+			},
+			{
+				title: "read Chekhov",
+				status: "backlog",
+				project: "learning",
+				priority: "low",
+				notes: "",
+				due: "2023-11-05",
+				tags: "",
+			},
+			{
+				title: "replace lightbulb",
+				status: "to-do",
+				project: "home",
+				priority: "medium",
+				notes: "bathroom light is flickering",
+				due: "",
+				tags: "store",
+			},
+		].map((item) => Object.entries(item));
+
+		defaultTasks.forEach((item) => {
+			PubSub.publish(EVENTS.ADD_TASK, item);
+		});
+	}
 }
 
 PubSub.subscribe(EVENTS.ADD_DEFAULTS, addDefaults);

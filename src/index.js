@@ -1,10 +1,10 @@
+import { PubSub, EVENTS } from "./pubsub";
 import { Tasks } from "./app-controller";
 import { findTaskId, makeFirstUpper } from "./helpers";
 import { dialog } from "./modals";
 import "./style.css";
-import { PubSub, EVENTS } from "./pubsub";
-import "./screenController";
 import "./web-storage";
+import "./screenController";
 
 const BottomBtns = (() => {
 	const addRevealBtn = document.getElementById("add-reveal-btn");
@@ -20,9 +20,7 @@ const BottomBtns = (() => {
 		addTaskBtn.classList.toggle("open");
 		addProjectBtn.classList.toggle("open");
 
-		storageRevealBtn.classList.remove("open");
-		defaultsBtn.classList.remove("open");
-		clearStorageBtn.classList.remove("open");
+		hideStorageBtns();
 	});
 
 	addTaskBtn.addEventListener("click", openEditMode);
@@ -33,12 +31,21 @@ const BottomBtns = (() => {
 		defaultsBtn.classList.toggle("open");
 		clearStorageBtn.classList.toggle("open");
 
-		addRevealBtn.classList.remove("open");
-		addTaskBtn.classList.remove("open");
-		addProjectBtn.classList.remove("open");
+		hideAddBtns();
 	});
-	// defaultsBtn.addEventListener("click", openEditMode);
-	// clearStorageBtn.addEventListener("click", openProjectMode);
+
+	defaultsBtn.addEventListener("click", () => {
+		PubSub.publish(EVENTS.ADD_DEFAULTS, true);
+	});
+	clearStorageBtn.addEventListener("click", () => {
+		const userConfirmed = confirm(
+			"Are you sure you want to delete all tasks AND projects? \nThis action cannot be undone."
+		);
+
+		if (userConfirmed) {
+			PubSub.publish(EVENTS.CLEAR_ALL);
+		}
+	});
 
 	function hideAddBtns() {
 		addRevealBtn.classList.remove("open");
@@ -46,12 +53,24 @@ const BottomBtns = (() => {
 		addProjectBtn.classList.remove("open");
 	}
 
-	return { hideAddBtns, addTaskBtn };
+	const subAddDisplay = PubSub.subscribe(EVENTS.DISPLAY_MODE, hideAddBtns);
+	const subAddEdit = PubSub.subscribe(EVENTS.EDIT_MODE, hideAddBtns);
+	const subAddProject = PubSub.subscribe(EVENTS.PROJECT_MODE, hideAddBtns);
+
+	function hideStorageBtns() {
+		storageRevealBtn.classList.remove("open");
+		defaultsBtn.classList.remove("open");
+		clearStorageBtn.classList.remove("open");
+	}
+
+	const subStorDefaults = PubSub.subscribe(EVENTS.ADD_DEFAULTS, hideStorageBtns);
+	const subStorClearAll = PubSub.subscribe(EVENTS.CLEAR_ALL, hideStorageBtns);
+	const subStorDisplay = PubSub.subscribe(EVENTS.DISPLAY_MODE, hideStorageBtns);
+
+	return { addTaskBtn };
 })();
 
 function openDisplayMode(e) {
-	BottomBtns.hideAddBtns();
-
 	PubSub.publish(EVENTS.DISPLAY_MODE, findTaskId(e.target));
 
 	document.getElementById("edit-btn").addEventListener("click", openEditMode);
@@ -61,7 +80,6 @@ function openDisplayMode(e) {
 }
 
 function openEditMode(e) {
-	BottomBtns.hideAddBtns();
 	if (e.target !== BottomBtns.addTaskBtn) {
 		document
 			.getElementById("edit-btn")
@@ -86,8 +104,6 @@ function openEditMode(e) {
 }
 
 function openProjectMode() {
-	BottomBtns.hideAddBtns();
-
 	PubSub.publish(EVENTS.PROJECT_MODE);
 
 	document
@@ -144,9 +160,8 @@ function getValuesArray() {
 	document.querySelectorAll(".submit-info").forEach((el) => {
 		let submitValue = {
 			input: el.value,
-			select: [...el.children].filter(
-				(option) => option.selected === true
-			)[0]?.value,
+			select: [...el.children].filter((option) => option.selected === true)[0]
+				?.value,
 			textarea: el.textContent,
 		}[el.tagName.toLowerCase()];
 		submittedInfo.push([el.id, submitValue]);

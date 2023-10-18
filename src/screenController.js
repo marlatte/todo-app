@@ -1,20 +1,13 @@
 import { Tasks, Projects } from "./app-controller";
 import { dialog } from "./modals";
 import { PubSub, EVENTS } from "./pubsub";
-import {
-	elFactory,
-	htmlFactory,
-	makeFirstUpper,
-	findProjectName,
-} from "./helpers";
+import { elFactory, htmlFactory, makeFirstUpper, findProjectName } from "./helpers";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
 const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
 const sidebar = document.querySelector(".sidebar");
 sidebarOpenBtn.addEventListener("click", () => sidebar.classList.add("open"));
-sidebarCloseBtn.addEventListener("click", () =>
-	sidebar.classList.remove("open")
-);
+sidebarCloseBtn.addEventListener("click", () => sidebar.classList.remove("open"));
 
 const projectDisplayed = document.getElementById("project-displayed");
 const statusesContainer = document.getElementById("statuses-container");
@@ -189,3 +182,5 @@ const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, updateScreen);
 const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateScreen);
 
 const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, updateScreen);
+
+const subClearScreen = PubSub.subscribe(EVENTS.CLEAR_ALL, updateScreen);
