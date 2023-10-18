@@ -41,10 +41,8 @@ if (storageAvailable("localStorage")) {
 	PubSub.publish(EVENTS.ADD_DEFAULTS, false);
 }
 
-function checkStorage() {
-	if (!!storageType.length) {
-		getStorage();
-	}
+if (!!storageType.getItem("allTasks")) {
+	getStorage();
 }
 
 function setStorage() {
@@ -86,7 +84,5 @@ const subSetDeleteTask = PubSub.subscribe(EVENTS.DELETE_TASK, setStorage);
 const subSetUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, setStorage);
 const subSetAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, setStorage);
 const subSetDeleteProject = PubSub.subscribe(EVENTS.DELETE_PROJECT, setStorage);
-
-const subCheckInit = PubSub.subscribe(EVENTS.INIT, checkStorage);
 
 const subClearStorage = PubSub.subscribe(EVENTS.CLEAR_ALL, clearStorage);
