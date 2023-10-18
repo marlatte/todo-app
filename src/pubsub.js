@@ -1,22 +1,3 @@
-/*
-PubSub organization
-
-event types: 
-	- addTask
-	- updateTask
-	- removeTask
-	- addProject
-	- removeProject
-
-subscribers (things that need to get done):
-	- making relevant changes in appController
-	- populateStorage (once JSON comes into play)
-	- updateScreen
-
-
-(localStorage note: gonna need to use MDN's storageAvailable fn to determine whether or not to subscribe storage related stuff to events, meaning that everything needs to still work even if storage isn't available)
-*/
-
 export const PubSub = (() => {
 	const _eventsList = {};
 	// { key: "triggerEvent", value: [ array of functions ] }

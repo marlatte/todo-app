@@ -31,13 +31,10 @@ function storageAvailable(type) {
 
 let storageType;
 if (storageAvailable("localStorage")) {
-	console.log("localStorage");
 	storageType = localStorage;
 } else if (storageAvailable("sessionStorage")) {
-	console.log("sessionStorage");
 	storageType = sessionStorage;
 } else {
-	console.log("No storage");
 	PubSub.publish(EVENTS.ADD_DEFAULTS, false);
 }
 
@@ -49,8 +46,6 @@ function setStorage() {
 	const allTasks = Tasks.getAllTasks().map((task) => task.getProperties());
 	const allProjects = Projects.getProjects();
 
-	console.log({ allTasks, allProjects }); //devMode
-
 	storageType.setItem("allProjects", JSON.stringify(allProjects));
 	storageType.setItem("allTasks", JSON.stringify([...allTasks]));
 }
@@ -60,9 +55,6 @@ function getStorage() {
 	const storedTasks = JSON.parse(storageType.getItem("allTasks")).map((item) =>
 		Object.entries(item)
 	);
-
-	console.log(storedProjects); // devMode
-	console.log(storedTasks); // devMode
 
 	storedProjects.forEach((project) => {
 		PubSub.publish(EVENTS.ADD_PROJECT, project);
@@ -75,8 +67,6 @@ function getStorage() {
 
 function clearStorage() {
 	storageType.clear();
-
-	console.log(storageType); // devMode
 }
 
 const subSetAddTask = PubSub.subscribe(EVENTS.ADD_TASK, setStorage);
