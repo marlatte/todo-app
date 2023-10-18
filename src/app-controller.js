@@ -27,16 +27,14 @@ export const Tasks = (() => {
 	}
 
 	function _columnSort(outgoingTasks) {
-		return _columnNames.map((columnName) => {
-			return [
-				columnName,
-				_dateSort(
-					outgoingTasks.filter(
-						(task) => task.getProperties().status === columnName
-					)
-				),
-			];
-		});
+		return _columnNames.map((columnName) => [
+			columnName,
+			_dateSort(
+				outgoingTasks.filter(
+					(task) => task.getProperties().status === columnName
+				)
+			),
+		]);
 	}
 
 	function _taskFactory() {
@@ -142,16 +140,12 @@ export const Projects = (() => {
 })();
 
 function addDefaults(askUser) {
-	const userConfirmed = askUser
-		? confirm(
-				"Default Mode replaces all tasks and projects with an example set. \nThis will erase anything you have saved."
-		  )
-		: true;
+	const question =
+		"Defaults replace all tasks and projects with an example set. \nThis will erase anything you have saved.";
+	const userConfirmed = askUser ? confirm(question) : true;
 	if (userConfirmed) {
 		PubSub.publish(EVENTS.CLEAR_ALL);
-		const defaultProjects = ["home", "finances", "learning"];
-
-		defaultProjects.forEach((project) => {
+		["home", "finances", "learning"].forEach((project) => {
 			PubSub.publish(EVENTS.ADD_PROJECT, project);
 		});
 
@@ -163,15 +157,12 @@ function addDefaults(askUser) {
 				priority: "high",
 				notes: "the rent is too damn high",
 				due: "2023-11-01",
-				tags: "",
 			},
 			{
 				title: "groceries",
 				status: "to-do",
 				project: "home",
 				priority: "medium",
-				notes: "",
-				due: "",
 				tags: "store",
 			},
 			{
@@ -179,18 +170,13 @@ function addDefaults(askUser) {
 				status: "backlog",
 				project: "finances",
 				priority: "medium",
-				notes: "",
-				due: "",
-				tags: "",
 			},
 			{
 				title: "read Chekhov",
 				status: "backlog",
 				project: "learning",
 				priority: "low",
-				notes: "",
 				due: "2023-11-05",
-				tags: "",
 			},
 			{
 				title: "replace lightbulb",
@@ -198,7 +184,6 @@ function addDefaults(askUser) {
 				project: "home",
 				priority: "medium",
 				notes: "bathroom light is flickering",
-				due: "",
 				tags: "store",
 			},
 		].map((item) => Object.entries(item));
@@ -209,4 +194,4 @@ function addDefaults(askUser) {
 	}
 }
 
-PubSub.subscribe(EVENTS.ADD_DEFAULTS, addDefaults);
+const subDefaults = PubSub.subscribe(EVENTS.ADD_DEFAULTS, addDefaults);

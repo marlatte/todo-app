@@ -19,7 +19,6 @@ const BottomBtns = (() => {
 		addRevealBtn.classList.toggle("open");
 		addTaskBtn.classList.toggle("open");
 		addProjectBtn.classList.toggle("open");
-
 		hideStorageBtns();
 	});
 
@@ -30,21 +29,19 @@ const BottomBtns = (() => {
 		storageRevealBtn.classList.toggle("open");
 		defaultsBtn.classList.toggle("open");
 		clearStorageBtn.classList.toggle("open");
-
 		hideAddBtns();
 	});
 
 	defaultsBtn.addEventListener("click", () => {
 		PubSub.publish(EVENTS.ADD_DEFAULTS, true);
 	});
+
 	clearStorageBtn.addEventListener("click", () => {
 		const userConfirmed = confirm(
 			"Are you sure you want to delete all tasks AND projects? \nThis action cannot be undone."
 		);
 
-		if (userConfirmed) {
-			PubSub.publish(EVENTS.CLEAR_ALL);
-		}
+		if (userConfirmed) PubSub.publish(EVENTS.CLEAR_ALL);
 	});
 
 	function hideAddBtns() {
@@ -53,16 +50,15 @@ const BottomBtns = (() => {
 		addProjectBtn.classList.remove("open");
 	}
 
-	const subAddDisplay = PubSub.subscribe(EVENTS.DISPLAY_MODE, hideAddBtns);
-	const subAddEdit = PubSub.subscribe(EVENTS.EDIT_MODE, hideAddBtns);
-	const subAddProject = PubSub.subscribe(EVENTS.PROJECT_MODE, hideAddBtns);
-
 	function hideStorageBtns() {
 		storageRevealBtn.classList.remove("open");
 		defaultsBtn.classList.remove("open");
 		clearStorageBtn.classList.remove("open");
 	}
 
+	const subAddDisplay = PubSub.subscribe(EVENTS.DISPLAY_MODE, hideAddBtns);
+	const subAddEdit = PubSub.subscribe(EVENTS.EDIT_MODE, hideAddBtns);
+	const subAddProject = PubSub.subscribe(EVENTS.PROJECT_MODE, hideAddBtns);
 	const subStorDefaults = PubSub.subscribe(EVENTS.ADD_DEFAULTS, hideStorageBtns);
 	const subStorClearAll = PubSub.subscribe(EVENTS.CLEAR_ALL, hideStorageBtns);
 	const subStorDisplay = PubSub.subscribe(EVENTS.DISPLAY_MODE, hideStorageBtns);
@@ -150,9 +146,7 @@ function handleTaskDelete(e) {
 		)}" task? \nThis action cannot be undone.`
 	);
 
-	if (userConfirmed) {
-		PubSub.publish(EVENTS.DELETE_TASK, selectedId);
-	}
+	if (userConfirmed) PubSub.publish(EVENTS.DELETE_TASK, selectedId);
 }
 
 function getValuesArray() {
@@ -201,5 +195,4 @@ function handleProjectSubmit(e) {
 }
 
 const subCardClick = PubSub.subscribe(EVENTS.CARD_CLICK, openDisplayMode);
-
 PubSub.publish(EVENTS.INIT);

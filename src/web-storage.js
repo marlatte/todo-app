@@ -43,7 +43,11 @@ if (!!storageType.getItem("allTasks")) {
 }
 
 function setStorage() {
-	const allTasks = Tasks.getAllTasks().map((task) => task.getProperties());
+	const allTasks = Tasks.getAllTasks().map((task) => {
+		const taskNoId = JSON.parse(JSON.stringify(task.getProperties()));
+		delete taskNoId.id;
+		return taskNoId;
+	});
 	const allProjects = Projects.getProjects();
 
 	storageType.setItem("allProjects", JSON.stringify(allProjects));
