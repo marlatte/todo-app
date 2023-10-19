@@ -1,0 +1,155 @@
+@import url(./sidebar.css);
+@import url(./modals.css);
+@import url(./header-footer.css);
+/* ---------------     Reboot     --------------- */
+
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	/* color: unset; */
+}
+
+/* ---------------     /Reboot     --------------- */
+/* ---------------     Utilities & Universals     --------------- */
+:root {
+	--header-bg-left: #004d6d;
+	--header-bg-right: #483264;
+
+	--text-light: #fbfcff;
+	--text-med: #404040;
+	--text-dark: #4c4263;
+
+	--priority-low: #87bbf2;
+	--priority-med: #ffc000;
+	--priority-hi: #c00000;
+	--priority-none: #a6a6a6;
+
+	--footer-bg: #222a35;
+}
+
+body {
+	min-height: 100svh;
+	display: flex;
+	flex-direction: column;
+	background-color: red;
+}
+
+/* ---------------     /Utilities & Universals     --------------- */
+/* ---------------     CONTENT     --------------- */
+
+.flex-container {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.app-content {
+	--main-spacer: 20px;
+	--add-btn-dims: 50px;
+
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
+}
+
+@media (min-width: 700px) {
+	.app-content {
+		width: min(calc(100vw - 40px), 1400px);
+		min-height: 80vh;
+		display: grid;
+		grid-template-columns: 1fr 4fr;
+		grid-template-rows: 60px auto;
+	}
+}
+
+/* ---------------     Main     --------------- */
+
+main {
+	flex: 1;
+	position: relative;
+	padding: var(--main-spacer);
+	padding-bottom: calc(var(--add-btn-dims) + var(--main-spacer));
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--main-spacer);
+}
+
+#statuses-container {
+	--status-spacer: 10px;
+	flex: 1;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--main-spacer);
+}
+
+.status-row {
+	flex: auto;
+	width: min(480px, 100%);
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--main-spacer);
+}
+
+/* ---------------     Status columns     --------------- */
+
+.status-column {
+	flex: 1;
+	padding: var(--status-spacer);
+	min-width: min(230px, 100%);
+	min-height: 25svh;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--status-spacer);
+	border: 1px solid black;
+	border-radius: 6px;
+}
+
+.task-card {
+	--priority-width: 12px;
+	--priority-color: grey;
+
+	padding: 5px 5px 5px calc(var(--priority-width) + 5px);
+
+	background-image: linear-gradient(
+		to right,
+		var(--priority-color) var(--priority-width),
+		transparent var(--priority-width)
+	);
+
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+.task-card[data-priority="high"] {
+	--priority-color: rgb(222, 19, 0);
+}
+
+.task-card[data-priority="medium"] {
+	--priority-color: gold;
+}
+
+.task-card[data-priority="low"] {
+	--priority-color: skyblue;
+}
+
+#done-column .task-card {
+	--priority-color: green;
+}
+
+.subtext {
+	display: flex;
+	justify-content: space-between;
+}
+
+/* ---------------     /Status columns     --------------- */
+/* ---------------     /Main     --------------- */
+/* ---------------     /CONTENT     --------------- */

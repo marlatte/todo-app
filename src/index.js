@@ -2,7 +2,7 @@ import { PubSub, EVENTS } from "./pubsub";
 import { Tasks } from "./app-controller";
 import { findTaskId, makeFirstUpper } from "./helpers";
 import { dialog } from "./modals";
-import "./style.css";
+import "./styles/style.css";
 import "./web-storage";
 import "./screenController";
 

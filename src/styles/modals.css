@@ -1,0 +1,40 @@
+dialog {
+	--modal-spacer: 12px;
+
+	margin: auto;
+	border: none;
+}
+
+dialog > * {
+	width: min(88vw, 500px);
+	padding: var(--modal-spacer);
+	gap: var(--modal-spacer);
+	flex-direction: column;
+}
+
+.display-mode {
+	display: flex;
+
+	background-color: wheat;
+}
+
+.display-mode-header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.edit-mode {
+	display: flex;
+	background-color: cadetblue;
+}
+
+.edit-mode-details {
+	display: flex;
+	flex-direction: column;
+	gap: var(--modal-spacer);
+}
+
+.project-mode {
+	display: flex;
+	background-color: pink;
+}
