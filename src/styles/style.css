@@ -1,6 +1,8 @@
 @import url(./sidebar.css);
 @import url(./modals.css);
 @import url(./header-footer.css);
+@import url("https://use.typekit.net/pke3bbf.css");
+
 /* ---------------     Reboot     --------------- */
 
 *,
@@ -10,6 +12,19 @@
 	padding: 0;
 	box-sizing: border-box;
 	/* color: unset; */
+}
+
+button {
+	color: unset;
+	background-color: unset;
+	border: none;
+	font-size: inherit;
+}
+
+h1,
+h2,
+h3 {
+	font-size: unset;
 }
 
 /* ---------------     /Reboot     --------------- */
@@ -28,6 +43,8 @@
 	--priority-none: #a6a6a6;
 
 	--footer-bg: #222a35;
+
+	--font-main: futura-pt;
 }
 
 body {
@@ -35,6 +52,9 @@ body {
 	display: flex;
 	flex-direction: column;
 	background-color: red;
+	font-family: var(--font-main), system-ui, -apple-system, BlinkMacSystemFont,
+		"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+		sans-serif;
 }
 
 /* ---------------     /Utilities & Universals     --------------- */
@@ -43,6 +63,7 @@ body {
 .flex-container {
 	flex: 1;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
@@ -51,6 +72,7 @@ body {
 	--main-spacer: 20px;
 	--add-btn-dims: 50px;
 
+	flex: 1;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -58,6 +80,10 @@ body {
 }
 
 @media (min-width: 700px) {
+	.flex-container {
+		flex-direction: row;
+	}
+
 	.app-content {
 		width: min(calc(100vw - 40px), 1400px);
 		min-height: 80vh;
@@ -72,12 +98,15 @@ body {
 main {
 	flex: 1;
 	position: relative;
-	padding: var(--main-spacer);
-	padding-bottom: calc(var(--add-btn-dims) + var(--main-spacer));
+	padding: calc(var(--main-spacer) / 2);
 
 	display: flex;
 	flex-direction: column;
 	gap: var(--main-spacer);
+}
+
+#project-displayed {
+	font-size: 1.8rem;
 }
 
 #statuses-container {
@@ -109,15 +138,23 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: var(--status-spacer);
-	border: 1px solid black;
-	border-radius: 6px;
+}
+
+.status-name {
+	font-size: 1.6rem;
+	font-weight: 500;
 }
 
 .task-card {
-	--priority-width: 12px;
-	--priority-color: grey;
+	--priority-width: 16px;
+	--side-pad: 9px;
+	--priority-color: var(--priority-none);
 
-	padding: 5px 5px 5px calc(var(--priority-width) + 5px);
+	min-height: 60px;
+	padding: 4px var(--side-pad) 4px calc(var(--priority-width) + var(--side-pad));
+
+	display: flex;
+	flex-direction: column;
 
 	background-image: linear-gradient(
 		to right,
@@ -125,29 +162,44 @@ main {
 		transparent var(--priority-width)
 	);
 
-	border: 2px solid black;
+	border: 1px solid black;
 	border-radius: 5px;
+	box-shadow: 6px 4px black;
+
+	font-weight: 500;
 }
 
 .task-card[data-priority="high"] {
-	--priority-color: rgb(222, 19, 0);
+	--priority-color: var(--priority-hi);
 }
 
 .task-card[data-priority="medium"] {
-	--priority-color: gold;
+	--priority-color: var(--priority-med);
 }
 
 .task-card[data-priority="low"] {
-	--priority-color: skyblue;
+	--priority-color: var(--priority-low);
 }
 
 #done-column .task-card {
 	--priority-color: green;
 }
 
-.subtext {
+.card-section {
+	flex: 1;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+}
+
+.task-card .title {
+	font-size: 1.4rem;
+	font-weight: 500;
+	line-height: 90%;
+}
+
+.card-section:last-child {
+	color: var(--text-med);
 }
 
 /* ---------------     /Status columns     --------------- */

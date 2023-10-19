@@ -13,7 +13,9 @@ header {
 		var(--header-bg-left),
 		var(--header-bg-right)
 	);
-	border-bottom: 1px solid black;
+	color: var(--text-light);
+	font-size: 1.5rem;
+	box-shadow: 0 3px 3px #b1b1b1;
 }
 
 header h1 {
@@ -24,7 +26,6 @@ header h1 {
 #sidebar-open-btn {
 	margin: 10px;
 	padding: 5px 8px;
-	font-size: 20px;
 }
 
 @media (min-width: 700px) {
@@ -44,7 +45,7 @@ footer {
 	justify-content: center;
 	align-items: center;
 
-	background-color: black;
+	background-color: var(--footer-bg);
 	color: white;
 }
 /* ---------------     /Footer     --------------- */

@@ -72,11 +72,14 @@ function updateTaskColumns(displayTasks) {
 						},
 					},
 					[
-						elFactory("div", {
-							classList: "title",
-							textContent: makeFirstUpper(task.title),
-						}),
-						elFactory("div", { classList: "subtext" }, [
+						elFactory("div", { classList: "card-section" }, [
+							elFactory("h3", {
+								classList: "title",
+								textContent: makeFirstUpper(task.title),
+							}),
+							elFactory("p", { textContent: "T" }),
+						]),
+						elFactory("div", { classList: "card-section" }, [
 							elFactory("div", {
 								classList: "project",
 								textContent: makeFirstUpper(task.project),
