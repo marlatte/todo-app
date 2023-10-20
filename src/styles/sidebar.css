@@ -35,7 +35,9 @@
 
 .close-btn {
 	align-self: flex-end;
-	padding: 10px;
+	padding: 8px;
+	font-size: 40px;
+	line-height: 22px;
 }
 
 .projects-container {

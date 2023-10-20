@@ -32,6 +32,7 @@ h3 {
 :root {
 	--header-bg-left: #004d6d;
 	--header-bg-right: #483264;
+	--display-mode-bg: #e4deff;
 
 	--text-light: #fbfcff;
 	--text-med: #404040;
@@ -87,6 +88,8 @@ body {
 	.app-content {
 		width: min(calc(100vw - 40px), 1400px);
 		min-height: 80vh;
+		flex: 0 0 auto;
+
 		display: grid;
 		grid-template-columns: 1fr 4fr;
 		grid-template-rows: 60px auto;
