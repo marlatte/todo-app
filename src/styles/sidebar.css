@@ -50,7 +50,7 @@
 	justify-content: space-between;
 }
 
-.bottom-buttons {
+.sidebar .bottom-buttons {
 	margin-top: auto;
 	display: flex;
 	flex-direction: column;

@@ -17,15 +17,18 @@ function buildDisplayMode() {
 					<h3 id="display-title"></h3>
 					<button class="close-btn display-close-btn">×</button>
 				</section>
-				<section class="display-mode-details">
-					<p>Project: <span id="display-project"></span></p>
-					<p>Priority: <span id="display-priority"></span></p>
-					<p>Due: <span id="display-due"></span></p>
-					<p>Status: <span id="display-status"></span></p>
-					<p>Notes:<span id="display-notes"></span></p>
-					<p>Tags: <span id="display-tags"></span></p>
+				<section class="display-mode-body">
+					<div class="display-sidebar"></div>
+					<div class="display-details">
+						<div class="display-item"><span class="display-label">Project: </span><span class="display-value" id="display-project"></span></div>
+						<div class="display-item"><span class="display-label">Priority: </span><span class="display-value" id="display-priority"></span></div>
+						<div class="display-item"><span class="display-label">Due: </span><span class="display-value" id="display-due"></span></div>
+						<div class="display-item"><span class="display-label">Status: </span><span class="display-value" id="display-status"></span></div>
+						<div class="display-item"><span class="display-label">Notes: </span><span class="display-value" id="display-notes"></span></div>
+						<div class="display-item"><span class="display-label">Tags: </span><span class="display-value" id="display-tags"></span></div>
+					</div>
 				</section>
-				<section class="display-mode-buttons id-bubble-marker" data-task-id="">
+				<section class="buttons id-bubble-marker" data-task-id="">
 					<button type="button" id="edit-btn">Edit</button>
 					<button type="button" id="delete-btn">Delete</button>
 				</section>
@@ -87,18 +90,18 @@ function buildEditMode() {
 					<div class="form-row">
 						<div class="form-item">
 							<label for="notes">Notes:</label>
-							<textarea id="notes" cols="30" rows="10" class="submit-info"></textarea>
+							<textarea id="notes" rows="5" class="submit-info"></textarea>
 						</div>
 					</div>
 					<div class="form-row">
+					<p>Enter tags separated by commas.</p>
 						<div class="form-item">
-							<p>Enter tags separated by commas.</p>
 							<label for="tags">Tags:</label>
 							<input type="text" id="tags" class="submit-info"/>
 						</div>
 					</div>
 				</section>
-				<section class="edit-mode-buttons id-bubble-marker" data-task-id="">
+				<section class="buttons id-bubble-marker" data-task-id="">
 					<button type="submit" id="save-btn">Save</button>
 					<button type="button" id="cancel-btn">Cancel</button>
 				</section>
