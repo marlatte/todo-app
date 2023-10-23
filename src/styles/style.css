@@ -203,6 +203,12 @@ main {
 	line-height: 90%;
 }
 
+.card-delete-btn {
+	padding: 0 4px;
+	border: 1px solid #000;
+	border-radius: 2px;
+}
+
 .card-section:last-child {
 	color: var(--text-med);
 }

@@ -137,7 +137,7 @@ dialog .buttons > * {
 .form-row p {
 	width: 100%;
 	margin-top: var(--modal-spacer);
-	font-size: 1rem;
+	font-size: 1.2rem;
 }
 
 form label {
@@ -157,6 +157,7 @@ textarea {
 	border-radius: 5px;
 
 	font-family: unset;
+	font-size: inherit;
 }
 
 textarea {

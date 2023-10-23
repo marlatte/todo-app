@@ -40,6 +40,7 @@ export const EVENTS = {
 	ADD_TASK: "addTask",
 	UPDATE_TASK: "updateTask",
 	CARD_CLICK: "cardClick",
+	CARD_DELETE: "cardDelete",
 	INIT: "init",
 	ADD_PROJECT: "addProject",
 	DELETE_PROJECT: "deleteProject",

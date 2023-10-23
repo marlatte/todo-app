@@ -195,4 +195,5 @@ function handleProjectSubmit(e) {
 }
 
 const subCardClick = PubSub.subscribe(EVENTS.CARD_CLICK, openDisplayMode);
+const subCardDelete = PubSub.subscribe(EVENTS.CARD_DELETE, handleTaskDelete);
 PubSub.publish(EVENTS.INIT);

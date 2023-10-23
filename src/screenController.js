@@ -77,7 +77,11 @@ function updateTaskColumns(displayTasks) {
 								classList: "title",
 								textContent: makeFirstUpper(task.title),
 							}),
-							elFactory("p", { textContent: "T" }),
+							elFactory("button", {
+								type: "button",
+								classList: "card-delete-btn",
+								textContent: "D",
+							}),
 						]),
 						elFactory("div", { classList: "card-section" }, [
 							elFactory("div", {
@@ -110,7 +114,11 @@ function updateTaskColumns(displayTasks) {
 	const TaskCards = document.querySelectorAll(".task-card");
 	TaskCards.forEach((card) => {
 		card.addEventListener("click", (e) => {
-			PubSub.publish(EVENTS.CARD_CLICK, e);
+			if (e.target.classList.value.includes("card-delete-btn")) {
+				PubSub.publish(EVENTS.CARD_DELETE, e);
+			} else {
+				PubSub.publish(EVENTS.CARD_CLICK, e);
+			}
 		});
 	});
 }
