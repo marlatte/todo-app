@@ -29,6 +29,25 @@ dialog > * {
 .display-mode-header {
 	display: flex;
 	justify-content: space-between;
+	font-size: 1.6rem;
+}
+
+.display-mode-details {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.display-close-btn {
+	--btn-dim: 33px;
+	align-self: center;
+	height: var(--btn-dim);
+	width: var(--btn-dim);
+
+	background-color: var(--text-dark);
+	color: var(--text-light);
+	border-radius: 20px;
+	font-weight: 500;
 }
 
 .display-mode p {
@@ -37,6 +56,32 @@ dialog > * {
 
 .display-mode p span {
 	color: #000;
+}
+
+.display-mode-buttons {
+	display: flex;
+	gap: var(--modal-spacer);
+}
+
+.display-mode-buttons > * {
+	flex: 1;
+
+	padding: 6px;
+
+	border-radius: 10px;
+	font-size: 1.6rem;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+#edit-btn {
+	background-color: var(--header-bg-right);
+	color: var(--text-light);
+}
+
+#delete-btn {
+	color: var(--header-bg-right);
+	border: 2px solid currentColor;
 }
 
 /* ---------------     /Display Mode     --------------- */

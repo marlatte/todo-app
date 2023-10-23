@@ -19,6 +19,7 @@ button {
 	background-color: unset;
 	border: none;
 	font-size: inherit;
+	font-family: unset;
 }
 
 h1,
