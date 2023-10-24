@@ -65,12 +65,14 @@ function buildEditMode() {
 					</div>
 					<div class="form-row">
 						<div class="form-item">
+							<i class="fa fa-chevron-down" aria-hidden="true"></i>
 							<label for="project">Project:</label>
 							<select id="project" class="submit-info">
 								<option value=""></option>
 							</select>
 						</div>
 						<div class="form-item">
+							<i class="fa fa-chevron-down" aria-hidden="true"></i>
 							<label for="priority">Priority:</label>
 							<select id="priority" class="submit-info">
 								<option value=""></option>
@@ -83,6 +85,7 @@ function buildEditMode() {
 							<input type="date" id="due" class="submit-info"/>
 						</div>
 						<div class="form-item">
+							<i class="fa fa-chevron-down" aria-hidden="true"></i>
 							<label for="status">Status:</label>
 							<select id="status" class="submit-info" required></select>
 						</div>

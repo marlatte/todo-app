@@ -42,10 +42,22 @@ footer {
 	height: 60px;
 
 	display: flex;
+	gap: 8px;
 	justify-content: center;
 	align-items: center;
 
 	background-color: var(--footer-bg);
-	color: white;
+	color: var(--text-light);
+	font-size: 20px;
+}
+
+.fa.fa-github {
+	color: currentColor;
+	font-size: 30px;
+
+	&:hover {
+		transition: transform 0.4s ease-in-out;
+		transform: rotate(-360deg) scale(1.3);
+	}
 }
 /* ---------------     /Footer     --------------- */
