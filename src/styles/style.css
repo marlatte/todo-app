@@ -92,6 +92,8 @@ body {
 	}
 
 	.app-content {
+		--app-bd-rad: 10px;
+
 		width: min(calc(100vw - 40px), 1400px);
 		min-height: 80vh;
 		flex: 0 0 auto;
@@ -99,6 +101,9 @@ body {
 		display: grid;
 		grid-template-columns: 1fr 4fr;
 		grid-template-rows: 60px auto;
+
+		border: 3px solid black;
+		border-radius: var(--app-bd-rad);
 	}
 }
 

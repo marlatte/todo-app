@@ -55,15 +55,21 @@
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
-	border: 2px solid rgb(17, 255, 0);
 }
 
 .hidden-btn {
+	width: 50%;
 	display: none;
+	border: 1px solid currentColor;
+	border-radius: 5px;
 }
 
 .hidden-btn.open {
 	display: block;
+}
+
+.storage-btn {
+	align-self: flex-end;
 }
 
 .reveal-btns {
@@ -78,14 +84,24 @@
 	place-content: center;
 
 	border-radius: var(--add-btn-dims);
-	border: 2px solid white;
+
 	background-color: black;
 	color: white;
 	font-size: 40px;
+
+	transition: all 0.4s;
 }
 
 #add-reveal-btn.open {
 	transform: rotate(45deg);
+}
+
+#storage-reveal-btn {
+	font-size: 20px;
+}
+
+#storage-reveal-btn.open {
+	transform: rotate(90deg);
 }
 
 @media (min-width: 700px) {
@@ -98,6 +114,9 @@
 		z-index: unset;
 
 		transition: none;
+
+		border-radius: 0 0 0 calc(var(--app-bd-rad) * 0.6);
+		border-right: 2px solid black;
 	}
 
 	.sidebar > *,
