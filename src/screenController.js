@@ -52,7 +52,7 @@ function updateTaskColumns(displayTasks) {
 			[
 				elFactory("h2", {
 					classList: "status-name",
-					textContent: statusName,
+					textContent: statusName + ":",
 				}),
 			]
 		);
@@ -77,11 +77,19 @@ function updateTaskColumns(displayTasks) {
 								classList: "title",
 								textContent: makeFirstUpper(task.title),
 							}),
-							elFactory("button", {
-								type: "button",
-								classList: "card-delete-btn",
-								textContent: "D",
-							}),
+							elFactory(
+								"button",
+								{
+									type: "button",
+									classList: "card-delete-btn",
+								},
+								[
+									elFactory("i", {
+										classList: "fa fa-trash-o card-delete-btn",
+										"aria-hidden": true,
+									}),
+								]
+							),
 						]),
 						elFactory("div", { classList: "card-section" }, [
 							elFactory("div", {

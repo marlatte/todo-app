@@ -15,7 +15,7 @@ dialog::backdrop {
 }
 
 dialog > * {
-	padding: calc(var(--modal-spacer) * 1.2);
+	padding: min(4vw, 18px);
 	gap: var(--modal-spacer);
 	flex-direction: column;
 }
@@ -136,7 +136,7 @@ dialog .buttons > * {
 
 .form-row p {
 	width: 100%;
-	margin-top: var(--modal-spacer);
+	margin: var(--modal-spacer) 0 0 76px;
 	font-size: 1.2rem;
 }
 
@@ -151,7 +151,7 @@ textarea {
 	flex: 1;
 	appearance: none;
 	padding: 1px 8px;
-	min-width: 100px;
+	width: 100px;
 
 	border: 1px solid var(--header-bg-left);
 	border-radius: 5px;

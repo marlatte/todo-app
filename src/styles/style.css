@@ -142,7 +142,6 @@ main {
 	flex: 1;
 	padding: var(--status-spacer);
 	min-width: min(230px, 100%);
-	min-height: 25svh;
 
 	display: flex;
 	flex-direction: column;
@@ -209,9 +208,7 @@ main {
 }
 
 .card-delete-btn {
-	padding: 0 4px;
-	border: 1px solid #000;
-	border-radius: 2px;
+	font-size: 20px;
 }
 
 .card-section:last-child {

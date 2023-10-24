@@ -97,7 +97,7 @@ function buildEditMode() {
 						</div>
 					</div>
 					<div class="form-row">
-					<p>Enter tags separated by commas.</p>
+					<p>Separate tags with commas.</p>
 						<div class="form-item">
 							<label for="tags">Tags:</label>
 							<input type="text" id="tags" class="submit-info"/>
