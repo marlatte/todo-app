@@ -35,15 +35,17 @@ h3 {
 /* ---------------     /Reboot     --------------- */
 /* ---------------     Utilities & Universals     --------------- */
 :root {
-	--header-bg-left: #004b6b;
-	--header-bg-right: #473262;
+	--save-btn-bg: #004b6b;
+	--edit-btn-bg: #473262;
+	--header-bg-left: hsl(210, 70%, 50%);
+	--header-bg-right: hsl(266, 50%, 30%);
 	--display-mode-bg: #eee0ff;
 	--edit-mode-bg: #e0f6ff;
 
 	--text-light: #fbfcff;
 	--text-med: #404040;
 	--text-dark: #4f4162;
-	--text-project: #821729;
+	--text-project: #760a1c;
 
 	--priority-low: #87bbf2;
 	--priority-med: #ffc000;
@@ -59,7 +61,10 @@ body {
 	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
-	background: linear-gradient(#004b6bbe, #473262be),
+	background: linear-gradient(
+			hsla(198, 100%, 41%, 0.745),
+			hsla(266, 32%, 50%, 0.745)
+		),
 		no-repeat center/cover
 			url(https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Stones_Porto_DSCF0572.jpg/1024px-Stones_Porto_DSCF0572.jpg);
 	font-family: var(--font-main), system-ui, -apple-system, BlinkMacSystemFont,
@@ -86,7 +91,7 @@ body {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	background-color: #fff;
+	background-color: var(--text-light);
 }
 
 @media (min-width: 700px) {
@@ -107,6 +112,7 @@ body {
 
 		border: 3px solid black;
 		border-radius: var(--app-bd-rad);
+		box-shadow: 8px 6px black;
 	}
 }
 
@@ -119,7 +125,6 @@ main {
 
 	display: flex;
 	flex-direction: column;
-	gap: var(--main-spacer);
 }
 
 #project-displayed {

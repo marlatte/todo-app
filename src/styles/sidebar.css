@@ -40,6 +40,8 @@
 	line-height: 22px;
 }
 
+/* ---------------     Project Buttons     --------------- */
+
 .projects-container {
 	display: flex;
 	flex-direction: column;
@@ -64,6 +66,13 @@
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
+
+.project-delete-btn {
+	font-size: 20px;
+}
+
+/* ---------------     /Project Buttons     --------------- */
+/* ---------------     Bottom Buttons     --------------- */
 
 .bottom-buttons {
 	margin-top: auto;
@@ -119,6 +128,8 @@
 	transform: rotate(90deg);
 }
 
+/* ---------------     /Bottom Buttons     --------------- */
+
 @media (min-width: 700px) {
 	.sidebar,
 	.sidebar.open {
@@ -131,7 +142,6 @@
 		transition: none;
 
 		border-radius: 0 0 0 calc(var(--app-bd-rad) * 0.6);
-		border-right: 2px solid black;
 	}
 
 	.sidebar > *,

@@ -159,7 +159,7 @@ function updateSidebar() {
 								},
 								[
 									elFactory("i", {
-										classList: "fa fa-trash-o",
+										classList: "fa fa-trash",
 										"aria-hidden": true,
 									}),
 								]

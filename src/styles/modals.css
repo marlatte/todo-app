@@ -96,12 +96,12 @@ dialog .buttons > * {
 }
 
 #edit-btn {
-	background-color: var(--header-bg-right);
+	background-color: var(--edit-btn-bg);
 	color: var(--text-light);
 }
 
 #delete-btn {
-	color: var(--header-bg-right);
+	color: var(--edit-btn-bg);
 	border: 2px solid currentColor;
 }
 
@@ -111,7 +111,7 @@ dialog .buttons > * {
 .edit-mode {
 	display: flex;
 	background-color: var(--edit-mode-bg);
-	color: var(--header-bg-left);
+	color: var(--save-btn-bg);
 }
 
 .edit-mode-details {
@@ -153,7 +153,7 @@ textarea {
 	padding: 1px 8px;
 	width: 100px;
 
-	border: 1px solid var(--header-bg-left);
+	border: 1px solid var(--save-btn-bg);
 	border-radius: 5px;
 
 	font-family: unset;
@@ -175,11 +175,11 @@ form .fa-chevron-down {
 
 #save-btn {
 	color: var(--text-light);
-	background-color: var(--header-bg-left);
+	background-color: var(--save-btn-bg);
 }
 
 #cancel-btn {
-	color: var(--header-bg-left);
+	color: var(--save-btn-bg);
 	border: 2px solid currentColor;
 }
 /* ---------------     /Edit Mode     --------------- */
