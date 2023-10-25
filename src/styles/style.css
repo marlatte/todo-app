@@ -36,7 +36,7 @@ h3 {
 /* ---------------     Utilities & Universals     --------------- */
 :root {
 	--header-bg-left: hsl(198, 100%, 21%);
-	--header-bg-right: hsl(266, 33%, 29%);
+	--header-bg-right: #473262;
 	--display-mode-bg: hsl(266, 100%, 94%);
 	--edit-mode-bg: hsl(198, 100%, 94%);
 
@@ -58,7 +58,9 @@ body {
 	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
-	background-color: red;
+	background: linear-gradient(#004b6bbe, #473262be),
+		no-repeat center/cover
+			url(https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Stones_Porto_DSCF0572.jpg/1024px-Stones_Porto_DSCF0572.jpg);
 	font-family: var(--font-main), system-ui, -apple-system, BlinkMacSystemFont,
 		"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
 		sans-serif;
