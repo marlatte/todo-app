@@ -64,7 +64,7 @@
 	text-underline-offset: 3px;
 }
 
-.sidebar .bottom-buttons {
+.bottom-buttons {
 	margin-top: auto;
 	display: flex;
 	flex-direction: column;
@@ -73,7 +73,7 @@
 
 .hidden-btn {
 	display: none;
-	padding: 3px;
+	padding: 5px;
 
 	border: 1px solid currentColor;
 	border-radius: 5px;
@@ -100,9 +100,7 @@
 	place-content: center;
 
 	border-radius: var(--add-btn-dims);
-
-	background-color: black;
-	color: white;
+	border: 2px solid currentColor;
 	font-size: 40px;
 
 	transition: all 0.4s;
