@@ -53,6 +53,7 @@
 
 .project-filter-btn {
 	font-size: 1.4rem;
+	transition: all 0.2s;
 }
 
 .project-filter-btn:hover {

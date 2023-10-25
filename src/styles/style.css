@@ -184,6 +184,12 @@ main {
 
 	font-weight: 500;
 	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.task-card:hover {
+	transform: translate(-1px, -1px);
+	box-shadow: 7px 5px black;
 }
 
 .task-card[data-priority="high"] {
