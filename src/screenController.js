@@ -2,6 +2,7 @@ import { Tasks, Projects } from "./app-controller";
 import { dialog } from "./modals";
 import { PubSub, EVENTS } from "./pubsub";
 import { elFactory, htmlFactory, makeFirstUpper, findProjectName } from "./helpers";
+import { addDragDrop, addStatusDrop } from "./drag-drop";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
 const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
@@ -66,6 +67,7 @@ function updateTaskColumns(displayTasks) {
 					"div",
 					{
 						classList: "task-card id-bubble-marker",
+						draggable: true,
 						dataset: {
 							priority: task.priority.toLowerCase(),
 							taskId: task.id,
@@ -118,9 +120,14 @@ function updateTaskColumns(displayTasks) {
 		}
 	});
 
-	// Make each task clickable
-	const TaskCards = document.querySelectorAll(".task-card");
-	TaskCards.forEach((card) => {
+	//Make each status-column able to receive dragDrops
+	document.querySelectorAll(".status-column").forEach((status) => {
+		addStatusDrop(status);
+	});
+
+	// Make each task clickable and draggable
+	document.querySelectorAll(".task-card").forEach((card) => {
+		addDragDrop(card);
 		card.addEventListener("click", (e) => {
 			if (e.target.classList.value.includes("card-delete-btn")) {
 				PubSub.publish(EVENTS.CARD_DELETE, e);
