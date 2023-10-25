@@ -9,7 +9,8 @@
 	flex-direction: column;
 	gap: 20px;
 
-	background-color: wheat;
+	background-color: var(--footer-bg);
+	color: var(--text-light);
 
 	transition: all 1s;
 }
@@ -42,12 +43,25 @@
 .projects-container {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 30px;
 }
 
 .project-name {
 	display: flex;
 	justify-content: space-between;
+}
+
+.project-filter-btn {
+	font-size: 1.4rem;
+}
+
+.project-filter-btn:hover {
+	color: var(--priority-low);
+}
+
+.project-filter-btn.selected {
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
 
 .sidebar .bottom-buttons {
@@ -58,8 +72,9 @@
 }
 
 .hidden-btn {
-	width: 50%;
 	display: none;
+	padding: 3px;
+
 	border: 1px solid currentColor;
 	border-radius: 5px;
 }
@@ -68,8 +83,9 @@
 	display: block;
 }
 
-.storage-btn {
-	align-self: flex-end;
+.hidden-btn:hover {
+	background-color: var(--text-light);
+	color: var(--footer-bg);
 }
 
 .reveal-btns {
@@ -110,7 +126,7 @@
 		position: inherit;
 		width: unset;
 		height: unset;
-		padding: 20px;
+		padding: 20px min(20px, 6%);
 		z-index: unset;
 
 		transition: none;

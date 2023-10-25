@@ -13,7 +13,7 @@ const projectDisplayed = document.getElementById("project-displayed");
 const statusesContainer = document.getElementById("statuses-container");
 
 const ALL_TASKS = "all-tasks";
-const NO_PROJECT = "uncategorized";
+const NO_PROJECT = "unsorted";
 let currentProject = ALL_TASKS;
 
 function updateScreen() {
@@ -151,11 +151,19 @@ function updateSidebar() {
 					}),
 					[ALL_TASKS, NO_PROJECT].includes(project)
 						? ""
-						: elFactory("button", {
-								type: "button",
-								textContent: "D",
-								classList: "project-delete-btn",
-						  }),
+						: elFactory(
+								"button",
+								{
+									type: "button",
+									classList: "project-delete-btn",
+								},
+								[
+									elFactory("i", {
+										classList: "fa fa-trash-o",
+										"aria-hidden": true,
+									}),
+								]
+						  ),
 				]
 			);
 		})
@@ -165,6 +173,9 @@ function updateSidebar() {
 		.before(htmlFactory(replacementContainer));
 	document.querySelectorAll(".project-filter-btn").forEach((button) => {
 		button.addEventListener("click", filterProjectView);
+		if (button.textContent === makeFirstUpper(currentProject)) {
+			button.classList.add("selected");
+		}
 	});
 	document.querySelectorAll(".project-delete-btn").forEach((button) => {
 		button.addEventListener("click", handleProjectDelete);

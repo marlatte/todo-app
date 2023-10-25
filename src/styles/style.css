@@ -35,14 +35,15 @@ h3 {
 /* ---------------     /Reboot     --------------- */
 /* ---------------     Utilities & Universals     --------------- */
 :root {
-	--header-bg-left: hsl(198, 100%, 21%);
+	--header-bg-left: #004b6b;
 	--header-bg-right: #473262;
-	--display-mode-bg: hsl(266, 100%, 94%);
-	--edit-mode-bg: hsl(198, 100%, 94%);
+	--display-mode-bg: #eee0ff;
+	--edit-mode-bg: #e0f6ff;
 
 	--text-light: #fbfcff;
 	--text-med: #404040;
-	--text-dark: hsl(266, 20%, 32%);
+	--text-dark: #4f4162;
+	--text-project: #821729;
 
 	--priority-low: #87bbf2;
 	--priority-med: #ffc000;

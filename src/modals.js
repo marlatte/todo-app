@@ -168,7 +168,7 @@ function buildProjectMode() {
 				<label for="new-project">New Project:</label>
 				<input type="text" id="new-project" required/>
 			</div>
-			<section class="project-mode-buttons">
+			<section class="buttons">
 				<button type="submit" id="project-save-btn">Submit</button>
 				<button type="button" id="project-cancel-btn">
 					Cancel

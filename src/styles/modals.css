@@ -86,9 +86,9 @@ dialog .buttons > * {
 }
 
 .display-label {
-	width: 80px;
+	width: 70px;
+	padding-left: 10px;
 	color: var(--text-dark);
-	text-align: right;
 }
 
 .display-value {
@@ -140,7 +140,7 @@ dialog .buttons > * {
 	font-size: 1.2rem;
 }
 
-form label {
+.edit-mode label {
 	width: 70px;
 	text-align: end;
 }
@@ -183,8 +183,21 @@ form .fa-chevron-down {
 	border: 2px solid currentColor;
 }
 /* ---------------     /Edit Mode     --------------- */
+/* ---------------     Project Mode     --------------- */
 
 .project-mode {
 	display: flex;
 	background-color: pink;
 }
+
+#project-save-btn {
+	background-color: var(--text-project);
+	color: pink;
+}
+
+#project-cancel-btn {
+	color: var(--text-project);
+	border: 2px solid var(--text-project);
+}
+
+/* ---------------     /Project Mode     --------------- */
