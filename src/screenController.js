@@ -127,7 +127,7 @@ function updateTaskColumns(displayTasks) {
 		PubSub.publish(EV.ADD_DRAG_DROP, card);
 		card.addEventListener("click", (e) => {
 			if (e.target.classList.value.includes("card-delete-btn")) {
-				PubSub.publish(EV.CARD.DELETE, e);
+				PubSub.publish(EV.CARD.DELETE, e, false);
 			} else {
 				PubSub.publish(EV.CARD.CLICK, e);
 			}
@@ -189,6 +189,7 @@ function updateSidebar() {
 function handleProjectDelete(e) {
 	const selectedProject = findProjectName(e.target);
 
+	// Will be replaced with new WARN event
 	const userConfirmed = confirm(
 		`Are you sure you want to delete "${makeFirstUpper(
 			selectedProject

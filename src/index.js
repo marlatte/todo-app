@@ -7,7 +7,6 @@ import "./web-storage";
 import "./screenController";
 import "./drag-drop";
 import "./warnings";
-import swal from "sweetalert";
 
 const BottomBtns = (() => {
 	const addRevealBtn = document.getElementById("add-reveal-btn");
@@ -73,9 +72,9 @@ function openDisplayMode(e) {
 	PubSub.publish(EV.DIALOG.DISPLAY_MODE, findTaskId(e.target));
 
 	document.getElementById("edit-btn").addEventListener("click", openEditMode);
-	document
-		.getElementById("delete-btn")
-		.addEventListener("click", handleTaskDelete);
+	document.getElementById("delete-btn").addEventListener("click", (e) => {
+		handleTaskDelete(e, true);
+	});
 }
 
 function openEditMode(e) {
@@ -139,10 +138,11 @@ function handleProjectCancel() {
 	dialog.close();
 }
 
-function handleTaskDelete(e) {
+function handleTaskDelete(e, reopenDialog) {
 	const selectedId = findTaskId(e.target);
 	const task = Tasks.getTasksBy("id", selectedId)[0].getProperties();
-	PubSub.publish(EV.WARN.TASK_DELETE, selectedId, task.title);
+	dialog.close();
+	PubSub.publish(EV.WARN.TASK_DELETE, selectedId, task.title, reopenDialog);
 }
 
 function getValuesArray() {
