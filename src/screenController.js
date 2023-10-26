@@ -54,7 +54,6 @@ function updateTaskColumns(displayTasks) {
 					classList: "status-name",
 					textContent: statusName + ":",
 				}),
-				// elFactory("div", { classList: "tasks-container" }),
 			]
 		);
 
@@ -62,7 +61,6 @@ function updateTaskColumns(displayTasks) {
 		column[1].forEach((taskContainer) => {
 			const task = taskContainer.getProperties();
 
-			// columnContent.children[1].children.push(
 			columnContent.children.push(
 				elFactory(
 					"div",
