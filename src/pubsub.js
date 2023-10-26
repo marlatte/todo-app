@@ -56,6 +56,9 @@ export const EV = {
 		ADD_DEFAULTS: "addDefaults",
 		CLEAR_ALL: "clearAll",
 	},
+	WARN: {
+		TASK_DELETE: "warnTaskDelete",
+	},
 	ADD_DRAG_DROP: "addDragDrop",
 	ADD_STATUS_DROP: "addStatusDrop",
 };

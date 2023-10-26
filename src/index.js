@@ -1,7 +1,7 @@
 import { PubSub, EV } from "./pubsub";
 import { Tasks } from "./app-controller";
-import { findTaskId, makeFirstUpper } from "./helpers";
-import { dialog } from "./modals";
+import { findTaskId } from "./helpers";
+import { dialog } from "./dialog";
 import "./styles/style.css";
 import "./web-storage";
 import "./screenController";
@@ -142,34 +142,7 @@ function handleProjectCancel() {
 function handleTaskDelete(e) {
 	const selectedId = findTaskId(e.target);
 	const task = Tasks.getTasksBy("id", selectedId)[0].getProperties();
-
-	swal({
-		title: "Are you sure?",
-		text: `Once deleted, the "${makeFirstUpper(
-			task.title
-		)}" task cannot be recovered.`,
-		icon: "warning",
-		buttons: true,
-		dangerMode: true,
-	}).then((willDelete) => {
-		if (willDelete) {
-			PubSub.publish(EV.TASK.DELETE, selectedId);
-			swal({
-				title: "Poof! Task deleted!",
-				text: "Way to get it done.",
-				icon: "success",
-				buttons: false,
-				timer: 2000,
-			});
-		} else {
-			swal({
-				title: "Nevermind!",
-				text: "We'll leave that one for now.",
-				buttons: false,
-				timer: 2000,
-			});
-		}
-	});
+	PubSub.publish(EV.WARN.TASK_DELETE, selectedId, task.title);
 }
 
 function getValuesArray() {

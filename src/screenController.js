@@ -1,5 +1,5 @@
 import { Tasks, Projects } from "./app-controller";
-import { dialog } from "./modals";
+import { dialog } from "./dialog";
 import { PubSub, EV } from "./pubsub";
 import { elFactory, htmlFactory, makeFirstUpper, findProjectName } from "./helpers";
 
