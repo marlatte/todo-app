@@ -1,4 +1,4 @@
-import { PubSub, EVENTS } from "./pubsub";
+import { PubSub, EV } from "./pubsub";
 import { Tasks } from "./app-controller";
 import { findTaskId, makeFirstUpper } from "./helpers";
 import { dialog } from "./modals";
@@ -6,6 +6,8 @@ import "./styles/style.css";
 import "./web-storage";
 import "./screenController";
 import "./drag-drop";
+import "./warnings";
+import swal from "sweetalert";
 
 const BottomBtns = (() => {
 	const addRevealBtn = document.getElementById("add-reveal-btn");
@@ -34,7 +36,7 @@ const BottomBtns = (() => {
 	});
 
 	defaultsBtn.addEventListener("click", () => {
-		PubSub.publish(EVENTS.ADD_DEFAULTS, true);
+		PubSub.publish(EV.RESET.ADD_DEFAULTS, true);
 	});
 
 	clearStorageBtn.addEventListener("click", () => {
@@ -42,7 +44,7 @@ const BottomBtns = (() => {
 			"Are you sure you want to delete all tasks AND projects? \nThis action cannot be undone."
 		);
 
-		if (userConfirmed) PubSub.publish(EVENTS.CLEAR_ALL);
+		if (userConfirmed) PubSub.publish(EV.RESET.CLEAR_ALL);
 	});
 
 	function hideAddBtns() {
@@ -57,18 +59,18 @@ const BottomBtns = (() => {
 		clearStorageBtn.classList.remove("open");
 	}
 
-	const subAddDisplay = PubSub.subscribe(EVENTS.DISPLAY_MODE, hideAddBtns);
-	const subAddEdit = PubSub.subscribe(EVENTS.EDIT_MODE, hideAddBtns);
-	const subAddProject = PubSub.subscribe(EVENTS.PROJECT_MODE, hideAddBtns);
-	const subStorDefaults = PubSub.subscribe(EVENTS.ADD_DEFAULTS, hideStorageBtns);
-	const subStorClearAll = PubSub.subscribe(EVENTS.CLEAR_ALL, hideStorageBtns);
-	const subStorDisplay = PubSub.subscribe(EVENTS.DISPLAY_MODE, hideStorageBtns);
+	const subAddDisplay = PubSub.subscribe(EV.DIALOG.DISPLAY_MODE, hideAddBtns);
+	const subAddEdit = PubSub.subscribe(EV.DIALOG.EDIT_MODE, hideAddBtns);
+	const subAddProject = PubSub.subscribe(EV.DIALOG.PROJECT_MODE, hideAddBtns);
+	const subStorDefaults = PubSub.subscribe(EV.RESET.ADD_DEFAULTS, hideStorageBtns);
+	const subStorClearAll = PubSub.subscribe(EV.RESET.CLEAR_ALL, hideStorageBtns);
+	const subStorDisplay = PubSub.subscribe(EV.DIALOG.DISPLAY_MODE, hideStorageBtns);
 
 	return { addTaskBtn };
 })();
 
 function openDisplayMode(e) {
-	PubSub.publish(EVENTS.DISPLAY_MODE, findTaskId(e.target));
+	PubSub.publish(EV.DIALOG.DISPLAY_MODE, findTaskId(e.target));
 
 	document.getElementById("edit-btn").addEventListener("click", openEditMode);
 	document
@@ -86,10 +88,10 @@ function openEditMode(e) {
 			.removeEventListener("click", handleTaskDelete);
 	}
 
-	PubSub.publish(EVENTS.EDIT_MODE);
+	PubSub.publish(EV.DIALOG.EDIT_MODE);
 
 	if (e.target.id === "edit-btn") {
-		PubSub.publish(EVENTS.EDIT_MODE_POP, findTaskId(e.target));
+		PubSub.publish(EV.DIALOG.EDIT_MODE_POP, findTaskId(e.target));
 	}
 
 	document
@@ -101,7 +103,7 @@ function openEditMode(e) {
 }
 
 function openProjectMode() {
-	PubSub.publish(EVENTS.PROJECT_MODE);
+	PubSub.publish(EV.DIALOG.PROJECT_MODE);
 
 	document
 		.querySelector(".project-mode")
@@ -141,13 +143,33 @@ function handleTaskDelete(e) {
 	const selectedId = findTaskId(e.target);
 	const task = Tasks.getTasksBy("id", selectedId)[0].getProperties();
 
-	const userConfirmed = confirm(
-		`Are you sure you want to delete the "${makeFirstUpper(
+	swal({
+		title: "Are you sure?",
+		text: `Once deleted, the "${makeFirstUpper(
 			task.title
-		)}" task? \nThis action cannot be undone.`
-	);
-
-	if (userConfirmed) PubSub.publish(EVENTS.DELETE_TASK, selectedId);
+		)}" task cannot be recovered.`,
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	}).then((willDelete) => {
+		if (willDelete) {
+			PubSub.publish(EV.TASK.DELETE, selectedId);
+			swal({
+				title: "Poof! Task deleted!",
+				text: "Way to get it done.",
+				icon: "success",
+				buttons: false,
+				timer: 2000,
+			});
+		} else {
+			swal({
+				title: "Nevermind!",
+				text: "We'll leave that one for now.",
+				buttons: false,
+				timer: 2000,
+			});
+		}
+	});
 }
 
 function getValuesArray() {
@@ -174,16 +196,16 @@ function handleTaskSubmit(e) {
 		.getElementById("cancel-btn")
 		.removeEventListener("click", handleTaskCancel);
 
-	const userConfirmed = confirm(
+	const userConfirmed = swal(
 		`Ready to submit ${submitId === 0 ? "a new task" : "your changes"}?`
 	);
 
 	if (userConfirmed) {
 		const valuesArray = getValuesArray();
 		if (submitId === 0) {
-			PubSub.publish(EVENTS.ADD_TASK, valuesArray);
+			PubSub.publish(EV.TASK.ADD, valuesArray);
 		} else {
-			PubSub.publish(EVENTS.UPDATE_TASK, submitId, valuesArray);
+			PubSub.publish(EV.TASK.UPDATE, submitId, valuesArray);
 		}
 		dialog.close();
 	}
@@ -192,9 +214,9 @@ function handleTaskSubmit(e) {
 function handleProjectSubmit(e) {
 	e.preventDefault();
 	const newProjectName = document.getElementById("new-project").value;
-	PubSub.publish(EVENTS.ADD_PROJECT, newProjectName);
+	PubSub.publish(EV.TASK.ADD, newProjectName);
 }
 
-const subCardClick = PubSub.subscribe(EVENTS.CARD_CLICK, openDisplayMode);
-const subCardDelete = PubSub.subscribe(EVENTS.CARD_DELETE, handleTaskDelete);
-PubSub.publish(EVENTS.INIT);
+const subCardClick = PubSub.subscribe(EV.CARD.CLICK, openDisplayMode);
+const subCardDelete = PubSub.subscribe(EV.CARD.DELETE, handleTaskDelete);
+PubSub.publish(EV.INIT);

@@ -31,21 +31,31 @@ export const PubSub = (() => {
 	return { subscribe, publish };
 })();
 
-export const EVENTS = {
+export const EV = {
 	INIT: "init",
-	DISPLAY_MODE: "displayMode",
-	EDIT_MODE: "editMode",
-	EDIT_MODE_POP: "editModePop",
-	PROJECT_MODE: "projectMode",
-	DELETE_TASK: "deleteTask",
-	ADD_TASK: "addTask",
-	UPDATE_TASK: "updateTask",
-	CARD_CLICK: "cardClick",
-	CARD_DELETE: "cardDelete",
-	ADD_PROJECT: "addProject",
-	DELETE_PROJECT: "deleteProject",
-	ADD_DEFAULTS: "addDefaults",
-	CLEAR_ALL: "clearAll",
+	DIALOG: {
+		DISPLAY_MODE: "displayMode",
+		EDIT_MODE: "editMode",
+		EDIT_MODE_POP: "editModePopulate",
+		PROJECT_MODE: "projectMode",
+	},
+	TASK: {
+		DELETE: "deleteTask",
+		ADD: "addTask",
+		UPDATE: "updateTask",
+	},
+	CARD: {
+		CLICK: "cardClick",
+		DELETE: "cardDelete",
+	},
+	PROJECT: {
+		ADD: "addProject",
+		DELETE: "deleteProject",
+	},
+	RESET: {
+		ADD_DEFAULTS: "addDefaults",
+		CLEAR_ALL: "clearAll",
+	},
 	ADD_DRAG_DROP: "addDragDrop",
 	ADD_STATUS_DROP: "addStatusDrop",
 };

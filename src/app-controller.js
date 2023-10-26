@@ -1,4 +1,4 @@
-import { PubSub, EVENTS } from "./pubsub";
+import { PubSub, EV } from "./pubsub";
 
 export const Tasks = (() => {
 	let _taskList = new Set();
@@ -91,10 +91,10 @@ export const Tasks = (() => {
 		);
 	}
 
-	const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, addTask);
-	const subRemoveTask = PubSub.subscribe(EVENTS.DELETE_TASK, removeTasks);
-	const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateTask);
-	const subClearTasks = PubSub.subscribe(EVENTS.CLEAR_ALL, clearTasks);
+	const subAddTask = PubSub.subscribe(EV.TASK.ADD, addTask);
+	const subRemoveTask = PubSub.subscribe(EV.TASK.DELETE, removeTasks);
+	const subUpdateTask = PubSub.subscribe(EV.TASK.UPDATE, updateTask);
+	const subClearTasks = PubSub.subscribe(EV.RESET.CLEAR_ALL, clearTasks);
 
 	return {
 		getAllTasks: () => [..._taskList],
@@ -122,7 +122,7 @@ export const Projects = (() => {
 			);
 
 			// Remove all tasks with those id's from _taskList
-			PubSub.publish(EVENTS.DELETE_TASK, ...removeIds);
+			PubSub.publish(EV.TASK.DELETE, ...removeIds);
 
 			// Remove name from project list
 			_projectList.delete(removeName);
@@ -133,9 +133,9 @@ export const Projects = (() => {
 		_projectList.clear();
 	}
 
-	const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, addProject);
-	const subRemoveProject = PubSub.subscribe(EVENTS.DELETE_PROJECT, removeProject);
-	const subClearProjects = PubSub.subscribe(EVENTS.CLEAR_ALL, clearProjects);
+	const subAddProject = PubSub.subscribe(EV.PROJECT.ADD, addProject);
+	const subRemoveProject = PubSub.subscribe(EV.PROJECT.DELETE, removeProject);
+	const subClearProjects = PubSub.subscribe(EV.RESET.CLEAR_ALL, clearProjects);
 
 	return {
 		getProjects: () => [..._projectList].sort(),
@@ -147,9 +147,9 @@ function addDefaults(askUser) {
 		"Defaults replace all tasks and projects with an example set. \nThis will erase anything you have saved.";
 	const userConfirmed = askUser ? confirm(question) : true;
 	if (userConfirmed) {
-		PubSub.publish(EVENTS.CLEAR_ALL);
+		PubSub.publish(EV.RESET.CLEAR_ALL);
 		["home", "finances", "learning"].forEach((project) => {
-			PubSub.publish(EVENTS.ADD_PROJECT, project);
+			PubSub.publish(EV.PROJECT.ADD, project);
 		});
 
 		const defaultTasks = [
@@ -192,9 +192,9 @@ function addDefaults(askUser) {
 		].map((item) => Object.entries(item));
 
 		defaultTasks.forEach((item) => {
-			PubSub.publish(EVENTS.ADD_TASK, item);
+			PubSub.publish(EV.TASK.ADD, item);
 		});
 	}
 }
 
-const subDefaults = PubSub.subscribe(EVENTS.ADD_DEFAULTS, addDefaults);
+const subDefaults = PubSub.subscribe(EV.RESET.ADD_DEFAULTS, addDefaults);

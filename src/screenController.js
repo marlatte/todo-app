@@ -1,6 +1,6 @@
 import { Tasks, Projects } from "./app-controller";
 import { dialog } from "./modals";
-import { PubSub, EVENTS } from "./pubsub";
+import { PubSub, EV } from "./pubsub";
 import { elFactory, htmlFactory, makeFirstUpper, findProjectName } from "./helpers";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
@@ -120,16 +120,16 @@ function updateTaskColumns(displayTasks) {
 	});
 
 	//Make each status-column able to receive dragDrops
-	PubSub.publish(EVENTS.ADD_STATUS_DROP);
+	PubSub.publish(EV.ADD_STATUS_DROP);
 
 	// Make each task clickable and draggable
 	document.querySelectorAll(".task-card").forEach((card) => {
-		PubSub.publish(EVENTS.ADD_DRAG_DROP, card);
+		PubSub.publish(EV.ADD_DRAG_DROP, card);
 		card.addEventListener("click", (e) => {
 			if (e.target.classList.value.includes("card-delete-btn")) {
-				PubSub.publish(EVENTS.CARD_DELETE, e);
+				PubSub.publish(EV.CARD.DELETE, e);
 			} else {
-				PubSub.publish(EVENTS.CARD_CLICK, e);
+				PubSub.publish(EV.CARD.CLICK, e);
 			}
 		});
 	});
@@ -196,7 +196,7 @@ function handleProjectDelete(e) {
 	);
 
 	if (userConfirmed) {
-		PubSub.publish(EVENTS.DELETE_PROJECT, selectedProject);
+		PubSub.publish(EV.PROJECT.DELETE, selectedProject);
 		currentProject =
 			selectedProject === currentProject ? ALL_TASKS : currentProject;
 		updateScreen();
@@ -209,12 +209,12 @@ function filterProjectView(e) {
 	sidebar.classList.remove("open");
 }
 
-const subInit = PubSub.subscribe(EVENTS.INIT, updateScreen);
+const subInit = PubSub.subscribe(EV.INIT, updateScreen);
 
-const subDeleteTask = PubSub.subscribe(EVENTS.DELETE_TASK, updateScreen);
-const subAddTask = PubSub.subscribe(EVENTS.ADD_TASK, updateScreen);
-const subUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, updateScreen);
+const subDeleteTask = PubSub.subscribe(EV.TASK.DELETE, updateScreen);
+const subAddTask = PubSub.subscribe(EV.TASK.ADD, updateScreen);
+const subUpdateTask = PubSub.subscribe(EV.TASK.UPDATE, updateScreen);
 
-const subAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, updateScreen);
+const subAddProject = PubSub.subscribe(EV.PROJECT.ADD, updateScreen);
 
-const subClearScreen = PubSub.subscribe(EVENTS.CLEAR_ALL, updateScreen);
+const subClearScreen = PubSub.subscribe(EV.RESET.CLEAR_ALL, updateScreen);

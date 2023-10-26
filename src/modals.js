@@ -1,6 +1,6 @@
 import { elFactory, formatDate, htmlFactory, makeFirstUpper } from "./helpers";
 import { Tasks, Projects } from "./app-controller";
-import { PubSub, EVENTS } from "./pubsub";
+import { PubSub, EV } from "./pubsub";
 
 export const dialog = document.querySelector("dialog");
 document.addEventListener("click", (e) => {
@@ -178,11 +178,11 @@ function buildProjectMode() {
 	dialog.showModal();
 }
 
-const subDisplayBuild = PubSub.subscribe(EVENTS.DISPLAY_MODE, buildDisplayMode);
-const subDisplayPop = PubSub.subscribe(EVENTS.DISPLAY_MODE, populateDisplay);
+const subDisplayBuild = PubSub.subscribe(EV.DIALOG.DISPLAY_MODE, buildDisplayMode);
+const subDisplayPop = PubSub.subscribe(EV.DIALOG.DISPLAY_MODE, populateDisplay);
 
-const subEditBuild = PubSub.subscribe(EVENTS.EDIT_MODE, buildEditMode);
-const subEditDropdowns = PubSub.subscribe(EVENTS.EDIT_MODE, addDropdowns);
-const subFormPop = PubSub.subscribe(EVENTS.EDIT_MODE_POP, populateForm);
+const subEditBuild = PubSub.subscribe(EV.DIALOG.EDIT_MODE, buildEditMode);
+const subEditDropdowns = PubSub.subscribe(EV.DIALOG.EDIT_MODE, addDropdowns);
+const subFormPop = PubSub.subscribe(EV.DIALOG.EDIT_MODE_POP, populateForm);
 
-const subProjectBuild = PubSub.subscribe(EVENTS.PROJECT_MODE, buildProjectMode);
+const subProjectBuild = PubSub.subscribe(EV.DIALOG.PROJECT_MODE, buildProjectMode);

@@ -1,4 +1,4 @@
-import { PubSub, EVENTS } from "./pubsub";
+import { PubSub, EV } from "./pubsub";
 import { Projects, Tasks } from "./app-controller";
 
 // This function is from MDN to test is storage is available on older browsers.
@@ -35,7 +35,7 @@ if (storageAvailable("localStorage")) {
 } else if (storageAvailable("sessionStorage")) {
 	storageType = sessionStorage;
 } else {
-	PubSub.publish(EVENTS.ADD_DEFAULTS, false);
+	PubSub.publish(EV.RESET.ADD_DEFAULTS, false);
 }
 
 if (!!storageType.getItem("allTasks")) {
@@ -61,11 +61,11 @@ function getStorage() {
 	);
 
 	storedProjects.forEach((project) => {
-		PubSub.publish(EVENTS.ADD_PROJECT, project);
+		PubSub.publish(EV.PROJECT.ADD, project);
 	});
 
 	storedTasks.forEach((item) => {
-		PubSub.publish(EVENTS.ADD_TASK, item);
+		PubSub.publish(EV.TASK.ADD, item);
 	});
 }
 
@@ -73,10 +73,10 @@ function clearStorage() {
 	storageType.clear();
 }
 
-const subSetAddTask = PubSub.subscribe(EVENTS.ADD_TASK, setStorage);
-const subSetDeleteTask = PubSub.subscribe(EVENTS.DELETE_TASK, setStorage);
-const subSetUpdateTask = PubSub.subscribe(EVENTS.UPDATE_TASK, setStorage);
-const subSetAddProject = PubSub.subscribe(EVENTS.ADD_PROJECT, setStorage);
-const subSetDeleteProject = PubSub.subscribe(EVENTS.DELETE_PROJECT, setStorage);
+const subSetAddTask = PubSub.subscribe(EV.TASK.ADD, setStorage);
+const subSetDeleteTask = PubSub.subscribe(EV.TASK.DELETE, setStorage);
+const subSetUpdateTask = PubSub.subscribe(EV.TASK.UPDATE, setStorage);
+const subSetAddProject = PubSub.subscribe(EV.PROJECT.ADD, setStorage);
+const subSetDeleteProject = PubSub.subscribe(EV.PROJECT.DELETE, setStorage);
 
-const subClearStorage = PubSub.subscribe(EVENTS.CLEAR_ALL, clearStorage);
+const subClearStorage = PubSub.subscribe(EV.RESET.CLEAR_ALL, clearStorage);

@@ -1,6 +1,6 @@
 import { Tasks } from "./app-controller";
 import { findStatus } from "./helpers";
-import { EVENTS, PubSub } from "./pubsub";
+import { EV, PubSub } from "./pubsub";
 
 let draggedTask = undefined;
 let counter = 0;
@@ -55,8 +55,8 @@ function updateStatus() {
 	const task = Tasks.getTasksBy("id", draggedId)[0].getProperties();
 	task.status = dropColumn;
 
-	PubSub.publish(EVENTS.UPDATE_TASK, draggedId, Object.entries(task));
+	PubSub.publish(EV.TASK.UPDATE, draggedId, Object.entries(task));
 }
 
-const subDragDrop = PubSub.subscribe(EVENTS.ADD_DRAG_DROP, addDragDrop);
-const subStatusDrop = PubSub.subscribe(EVENTS.ADD_STATUS_DROP, addStatusDrop);
+const subDragDrop = PubSub.subscribe(EV.ADD_DRAG_DROP, addDragDrop);
+const subStatusDrop = PubSub.subscribe(EV.ADD_STATUS_DROP, addStatusDrop);
