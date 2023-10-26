@@ -2,7 +2,6 @@ import { Tasks, Projects } from "./app-controller";
 import { dialog } from "./modals";
 import { PubSub, EVENTS } from "./pubsub";
 import { elFactory, htmlFactory, makeFirstUpper, findProjectName } from "./helpers";
-import { addDragDrop, addStatusDrop } from "./drag-drop";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
 const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
@@ -55,6 +54,7 @@ function updateTaskColumns(displayTasks) {
 					classList: "status-name",
 					textContent: statusName + ":",
 				}),
+				// elFactory("div", { classList: "tasks-container" }),
 			]
 		);
 
@@ -62,6 +62,7 @@ function updateTaskColumns(displayTasks) {
 		column[1].forEach((taskContainer) => {
 			const task = taskContainer.getProperties();
 
+			// columnContent.children[1].children.push(
 			columnContent.children.push(
 				elFactory(
 					"div",
@@ -121,13 +122,11 @@ function updateTaskColumns(displayTasks) {
 	});
 
 	//Make each status-column able to receive dragDrops
-	document.querySelectorAll(".status-column").forEach((status) => {
-		addStatusDrop(status);
-	});
+	PubSub.publish(EVENTS.ADD_STATUS_DROP);
 
 	// Make each task clickable and draggable
 	document.querySelectorAll(".task-card").forEach((card) => {
-		addDragDrop(card);
+		PubSub.publish(EVENTS.ADD_DRAG_DROP, card);
 		card.addEventListener("click", (e) => {
 			if (e.target.classList.value.includes("card-delete-btn")) {
 				PubSub.publish(EVENTS.CARD_DELETE, e);
@@ -147,7 +146,7 @@ function updateSidebar() {
 			return elFactory(
 				"div",
 				{
-					classList: "project-name id-bubble-marker",
+					classList: "project-name project-bubble-marker",
 					dataset: { projectFilter: project },
 				},
 				[

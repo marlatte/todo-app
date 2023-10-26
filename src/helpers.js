@@ -43,9 +43,15 @@ export function findTaskId(target) {
 }
 
 export function findProjectName(target) {
-	return target.classList.value.includes("id-bubble-marker")
+	return target.classList.value.includes("project-bubble-marker")
 		? target.dataset.projectFilter
 		: findProjectName(target.parentElement);
+}
+
+export function findStatus(target) {
+	return target.classList.value.includes("status-column")
+		? target
+		: findStatus(target.parentElement);
 }
 
 export function makeFirstUpper(string) {

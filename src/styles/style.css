@@ -159,6 +159,14 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: var(--status-spacer);
+
+	border-radius: 10px;
+	border: 2px solid transparent;
+}
+
+.status-column.drag-over {
+	border-color: black;
+	background-color: hsl(279, 33%, 92%);
 }
 
 .status-name {

@@ -5,6 +5,7 @@ import { dialog } from "./modals";
 import "./styles/style.css";
 import "./web-storage";
 import "./screenController";
+import "./drag-drop";
 
 const BottomBtns = (() => {
 	const addRevealBtn = document.getElementById("add-reveal-btn");

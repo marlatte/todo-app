@@ -44,7 +44,7 @@ if (!!storageType.getItem("allTasks")) {
 
 function setStorage() {
 	const allTasks = Tasks.getAllTasks().map((task) => {
-		const taskNoId = JSON.parse(JSON.stringify(task.getProperties()));
+		const taskNoId = task.getProperties();
 		delete taskNoId.id;
 		return taskNoId;
 	});

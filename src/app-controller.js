@@ -41,8 +41,11 @@ export const Tasks = (() => {
 		const _task = {};
 		const setProperty = (key, value) => (_task[key] = value);
 		_propertyNames.forEach((prop) => setProperty(prop, ""));
+		const getProperties = () => {
+			return { ..._task };
+		};
 		return {
-			getProperties: () => _task,
+			getProperties,
 			setProperty,
 		};
 	}

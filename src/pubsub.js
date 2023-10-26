@@ -32,6 +32,7 @@ export const PubSub = (() => {
 })();
 
 export const EVENTS = {
+	INIT: "init",
 	DISPLAY_MODE: "displayMode",
 	EDIT_MODE: "editMode",
 	EDIT_MODE_POP: "editModePop",
@@ -41,9 +42,10 @@ export const EVENTS = {
 	UPDATE_TASK: "updateTask",
 	CARD_CLICK: "cardClick",
 	CARD_DELETE: "cardDelete",
-	INIT: "init",
 	ADD_PROJECT: "addProject",
 	DELETE_PROJECT: "deleteProject",
 	ADD_DEFAULTS: "addDefaults",
 	CLEAR_ALL: "clearAll",
+	ADD_DRAG_DROP: "addDragDrop",
+	ADD_STATUS_DROP: "addStatusDrop",
 };
