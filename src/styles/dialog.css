@@ -1,5 +1,5 @@
 dialog {
-	--modal-spacer: 12px;
+	--modal-spacer: min(4vw, 18px);
 
 	width: min(88vw, 500px);
 	margin: auto;
@@ -15,9 +15,10 @@ dialog::backdrop {
 }
 
 dialog > * {
-	padding: min(4vw, 18px);
-	gap: var(--modal-spacer);
+	padding: var(--modal-spacer);
+	display: flex;
 	flex-direction: column;
+	gap: var(--modal-spacer);
 }
 
 dialog .buttons {
@@ -39,42 +40,21 @@ dialog .buttons > * {
 /* ---------------     Display Mode     --------------- */
 
 .display-mode {
-	display: flex;
 	background-color: var(--display-mode-bg);
 }
 
-.display-mode-header {
-	display: flex;
-	justify-content: space-between;
+.display-header {
+	margin-bottom: 10px;
 	font-size: 1.6rem;
 }
 
-.display-close-btn {
-	--btn-dim: 33px;
-	align-self: center;
-	height: var(--btn-dim);
-	width: var(--btn-dim);
-
+.display-divider {
+	height: 2px;
 	background-color: var(--text-dark);
-	color: var(--text-light);
-	border-radius: 20px;
-	font-weight: 500;
-}
-
-.display-mode-body {
-	display: flex;
-}
-
-.display-sidebar {
-	width: 6px;
-	border-radius: 5px;
-	background-color: grey;
+	border-radius: 2px;
 }
 
 .display-details {
-	flex: 1;
-	margin: 8px 0;
-
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
@@ -86,9 +66,9 @@ dialog .buttons > * {
 }
 
 .display-label {
-	width: 70px;
-	padding-left: 10px;
+	width: 62px;
 	color: var(--text-dark);
+	text-align: right;
 }
 
 .display-value {
@@ -100,7 +80,7 @@ dialog .buttons > * {
 	color: var(--text-light);
 }
 
-#delete-btn {
+#display-close-btn {
 	color: var(--edit-btn-bg);
 	border: 2px solid currentColor;
 }
@@ -109,7 +89,6 @@ dialog .buttons > * {
 /* ---------------     Edit Mode     --------------- */
 
 .edit-mode {
-	display: flex;
 	background-color: var(--edit-mode-bg);
 	color: var(--save-btn-bg);
 }
@@ -186,7 +165,6 @@ form .fa-chevron-down {
 /* ---------------     Project Mode     --------------- */
 
 .project-mode {
-	display: flex;
 	background-color: pink;
 }
 

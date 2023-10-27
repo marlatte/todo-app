@@ -2,7 +2,7 @@ import { makeFirstUpper } from "./helpers";
 import { EV, PubSub } from "./pubsub";
 import swal from "sweetalert";
 
-function warnTaskDelete(selectedId, taskTitle, reopenDialog) {
+function warnTaskDelete(selectedId, taskTitle) {
 	swal({
 		title: "Are you sure?",
 		text: `Once deleted, the "${makeFirstUpper(
@@ -22,18 +22,12 @@ function warnTaskDelete(selectedId, taskTitle, reopenDialog) {
 				timer: 2000,
 			});
 		} else {
-			if (reopenDialog) {
-				setTimeout(() => {
-					PubSub.publish(EV.INDEX.CARD_CLICK, selectedId);
-				}, 70);
-			} else {
-				swal({
-					title: "Nevermind!",
-					text: "We'll leave that one for now.",
-					buttons: false,
-					timer: 2000,
-				});
-			}
+			swal({
+				title: "Nevermind!",
+				text: "We'll leave that one for now.",
+				buttons: false,
+				timer: 2000,
+			});
 		}
 	});
 }
@@ -59,7 +53,7 @@ function warnProjectDelete(selectedProject) {
 			});
 		} else {
 			swal({
-				title: "Nevermind!",
+				title: "Still working!",
 				text: "Plenty left to do, eh?",
 				buttons: false,
 				timer: 2000,

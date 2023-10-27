@@ -68,9 +68,9 @@ function openDisplayMode(selectedId) {
 	PubSub.publish(EV.DIALOG.DISPLAY_MODE, selectedId);
 
 	document.getElementById("edit-btn").addEventListener("click", checkEditMode);
-	document.getElementById("delete-btn").addEventListener("click", (e) => {
-		handleTaskDelete(e, true);
-	});
+	document
+		.getElementById("display-close-btn")
+		.addEventListener("click", () => dialog.close());
 }
 
 function checkEditMode(e) {
@@ -80,8 +80,8 @@ function checkEditMode(e) {
 			.getElementById("edit-btn")
 			.removeEventListener("click", checkEditMode);
 		document
-			.getElementById("delete-btn")
-			.removeEventListener("click", handleTaskDelete);
+			.getElementById("display-close-btn")
+			.removeEventListener("click", () => dialog.close());
 
 		const task = Tasks.getTasksBy("id", findTaskId(e.target))[0].getProperties();
 		openEditMode(task);
@@ -141,11 +141,10 @@ function handleProjectCancel() {
 	dialog.close();
 }
 
-function handleTaskDelete(e, reopenDialog) {
+function handleTaskDelete(e) {
 	const selectedId = findTaskId(e.target);
 	const task = Tasks.getTasksBy("id", selectedId)[0].getProperties();
-	dialog.close();
-	PubSub.publish(EV.WARN.TASK_DELETE, selectedId, task.title, reopenDialog);
+	PubSub.publish(EV.WARN.TASK_DELETE, selectedId, task.title);
 }
 
 function getValuesArray() {

@@ -12,27 +12,26 @@ dialog.addEventListener("close", () => {
 
 function buildDisplayMode() {
 	dialog.innerHTML = `
-			<div class="display-mode">
-				<section class="display-mode-header">
+		<div class="display-mode">
+			<section class="display-body">
+				<div class="display-header">
 					<h3 id="display-title"></h3>
-					<button class="close-btn display-close-btn">×</button>
-				</section>
-				<section class="display-mode-body">
-					<div class="display-sidebar"></div>
-					<div class="display-details">
-						<div class="display-item"><span class="display-label">Project: </span><span class="display-value" id="display-project"></span></div>
-						<div class="display-item"><span class="display-label">Priority: </span><span class="display-value" id="display-priority"></span></div>
-						<div class="display-item"><span class="display-label">Due: </span><span class="display-value" id="display-due"></span></div>
-						<div class="display-item"><span class="display-label">Status: </span><span class="display-value" id="display-status"></span></div>
-						<div class="display-item"><span class="display-label">Notes: </span><span class="display-value" id="display-notes"></span></div>
-						<div class="display-item"><span class="display-label">Tags: </span><span class="display-value" id="display-tags"></span></div>
-					</div>
-				</section>
-				<section class="buttons id-bubble-marker" data-task-id="">
-					<button type="button" id="delete-btn">Delete</button>
-					<button type="button" id="edit-btn">Edit</button>
-				</section>
-			</div>
+					<div class="display-divider"></div>
+				</div>
+				<div class="display-details">
+					<div class="display-item"><span class="display-label">Project: </span><span class="display-value" id="display-project"></span></div>
+					<div class="display-item"><span class="display-label">Priority: </span><span class="display-value" id="display-priority"></span></div>
+					<div class="display-item"><span class="display-label">Due: </span><span class="display-value" id="display-due"></span></div>
+					<div class="display-item"><span class="display-label">Status: </span><span class="display-value" id="display-status"></span></div>
+					<div class="display-item"><span class="display-label">Notes: </span><span class="display-value" id="display-notes"></span></div>
+					<div class="display-item"><span class="display-label">Tags: </span><span class="display-value" id="display-tags"></span></div>
+				</div>
+			</section>
+			<section class="buttons id-bubble-marker" data-task-id="">
+				<button type="button" id="display-close-btn">Cancel</button>
+				<button type="button" id="edit-btn">Edit</button>
+			</section>
+		</div>
 	`;
 	dialog.showModal();
 }
@@ -49,66 +48,65 @@ function populateDisplay(selectedId) {
 		element.textContent = prop === "tags" ? output : makeFirstUpper(output);
 	});
 	dialog.querySelector(".id-bubble-marker").dataset.taskId = selectedId;
-	dialog
-		.querySelector(".display-close-btn")
-		.addEventListener("click", () => dialog.close());
 }
 
 function buildEditMode() {
-	dialog.innerHTML = `<form class="edit-mode" method="dialog">
-				<section class="edit-mode-details">
-					<div class="form-row">
-						<div class="form-item">
-							<label for="title">Title:</label>
-							<input type="text" id="title" class="submit-info" required />
-						</div>
+	dialog.innerHTML = `
+		<form class="edit-mode" method="dialog">
+			<section class="edit-mode-details">
+				<div class="form-row">
+					<div class="form-item">
+						<label for="title">Title:</label>
+						<input type="text" id="title" class="submit-info" required />
 					</div>
-					<div class="form-row">
-						<div class="form-item">
-							<i class="fa fa-chevron-down" aria-hidden="true"></i>
-							<label for="project">Project:</label>
-							<select id="project" class="submit-info">
-								<option value=""></option>
-							</select>
-						</div>
-						<div class="form-item">
-							<i class="fa fa-chevron-down" aria-hidden="true"></i>
-							<label for="priority">Priority:</label>
-							<select id="priority" class="submit-info">
-								<option value=""></option>
-							</select>
-						</div>
+				</div>
+				<div class="form-row">
+					<div class="form-item">
+						<i class="fa fa-chevron-down" aria-hidden="true"></i>
+						<label for="project">Project:</label>
+						<select id="project" class="submit-info">
+							<option value=""></option>
+						</select>
 					</div>
-					<div class="form-row">
-						<div class="form-item">
-							<label for="due">Due:</label>
-							<input type="date" id="due" class="submit-info"/>
-						</div>
-						<div class="form-item">
-							<i class="fa fa-chevron-down" aria-hidden="true"></i>
-							<label for="status">Status:</label>
-							<select id="status" class="submit-info" required></select>
-						</div>
+					<div class="form-item">
+						<i class="fa fa-chevron-down" aria-hidden="true"></i>
+						<label for="priority">Priority:</label>
+						<select id="priority" class="submit-info">
+							<option value=""></option>
+						</select>
 					</div>
-					<div class="form-row">
-						<div class="form-item">
-							<label for="notes">Notes:</label>
-							<textarea id="notes" rows="5" class="submit-info"></textarea>
-						</div>
+				</div>
+				<div class="form-row">
+					<div class="form-item">
+						<label for="due">Due:</label>
+						<input type="date" id="due" class="submit-info"/>
 					</div>
-					<div class="form-row">
-					<p>Separate tags with commas.</p>
-						<div class="form-item">
-							<label for="tags">Tags:</label>
-							<input type="text" id="tags" class="submit-info"/>
-						</div>
+					<div class="form-item">
+						<i class="fa fa-chevron-down" aria-hidden="true"></i>
+						<label for="status">Status:</label>
+						<select id="status" class="submit-info" required></select>
 					</div>
-				</section>
-				<section class="buttons id-bubble-marker" data-task-id="">
-					<button type="button" id="cancel-btn">Cancel</button>
-					<button type="submit" id="save-btn">Save</button>
-				</section>
-			</form>`;
+				</div>
+				<div class="form-row">
+					<div class="form-item">
+						<label for="notes">Notes:</label>
+						<textarea id="notes" rows="5" class="submit-info"></textarea>
+					</div>
+				</div>
+				<div class="form-row">
+				<p>Separate tags with commas.</p>
+					<div class="form-item">
+						<label for="tags">Tags:</label>
+						<input type="text" id="tags" class="submit-info"/>
+					</div>
+				</div>
+			</section>
+			<section class="buttons id-bubble-marker" data-task-id="">
+				<button type="button" id="cancel-btn">Back</button>
+				<button type="submit" id="save-btn">Save</button>
+			</section>
+		</form>
+	`;
 	dialog.showModal();
 }
 
