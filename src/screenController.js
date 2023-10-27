@@ -182,26 +182,15 @@ function updateSidebar() {
 		}
 	});
 	document.querySelectorAll(".project-delete-btn").forEach((button) => {
-		button.addEventListener("click", handleProjectDelete);
+		button.addEventListener("click", (e) => {
+			const selectedProject = findProjectName(e.target);
+			PubSub.publish(EV.WARN.PROJECT_DELETE, selectedProject);
+		});
 	});
 }
 
-function handleProjectDelete(e) {
-	const selectedProject = findProjectName(e.target);
-
-	// Will be replaced with new WARN event
-	const userConfirmed = confirm(
-		`Are you sure you want to delete "${makeFirstUpper(
-			selectedProject
-		)}" and all its tasks? \nThis action cannot be undone.`
-	);
-
-	if (userConfirmed) {
-		PubSub.publish(EV.PROJECT.DELETE, selectedProject);
-		currentProject =
-			selectedProject === currentProject ? ALL_TASKS : currentProject;
-		updateScreen();
-	}
+function resetCurrentProject(selectedProject) {
+	currentProject = selectedProject === currentProject ? ALL_TASKS : currentProject;
 }
 
 function filterProjectView(e) {
@@ -210,6 +199,8 @@ function filterProjectView(e) {
 	sidebar.classList.remove("open");
 }
 
+const subResetProject = PubSub.subscribe(EV.PROJECT.DELETE, resetCurrentProject);
+
 const subInit = PubSub.subscribe(EV.INIT, updateScreen);
 
 const subDeleteTask = PubSub.subscribe(EV.TASK.DELETE, updateScreen);
@@ -217,5 +208,6 @@ const subAddTask = PubSub.subscribe(EV.TASK.ADD, updateScreen);
 const subUpdateTask = PubSub.subscribe(EV.TASK.UPDATE, updateScreen);
 
 const subAddProject = PubSub.subscribe(EV.PROJECT.ADD, updateScreen);
+const subDeleteProject = PubSub.subscribe(EV.PROJECT.DELETE, updateScreen);
 
 const subClearScreen = PubSub.subscribe(EV.RESET.CLEAR_ALL, updateScreen);

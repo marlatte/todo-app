@@ -37,11 +37,42 @@ function warnTaskDelete(selectedId, taskTitle, reopenDialog) {
 					title: "Nevermind!",
 					text: "We'll leave that one for now.",
 					buttons: false,
-					timer: 2500,
+					timer: 2000,
 				});
 			}
 		}
 	});
 }
 
-PubSub.subscribe(EV.WARN.TASK_DELETE, warnTaskDelete);
+function warnProjectDelete(selectedProject) {
+	swal({
+		title: "Are you sure?",
+		text: `Deleting project "${makeFirstUpper(
+			selectedProject
+		)}" will also permanently delete all its tasks.`,
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	}).then((willDelete) => {
+		if (willDelete) {
+			PubSub.publish(EV.PROJECT.DELETE, selectedProject);
+			swal({
+				title: "Poof! Project deleted!",
+				text: "Goodbye chores, hello freedom.",
+				icon: "success",
+				buttons: false,
+				timer: 3000,
+			});
+		} else {
+			swal({
+				title: "Nevermind!",
+				text: "We'll leave that one for now.",
+				buttons: false,
+				timer: 2000,
+			});
+		}
+	});
+}
+
+const subWarnTask = PubSub.subscribe(EV.WARN.TASK_DELETE, warnTaskDelete);
+const subWarnProject = PubSub.subscribe(EV.WARN.PROJECT_DELETE, warnProjectDelete);

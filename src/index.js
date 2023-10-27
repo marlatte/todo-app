@@ -187,7 +187,7 @@ function handleTaskSubmit(e) {
 function handleProjectSubmit(e) {
 	e.preventDefault();
 	const newProjectName = document.getElementById("new-project").value;
-	PubSub.publish(EV.TASK.ADD, newProjectName);
+	PubSub.publish(EV.PROJECT.ADD, newProjectName);
 }
 
 const subCardClick = PubSub.subscribe(EV.CARD.CLICK, openDisplayMode);

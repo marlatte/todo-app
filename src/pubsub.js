@@ -58,6 +58,7 @@ export const EV = {
 	},
 	WARN: {
 		TASK_DELETE: "warnTaskDelete",
+		PROJECT_DELETE: "warnProjectDelete",
 	},
 	ADD_DRAG_DROP: "addDragDrop",
 	ADD_STATUS_DROP: "addStatusDrop",
