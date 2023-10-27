@@ -29,8 +29,8 @@ function buildDisplayMode() {
 					</div>
 				</section>
 				<section class="buttons id-bubble-marker" data-task-id="">
-					<button type="button" id="edit-btn">Edit</button>
 					<button type="button" id="delete-btn">Delete</button>
+					<button type="button" id="edit-btn">Edit</button>
 				</section>
 			</div>
 	`;
@@ -105,8 +105,8 @@ function buildEditMode() {
 					</div>
 				</section>
 				<section class="buttons id-bubble-marker" data-task-id="">
-					<button type="submit" id="save-btn">Save</button>
 					<button type="button" id="cancel-btn">Cancel</button>
+					<button type="submit" id="save-btn">Save</button>
 				</section>
 			</form>`;
 	dialog.showModal();

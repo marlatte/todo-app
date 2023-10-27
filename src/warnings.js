@@ -51,7 +51,7 @@ function warnProjectDelete(selectedProject) {
 		if (willDelete) {
 			PubSub.publish(EV.PROJECT.DELETE, selectedProject);
 			swal({
-				title: "Poof! Project deleted!",
+				title: "Poof!",
 				text: "Goodbye chores, hello freedom.",
 				icon: "success",
 				buttons: false,
