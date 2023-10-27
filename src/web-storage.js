@@ -35,7 +35,7 @@ if (storageAvailable("localStorage")) {
 } else if (storageAvailable("sessionStorage")) {
 	storageType = sessionStorage;
 } else {
-	PubSub.publish(EV.RESET.ADD_DEFAULTS, false);
+	PubSub.publish(EV.RESET.ADD_DEFAULTS);
 }
 
 if (!!storageType.getItem("allTasks")) {

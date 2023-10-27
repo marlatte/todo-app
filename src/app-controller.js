@@ -142,59 +142,54 @@ export const Projects = (() => {
 	};
 })();
 
-function addDefaults(askUser) {
-	const question =
-		"Defaults replace all tasks and projects with an example set. \nThis will erase anything you have saved.";
-	const userConfirmed = askUser ? confirm(question) : true;
-	if (userConfirmed) {
-		PubSub.publish(EV.RESET.CLEAR_ALL);
-		["home", "finances", "learning"].forEach((project) => {
-			PubSub.publish(EV.PROJECT.ADD, project);
-		});
+function addDefaults() {
+	PubSub.publish(EV.RESET.CLEAR_ALL);
+	["home", "finances", "learning"].forEach((project) => {
+		PubSub.publish(EV.PROJECT.ADD, project);
+	});
 
-		const defaultTasks = [
-			{
-				title: "pay bills",
-				status: "in-progress",
-				project: "finances",
-				priority: "high",
-				notes: "the rent is too damn high",
-				due: "2023-11-01",
-			},
-			{
-				title: "groceries",
-				status: "to-do",
-				project: "home",
-				priority: "medium",
-				tags: "store",
-			},
-			{
-				title: "file taxes",
-				status: "backlog",
-				project: "finances",
-				priority: "medium",
-			},
-			{
-				title: "read Chekhov",
-				status: "backlog",
-				project: "learning",
-				priority: "low",
-				due: "2023-11-05",
-			},
-			{
-				title: "replace lightbulb",
-				status: "to-do",
-				project: "home",
-				priority: "medium",
-				notes: "bathroom light is flickering",
-				tags: "store",
-			},
-		].map((item) => Object.entries(item));
+	const defaultTasks = [
+		{
+			title: "pay bills",
+			status: "in-progress",
+			project: "finances",
+			priority: "high",
+			notes: "the rent is too damn high",
+			due: "2023-11-01",
+		},
+		{
+			title: "groceries",
+			status: "to-do",
+			project: "home",
+			priority: "medium",
+			tags: "store",
+		},
+		{
+			title: "file taxes",
+			status: "backlog",
+			project: "finances",
+			priority: "medium",
+		},
+		{
+			title: "read Chekhov",
+			status: "backlog",
+			project: "learning",
+			priority: "low",
+			due: "2023-11-05",
+		},
+		{
+			title: "replace lightbulb",
+			status: "to-do",
+			project: "home",
+			priority: "medium",
+			notes: "bathroom light is flickering",
+			tags: "store",
+		},
+	].map((item) => Object.entries(item));
 
-		defaultTasks.forEach((item) => {
-			PubSub.publish(EV.TASK.ADD, item);
-		});
-	}
+	defaultTasks.forEach((item) => {
+		PubSub.publish(EV.TASK.ADD, item);
+	});
 }
 
 const subDefaults = PubSub.subscribe(EV.RESET.ADD_DEFAULTS, addDefaults);

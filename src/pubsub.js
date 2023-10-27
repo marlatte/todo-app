@@ -57,8 +57,11 @@ export const EV = {
 		CLEAR_ALL: "clearAll",
 	},
 	WARN: {
+		TASK_SUBMIT: "warnTaskSubmit",
 		TASK_DELETE: "warnTaskDelete",
 		PROJECT_DELETE: "warnProjectDelete",
+		DEFAULTS: "warnDefaults",
+		CLEAR_ALL: "warnClearAll",
 	},
 	ADD_DRAG_DROP: "addDragDrop",
 	ADD_STATUS_DROP: "addStatusDrop",

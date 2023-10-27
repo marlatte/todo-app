@@ -35,15 +35,11 @@ const BottomBtns = (() => {
 	});
 
 	defaultsBtn.addEventListener("click", () => {
-		PubSub.publish(EV.RESET.ADD_DEFAULTS, true);
+		PubSub.publish(EV.WARN.DEFAULTS);
 	});
 
 	clearStorageBtn.addEventListener("click", () => {
-		const userConfirmed = confirm(
-			"Are you sure you want to delete all tasks AND projects? \nThis action cannot be undone."
-		);
-
-		if (userConfirmed) PubSub.publish(EV.RESET.CLEAR_ALL);
+		PubSub.publish(EV.WARN.CLEAR_ALL);
 	});
 
 	function hideAddBtns() {
@@ -90,7 +86,8 @@ function openEditMode(e) {
 	PubSub.publish(EV.DIALOG.EDIT_MODE);
 
 	if (e.target.id === "edit-btn") {
-		PubSub.publish(EV.DIALOG.EDIT_MODE_POP, findTaskId(e.target));
+		const task = Tasks.getTasksBy("id", findTaskId(e.target))[0].getProperties();
+		PubSub.publish(EV.DIALOG.EDIT_MODE_POP, task);
 	}
 
 	document
@@ -168,20 +165,9 @@ function handleTaskSubmit(e) {
 	document
 		.getElementById("cancel-btn")
 		.removeEventListener("click", handleTaskCancel);
-
-	const userConfirmed = swal(
-		`Ready to submit ${submitId === 0 ? "a new task" : "your changes"}?`
-	);
-
-	if (userConfirmed) {
-		const valuesArray = getValuesArray();
-		if (submitId === 0) {
-			PubSub.publish(EV.TASK.ADD, valuesArray);
-		} else {
-			PubSub.publish(EV.TASK.UPDATE, submitId, valuesArray);
-		}
-		dialog.close();
-	}
+	dialog.close();
+	const valuesArray = getValuesArray();
+	PubSub.publish(EV.WARN.TASK_SUBMIT, submitId, valuesArray);
 }
 
 function handleProjectSubmit(e) {

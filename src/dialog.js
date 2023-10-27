@@ -132,8 +132,7 @@ function addDropdowns() {
 	});
 }
 
-function populateForm(selectedId) {
-	const task = Tasks.getTasksBy("id", selectedId)[0].getProperties();
+function populateForm(task) {
 	Tasks.getPropertyNames().forEach((prop) => {
 		const element = document.getElementById(prop);
 
@@ -158,7 +157,7 @@ function populateForm(selectedId) {
 				break;
 		}
 	});
-	dialog.querySelector(".id-bubble-marker").dataset.taskId = selectedId;
+	dialog.querySelector(".id-bubble-marker").dataset.taskId = task.id;
 }
 
 function buildProjectMode() {
