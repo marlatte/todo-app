@@ -24,7 +24,7 @@ const BottomBtns = (() => {
 		hideStorageBtns();
 	});
 
-	addTaskBtn.addEventListener("click", openEditMode);
+	addTaskBtn.addEventListener("click", checkEditMode);
 	addProjectBtn.addEventListener("click", openProjectMode);
 
 	storageRevealBtn.addEventListener("click", () => {
@@ -64,29 +64,35 @@ const BottomBtns = (() => {
 	return { addTaskBtn };
 })();
 
-function openDisplayMode(e) {
-	PubSub.publish(EV.DIALOG.DISPLAY_MODE, findTaskId(e.target));
+function openDisplayMode(selectedId) {
+	PubSub.publish(EV.DIALOG.DISPLAY_MODE, selectedId);
 
-	document.getElementById("edit-btn").addEventListener("click", openEditMode);
+	document.getElementById("edit-btn").addEventListener("click", checkEditMode);
 	document.getElementById("delete-btn").addEventListener("click", (e) => {
 		handleTaskDelete(e, true);
 	});
 }
 
-function openEditMode(e) {
+function checkEditMode(e) {
+	// Check if opened from displayMode
 	if (e.target !== BottomBtns.addTaskBtn) {
 		document
 			.getElementById("edit-btn")
-			.removeEventListener("click", openEditMode);
+			.removeEventListener("click", checkEditMode);
 		document
 			.getElementById("delete-btn")
 			.removeEventListener("click", handleTaskDelete);
-	}
 
-	PubSub.publish(EV.DIALOG.EDIT_MODE);
-
-	if (e.target.id === "edit-btn") {
 		const task = Tasks.getTasksBy("id", findTaskId(e.target))[0].getProperties();
+		openEditMode(task);
+	} else {
+		openEditMode();
+	}
+}
+
+function openEditMode(task) {
+	PubSub.publish(EV.DIALOG.EDIT_MODE);
+	if (!!task) {
 		PubSub.publish(EV.DIALOG.EDIT_MODE_POP, task);
 	}
 
@@ -116,9 +122,9 @@ function handleTaskCancel(e) {
 	document
 		.getElementById("cancel-btn")
 		.removeEventListener("click", handleTaskCancel);
-
-	if (findTaskId(e.target)) {
-		openDisplayMode(e);
+	const taskId = findTaskId(e.target);
+	if (!!taskId) {
+		openDisplayMode(taskId);
 	} else {
 		dialog.close();
 	}
@@ -158,7 +164,6 @@ function getValuesArray() {
 
 function handleTaskSubmit(e) {
 	e.preventDefault();
-	const submitId = findTaskId(document.getElementById("save-btn"));
 	document
 		.querySelector(".edit-mode")
 		.removeEventListener("submit", handleTaskSubmit);
@@ -166,6 +171,7 @@ function handleTaskSubmit(e) {
 		.getElementById("cancel-btn")
 		.removeEventListener("click", handleTaskCancel);
 	dialog.close();
+	const submitId = findTaskId(document.getElementById("save-btn"));
 	const valuesArray = getValuesArray();
 	PubSub.publish(EV.WARN.TASK_SUBMIT, submitId, valuesArray);
 }
@@ -176,6 +182,7 @@ function handleProjectSubmit(e) {
 	PubSub.publish(EV.PROJECT.ADD, newProjectName);
 }
 
-const subCardClick = PubSub.subscribe(EV.CARD.CLICK, openDisplayMode);
-const subCardDelete = PubSub.subscribe(EV.CARD.DELETE, handleTaskDelete);
+const subCardClick = PubSub.subscribe(EV.INDEX.CARD_CLICK, openDisplayMode);
+const subCardDelete = PubSub.subscribe(EV.INDEX.CARD_DELETE, handleTaskDelete);
+const subReopenEdit = PubSub.subscribe(EV.INDEX.REOPEN_EDIT, openEditMode);
 PubSub.publish(EV.INIT);

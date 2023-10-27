@@ -1,7 +1,13 @@
 import { Tasks, Projects } from "./app-controller";
 import { dialog } from "./dialog";
 import { PubSub, EV } from "./pubsub";
-import { elFactory, htmlFactory, makeFirstUpper, findProjectName } from "./helpers";
+import {
+	elFactory,
+	htmlFactory,
+	makeFirstUpper,
+	findProjectName,
+	findTaskId,
+} from "./helpers";
 
 const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
 const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
@@ -127,9 +133,9 @@ function updateTaskColumns(displayTasks) {
 		PubSub.publish(EV.ADD_DRAG_DROP, card);
 		card.addEventListener("click", (e) => {
 			if (e.target.classList.value.includes("card-delete-btn")) {
-				PubSub.publish(EV.CARD.DELETE, e, false);
+				PubSub.publish(EV.INDEX.CARD_DELETE, e, false);
 			} else {
-				PubSub.publish(EV.CARD.CLICK, e);
+				PubSub.publish(EV.INDEX.CARD_CLICK, findTaskId(e.target));
 			}
 		});
 	});

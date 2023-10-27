@@ -44,9 +44,10 @@ export const EV = {
 		ADD: "addTask",
 		UPDATE: "updateTask",
 	},
-	CARD: {
-		CLICK: "cardClick",
-		DELETE: "cardDelete",
+	INDEX: {
+		CARD_CLICK: "cardClick",
+		CARD_DELETE: "cardDelete",
+		REOPEN_EDIT: "reopenEditMode",
 	},
 	PROJECT: {
 		ADD: "addProject",

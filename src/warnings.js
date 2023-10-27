@@ -1,5 +1,4 @@
 import { makeFirstUpper } from "./helpers";
-import { dialog } from "./dialog";
 import { EV, PubSub } from "./pubsub";
 import swal from "sweetalert";
 
@@ -24,15 +23,9 @@ function warnTaskDelete(selectedId, taskTitle, reopenDialog) {
 			});
 		} else {
 			if (reopenDialog) {
-				const fakeEvent = {
-					target: {
-						classList: { value: "id-bubble-marker" },
-						dataset: { taskId: selectedId },
-					},
-				};
 				setTimeout(() => {
-					PubSub.publish(EV.CARD.CLICK, fakeEvent);
-				}, 60);
+					PubSub.publish(EV.INDEX.CARD_CLICK, selectedId);
+				}, 70);
 			} else {
 				swal({
 					title: "Nevermind!",
@@ -146,7 +139,6 @@ function warnTaskSubmit(submitId, valuesArray) {
 				PubSub.publish(EV.TASK.UPDATE, submitId, valuesArray);
 			}
 		} else {
-			PubSub.publish(EV.DIALOG.EDIT_MODE);
 			const rebuiltTask = valuesArray.reduce(
 				(acc, current) => {
 					acc[current[0]] = current[1];
@@ -154,7 +146,7 @@ function warnTaskSubmit(submitId, valuesArray) {
 				},
 				{ id: submitId }
 			);
-			PubSub.publish(EV.DIALOG.EDIT_MODE_POP, rebuiltTask);
+			PubSub.publish(EV.INDEX.REOPEN_EDIT, rebuiltTask);
 		}
 	});
 }
