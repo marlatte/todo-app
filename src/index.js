@@ -7,6 +7,9 @@ import "./web-storage";
 import "./screenController";
 import "./drag-drop";
 import "./warnings";
+import logo from "./img/logo.png";
+
+document.getElementById("logo").src = logo;
 
 const BottomBtns = (() => {
 	const addRevealBtn = document.getElementById("add-reveal-btn");

@@ -39,8 +39,8 @@ h3 {
 :root {
 	--save-btn-bg: #004b6b;
 	--edit-btn-bg: #473262;
-	--header-bg-left: hsl(210, 70%, 50%);
-	--header-bg-right: hsl(266, 50%, 30%);
+	--header-bg-left: #2680d9;
+	--header-bg-right: #472673;
 	--display-mode-bg: #eee0ff;
 	--edit-mode-bg: #e0f6ff;
 
