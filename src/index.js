@@ -7,7 +7,7 @@ import "./web-storage";
 import "./screenController";
 import "./drag-drop";
 import "./warnings";
-import logo from "./img/logo.png";
+import logo from "./img/logo-shadow.png";
 
 document.getElementById("logo").src = logo;
 
