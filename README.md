@@ -4,4 +4,4 @@ This To-Do webapp uses local storage to save information about all your tasks, f
 
 Full requirements from The Odin Project can be [found here](https://www.theodinproject.com/lessons/node-path-javascript-todo-list).
 
-👉 [Live Demo](#) 👈
+👉 [Live Demo](https://marlatte.github.io/todo-app/) 👈
